@@ -1,0 +1,13 @@
+{
+  "name": "diegins",
+  "version": "0.0.0",
+  "description": "Diegins",
+  "main": "app.js",
+  "author": {
+    "name": "Diego Di Mauro",
+    "url": "https://github.com/hurrikam"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.0"
+  }
+}
