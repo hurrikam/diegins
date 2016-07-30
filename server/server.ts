@@ -7,7 +7,7 @@ const MaximumPortNumber = 65535;
 export class Server {
 
     private httpServer: http.Server;
-    private pageRequestHandler: server.PageRequestHandler;
+    private fileRequestHandler: server.FileRequestHandler;
     private requestUrlNormalizer: server.RequestUrlNormalizer;
 
     public constructor(private port: number) {
@@ -15,14 +15,14 @@ export class Server {
             throw new Error(`The 'port' parameter must be a value in the range (inclusive) ` +
                 `${MinimumPortNumber} and ${MaximumPortNumber}`);
         }
-        this.pageRequestHandler = new server.PageRequestHandler();
+        this.fileRequestHandler = new server.FileRequestHandler();
         this.requestUrlNormalizer = new server.RequestUrlNormalizer();
     }
 
     private handleRequest(request: http.ServerRequest, response: http.ServerResponse): void {
         let url = this.requestUrlNormalizer.normalize(request.url);
-        if (this.pageRequestHandler.isPageRequest(url)) {
-            this.pageRequestHandler.servePage(url, response);
+        if (this.fileRequestHandler.isFileRequest(url)) {
+            this.fileRequestHandler.serveFile(url, response);
         }
     }
 

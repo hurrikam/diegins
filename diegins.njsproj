@@ -34,18 +34,24 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="server\extensionToMimeConverter.ts" />
+    <TypeScriptCompile Include="server\fileExtensionHelper.ts" />
     <TypeScriptCompile Include="server\index.ts" />
-    <TypeScriptCompile Include="server\pageRequestHandler.ts" />
+    <TypeScriptCompile Include="server\mimeTypes.ts" />
+    <TypeScriptCompile Include="server\fileRequestHandler.ts" />
     <TypeScriptCompile Include="server\requestUrlNormalizer.ts" />
     <TypeScriptCompile Include="server\server.ts" />
     <TypeScriptCompile Include="typings\node.d.ts" />
     <TypeScriptCompile Include="server.ts" />
+    <Content Include="client\images\logo.png" />
+    <Content Include="client\index.css" />
     <Content Include="client\index.html" />
     <Content Include="package.json" />
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="client\" />
+    <Folder Include="client\images\" />
     <Folder Include="server\" />
     <Folder Include="typings\" />
   </ItemGroup>
