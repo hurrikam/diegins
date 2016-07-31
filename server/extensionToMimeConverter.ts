@@ -1,4 +1,4 @@
-﻿import * as server from './mimeTypes';
+﻿import { MimeTypes } from './mimeTypes';
 
 const DefaultMimeType = '';
 
@@ -7,8 +7,10 @@ export class ExtensionToMimeConverter {
     private map: { [extension: string]: string; } = {};
 
     public constructor() {
-        this.map['html'] = server.MimeTypes.TextHtml;
-        this.map['css'] = server.MimeTypes.TextCss;
+        this.map['css'] = MimeTypes.TextCss;
+        this.map['html'] = MimeTypes.TextHtml;
+        this.map['js'] = MimeTypes.ApplicationJavaScript;
+        this.map['png'] = MimeTypes.ImagePng;
     }
 
     public convert(extension: string): string {

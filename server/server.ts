@@ -19,7 +19,7 @@ export class Server {
         this.requestUrlNormalizer = new server.RequestUrlNormalizer();
     }
 
-    private handleRequest(request: http.ServerRequest, response: http.ServerResponse): void {
+    private handleRequest(request: http.IncomingMessage, response: http.ServerResponse): void {
         let url = this.requestUrlNormalizer.normalize(request.url);
         if (this.fileRequestHandler.isFileRequest(url)) {
             this.fileRequestHandler.serveFile(url, response);

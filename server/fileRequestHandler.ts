@@ -2,7 +2,8 @@
 import http = require('http');
 import * as server from './index';
 
-const FilesRootPath = './client/';
+const ClientFilesRoot = './client/';
+const NodeModulesRoot = 'node_modules/';
 const ResponseStatusOK = 200;
 const DefaultFile = 'index.html';
 const DefaultMimeType = server.MimeTypes.TextHtml;
@@ -21,7 +22,10 @@ export class FileRequestHandler {
         if (!fileRelativePath) {
             fileRelativePath = DefaultFile;
         }
-        return FilesRootPath + fileRelativePath;
+        if (fileRelativePath.indexOf(NodeModulesRoot) == 0) {
+            return fileRelativePath;
+        }
+        return ClientFilesRoot + fileRelativePath;
     }
 
     private getFileMimeType(fileRelativePath: string): string {
