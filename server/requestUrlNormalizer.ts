@@ -10,10 +10,10 @@ export class RequestUrlNormalizer {
         if (!url) {
             return DefaultReturnUrl;
         }
-        if (url == UrlPrefix) {
+        if (url === UrlPrefix) {
             return DefaultReturnUrl;
         }
-        if (url.indexOf(UrlPrefix) == 0) {
+        if (url.indexOf(UrlPrefix) === 0) {
             let normalizedUrlLength = url.length - UrlPrefix.length;
             return url.substr(UrlPrefix.length, normalizedUrlLength);
         }

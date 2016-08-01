@@ -22,7 +22,7 @@ export class FileRequestHandler {
         if (!fileRelativePath) {
             fileRelativePath = DefaultFile;
         }
-        if (fileRelativePath.indexOf(NodeModulesRoot) == 0) {
+        if (fileRelativePath.indexOf(NodeModulesRoot) === 0) {
             return fileRelativePath;
         }
         return ClientFilesRoot + fileRelativePath;
