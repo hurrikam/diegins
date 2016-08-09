@@ -41,7 +41,7 @@
     <Content Include="typings\globals\core-js\typings.json" />
     <Content Include="typings\globals\jasmine\typings.json" />
     <Content Include="typings\globals\node\typings.json" />
-    <TypeScriptCompile Include="client\appComponent.ts" />
+    <TypeScriptCompile Include="client\components\appComponent.ts" />
     <TypeScriptCompile Include="client\main.ts" />
     <TypeScriptCompile Include="server\extensionToMimeConverter.ts" />
     <TypeScriptCompile Include="server\fileExtensionHelper.ts" />
@@ -64,6 +64,7 @@
   <ItemGroup>
     <Folder Include="client\" />
     <Folder Include="client\images\" />
+    <Folder Include="client\components\" />
     <Folder Include="server\" />
     <Folder Include="typings\" />
     <Folder Include="typings\globals\" />
@@ -79,10 +80,12 @@
     <TypeScriptNoImplicitAny>True</TypeScriptNoImplicitAny>
     <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
     <TypeScriptOutFile />
-    <TypeScriptOutDir>tsOutput</TypeScriptOutDir>
+    <TypeScriptOutDir>
+    </TypeScriptOutDir>
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
-    <TypeScriptMapRoot>tsOutput</TypeScriptMapRoot>
+    <TypeScriptMapRoot>
+    </TypeScriptMapRoot>
     <TypeScriptSourceRoot />
     <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
   </PropertyGroup>

@@ -1,4 +1,4 @@
-﻿import { bootstrap } from 'angular2/platform/browser';
-import { AppComponent } from './appComponent';
+import { bootstrap } from '@angular/platform-browser-dynamic';
+import { AppComponent } from './components/appComponent';
 
 bootstrap(AppComponent);
