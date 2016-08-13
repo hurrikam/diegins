@@ -41,6 +41,7 @@
     <Content Include="typings\globals\core-js\typings.json" />
     <Content Include="typings\globals\jasmine\typings.json" />
     <Content Include="typings\globals\node\typings.json" />
+    <TypeScriptCompile Include="client\appModule.ts" />
     <TypeScriptCompile Include="client\components\appComponent.ts" />
     <TypeScriptCompile Include="client\main.ts" />
     <TypeScriptCompile Include="server\extensionToMimeConverter.ts" />
