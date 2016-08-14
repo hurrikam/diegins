@@ -43,7 +43,11 @@
     <Content Include="typings\globals\node\typings.json" />
     <TypeScriptCompile Include="client\appModule.ts" />
     <TypeScriptCompile Include="client\components\appComponent.ts" />
+    <TypeScriptCompile Include="client\components\jobListComponent.ts" />
     <TypeScriptCompile Include="client\main.ts" />
+    <TypeScriptCompile Include="client\mocks\jobs.ts" />
+    <TypeScriptCompile Include="client\models\job.ts" />
+    <TypeScriptCompile Include="client\services\jobService.ts" />
     <TypeScriptCompile Include="server\extensionToMimeConverter.ts" />
     <TypeScriptCompile Include="server\fileExtensionHelper.ts" />
     <TypeScriptCompile Include="server\index.ts" />
@@ -66,6 +70,9 @@
     <Folder Include="client\" />
     <Folder Include="client\images\" />
     <Folder Include="client\components\" />
+    <Folder Include="client\models\" />
+    <Folder Include="client\mocks\" />
+    <Folder Include="client\services\" />
     <Folder Include="server\" />
     <Folder Include="typings\" />
     <Folder Include="typings\globals\" />

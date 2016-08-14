@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'diegins-app',
-    template: '<h1>Welcome to Diegins</h1>'
+    template: '<div><job-list></job-list></div>'
 })
 export class AppComponent { 
 }
