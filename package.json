@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
+    "lint": "tslint ./*.ts ./server/**/*.ts ./client/**/*.ts -t verbose",
     "lite": "lite-server",
     "postinstall": "typings install",
     "tsc": "tsc",
@@ -38,6 +39,8 @@
   "devDependencies": {
     "concurrently": "^2.0.0",
     "lite-server": "^2.2.0",
+    "tslint": "^3.14.0",
+    "tslint-eslint-rules": "^1.3.0",
     "typescript": "^1.8.10",
     "typings": "^1.0.4"
   }

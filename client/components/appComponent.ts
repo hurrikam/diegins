@@ -4,5 +4,5 @@ import { Component } from '@angular/core';
     selector: 'diegins-app',
     template: '<div><job-list></job-list></div>'
 })
-export class AppComponent { 
+export class AppComponent {
 }

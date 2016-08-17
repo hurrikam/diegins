@@ -37,6 +37,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="client\systemjs.config.js" />
+    <Content Include="tsconfig.json" />
+    <Content Include="tslint.json" />
     <Content Include="typings.json" />
     <Content Include="typings\globals\core-js\typings.json" />
     <Content Include="typings\globals\jasmine\typings.json" />

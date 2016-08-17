@@ -1,21 +1,18 @@
-﻿const UrlPrefix = '/';
-const DefaultReturnUrl = '';
+﻿const URL_PREFIX = '/';
+const EMPTY_URL = '';
 
 export class RequestUrlNormalizer {
 
-    public constructor() {
-    }
-
     public normalize(url: string): string {
         if (!url) {
-            return DefaultReturnUrl;
+            return EMPTY_URL;
         }
-        if (url === UrlPrefix) {
-            return DefaultReturnUrl;
+        if (url === URL_PREFIX) {
+            return EMPTY_URL;
         }
-        if (url.indexOf(UrlPrefix) === 0) {
-            let normalizedUrlLength = url.length - UrlPrefix.length;
-            return url.substr(UrlPrefix.length, normalizedUrlLength);
+        if (url.indexOf(URL_PREFIX) === 0) {
+            let normalizedUrlLength = url.length - URL_PREFIX.length;
+            return url.substr(URL_PREFIX.length, normalizedUrlLength);
         }
         return url;
     }

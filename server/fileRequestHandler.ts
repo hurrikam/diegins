@@ -2,11 +2,11 @@
 import http = require('http');
 import * as server from './index';
 
-const ClientFilesRoot = './client/';
-const NodeModulesRoot = 'node_modules/';
-const ResponseStatusOK = 200;
-const DefaultFile = 'index.html';
-const DefaultMimeType = server.MimeTypes.TextHtml;
+const CLIENT_FILES_ROOT = './client/';
+const NODE_MODULES_ROOT = 'node_modules/';
+const RESPONSE_STATUS_OK = 200;
+const DEFAULT_FILE = 'index.html';
+const DEFAULT_MIME_TYPE = server.MimeTypes.TEXT_HTML;
 
 export class FileRequestHandler {
 
@@ -20,17 +20,17 @@ export class FileRequestHandler {
 
     private getFileFullPath(fileRelativePath: string) {
         if (!fileRelativePath) {
-            fileRelativePath = DefaultFile;
+            fileRelativePath = DEFAULT_FILE;
         }
-        if (fileRelativePath.indexOf(NodeModulesRoot) === 0) {
+        if (fileRelativePath.indexOf(NODE_MODULES_ROOT) === 0) {
             return fileRelativePath;
         }
-        return ClientFilesRoot + fileRelativePath;
+        return CLIENT_FILES_ROOT + fileRelativePath;
     }
 
     private getFileMimeType(fileRelativePath: string): string {
         if (!fileRelativePath) {
-            return DefaultMimeType;
+            return DEFAULT_MIME_TYPE;
         }
         let extension = this.fileExtensionHelper.GetFileExtension(fileRelativePath);
         return this.extensionToMimeConverter.convert(extension);
@@ -44,7 +44,7 @@ export class FileRequestHandler {
     public serveFile(fileRelativePath: string, response: http.ServerResponse): void {
         let filePath = this.getFileFullPath(fileRelativePath);
         let mimeType = this.getFileMimeType(fileRelativePath);
-        response.writeHead(ResponseStatusOK, { 'Content-Type': mimeType });
+        response.writeHead(RESPONSE_STATUS_OK, { 'Content-Type': mimeType });
         response.end(fs.readFileSync(filePath));
     }
 }
