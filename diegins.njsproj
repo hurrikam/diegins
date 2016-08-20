@@ -51,11 +51,23 @@
     <TypeScriptCompile Include="client\models\job.ts" />
     <TypeScriptCompile Include="client\services\jobService.ts" />
     <TypeScriptCompile Include="server\extensionToMimeConverter.ts" />
+    <TypeScriptCompile Include="server\extensionToMimeConverterSpec.ts">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="server\fileExtensionHelper.ts" />
     <TypeScriptCompile Include="server\index.ts" />
     <TypeScriptCompile Include="server\mimeTypes.ts" />
     <TypeScriptCompile Include="server\fileRequestHandler.ts" />
+    <TypeScriptCompile Include="server\mimeTypesSpec.ts">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="server\requestUrlNormalizer.ts" />
+    <TypeScriptCompile Include="server\requestUrlNormalizerSpec.ts">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="server\server.ts" />
     <TypeScriptCompile Include="server.ts" />
     <Content Include="client\images\logo.png" />

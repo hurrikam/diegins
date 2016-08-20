@@ -1,6 +1,6 @@
 ﻿import { MimeTypes } from './mimeTypes';
 
-const DEFAULT_MIME_TYPE = '';
+export const DEFAULT_MIME_TYPE = '';
 
 export class ExtensionToMimeConverter {
 

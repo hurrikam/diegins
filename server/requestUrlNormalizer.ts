@@ -1,5 +1,5 @@
-﻿const URL_PREFIX = '/';
-const EMPTY_URL = '';
+﻿export const URL_PREFIX = '/';
+export const EMPTY_URL = '';
 
 export class RequestUrlNormalizer {
 
