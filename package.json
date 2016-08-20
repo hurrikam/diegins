@@ -12,6 +12,7 @@
     "lint": "tslint ./*.ts ./server/**/*.ts ./client/**/*.ts -t verbose",
     "lite": "lite-server",
     "postinstall": "typings install",
+    "test": "mocha server",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "typings": "typings"
