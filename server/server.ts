@@ -1,8 +1,8 @@
-﻿import http = require('http');
+﻿import * as http from 'http';
 import * as server from './index';
 
-const MINIMUM_PORT_NUMBER = 0;
-const MAXIMUM_PORT_NUMBER = 65535;
+export const MINIMUM_SERVER_PORT_NUMBER = 0;
+export const MAXIMUM_SERVER_PORT_NUMBER = 65535;
 
 export class Server {
 
@@ -11,9 +11,9 @@ export class Server {
     private requestUrlNormalizer: server.RequestUrlNormalizer;
 
     public constructor(private port: number) {
-        if (port < MINIMUM_PORT_NUMBER || port > MAXIMUM_PORT_NUMBER) {
+        if (port < MINIMUM_SERVER_PORT_NUMBER || port > MAXIMUM_SERVER_PORT_NUMBER) {
             throw new Error(`The 'port' parameter must be a value in the range (inclusive) ` +
-                `${MINIMUM_PORT_NUMBER} and ${MAXIMUM_PORT_NUMBER}`);
+                `${MINIMUM_SERVER_PORT_NUMBER} and ${MAXIMUM_SERVER_PORT_NUMBER}`);
         }
         this.fileRequestHandler = new server.FileRequestHandler();
         this.requestUrlNormalizer = new server.RequestUrlNormalizer();

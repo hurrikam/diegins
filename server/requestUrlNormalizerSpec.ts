@@ -1,36 +1,36 @@
-﻿import assert = require('assert');
+﻿import { expect } from 'chai';
 import { URL_PREFIX, EMPTY_URL, RequestUrlNormalizer } from './requestUrlNormalizer';
 
 describe('URL_PREFIX', () => {
 
     it('is the slash character', () => {
-        assert.strictEqual(URL_PREFIX, '/');
+        expect(URL_PREFIX).to.equal('/');
     });
 });
 
 describe('EMPTY_URL', () => {
 
     it('is an empty string', () => {
-        assert.strictEqual(EMPTY_URL, '');
+        expect(EMPTY_URL).to.equal('');
     });
 });
 
 describe('requestUrlNormalizer', () => {
 
-    describe('normalize()', () => {
+    describe('normalize', () => {
 
         const normalizer = new RequestUrlNormalizer();
 
         it('converts null to the empty URL', () => {
-            assert.strictEqual(normalizer.normalize(null), EMPTY_URL);
+            expect(normalizer.normalize(null)).to.equal(EMPTY_URL);
         });
 
         it('converts undefined to the empty URL', () => {
-            assert.strictEqual(normalizer.normalize(undefined), EMPTY_URL);
+            expect(normalizer.normalize(undefined)).to.equal(EMPTY_URL);
         });
 
         it('converts an empty string to the empty URL', () => {
-            assert.strictEqual(normalizer.normalize(''), EMPTY_URL);
+            expect(normalizer.normalize('')).to.equal(EMPTY_URL);
         });
     });
 });

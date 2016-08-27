@@ -32,7 +32,7 @@ export class FileRequestHandler {
         if (!fileRelativePath) {
             return DEFAULT_MIME_TYPE;
         }
-        let extension = this.fileExtensionHelper.GetFileExtension(fileRelativePath);
+        let extension = this.fileExtensionHelper.getFileExtension(fileRelativePath);
         return this.extensionToMimeConverter.convert(extension);
     }
 
