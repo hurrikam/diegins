@@ -1,11 +1,12 @@
-﻿import path = require('path');
+﻿import * as path from 'path';
+import { StringUtils } from '../common/stringUtils';
 
 export const FILE_EXTENSION_DELIMITER = '.';
 
 export class FileExtensionHelper {
 
     public getFileExtension(filePath: string): string {
-        if (!filePath || filePath.trim().length === 0) {
+        if (StringUtils.isBlank(filePath)) {
             throw new Error('The filePath parameter cannot be an empty string');
         }
         let extension = path.extname(filePath);
