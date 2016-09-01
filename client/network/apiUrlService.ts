@@ -9,9 +9,9 @@ export class ApiUrlService {
     }
 
     public getUrl(apiEndpoint: string): string {
-        if (StringUtils.isBlank(apiEndpoint)) {
+        if (StringUtils.isUndefinedOrBlank(apiEndpoint)) {
             throw new Error('The apiEndpoint parameter cannot be a blank string');
         }
-        return this.hostName + '/' + apiEndpoint;
+        return this.hostName + '/api/' + apiEndpoint;
     }
 }

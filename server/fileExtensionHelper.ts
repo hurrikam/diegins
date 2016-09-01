@@ -6,7 +6,7 @@ export const FILE_EXTENSION_DELIMITER = '.';
 export class FileExtensionHelper {
 
     public getFileExtension(filePath: string): string {
-        if (StringUtils.isBlank(filePath)) {
+        if (StringUtils.isUndefinedOrBlank(filePath)) {
             throw new Error('The filePath parameter cannot be an empty string');
         }
         let extension = path.extname(filePath);

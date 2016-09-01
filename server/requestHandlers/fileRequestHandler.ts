@@ -45,7 +45,7 @@ export class FileRequestHandler implements RequestHandler {
         }
         let filePath = this.getFileFullPath(url);
         let mimeType = this.getFileMimeType(url);
-        response.writeHead(RESPONSE_STATUS_OK, { 'Content-Type': mimeType });
+        response.setHeader('Content-Type', mimeType);
         response.end(fs.readFileSync(filePath));
         return true;
     }
