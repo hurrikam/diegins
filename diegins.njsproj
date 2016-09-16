@@ -52,6 +52,7 @@
     <TypeScriptCompile Include="client\mocks\jobs.ts" />
     <TypeScriptCompile Include="client\models\job.ts" />
     <TypeScriptCompile Include="common\api\endpoints.ts" />
+    <TypeScriptCompile Include="common\api\endpointsSpec.ts" />
     <TypeScriptCompile Include="common\mocks\jobs.ts" />
     <TypeScriptCompile Include="client\network\apiUrlService.ts" />
     <TypeScriptCompile Include="client\network\httpService.ts" />
@@ -112,6 +113,7 @@
     <Folder Include="client\services\" />
     <Folder Include="common\" />
     <Folder Include="common\api\" />
+    <Folder Include="common\mocks\" />
     <Folder Include="server\" />
     <Folder Include="server\apiCommands\" />
     <Folder Include="server\requestHandlers\" />

@@ -1,7 +1,5 @@
 ﻿export module MimeTypes {
 
-    'use strict';
-
     export const APPLICATION_JAVASCRIPT = 'application/javascript';
     export const APPLICATION_JSON = 'application/json';
     export const IMAGE_PNG = 'image/png';
