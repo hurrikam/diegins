@@ -61,6 +61,8 @@
     <TypeScriptCompile Include="common\stringUtilsSpec.ts" />
     <TypeScriptCompile Include="server\apiCommands\apiCommand.ts" />
     <TypeScriptCompile Include="server\apiCommands\getJobsCommand.ts" />
+    <TypeScriptCompile Include="server\jobs\index.ts" />
+    <TypeScriptCompile Include="server\jobs\jobRepository.ts" />
     <TypeScriptCompile Include="server\requestHandlers\apiRequestHandler.ts" />
     <TypeScriptCompile Include="server\extensionToMimeConverter.ts" />
     <TypeScriptCompile Include="server\extensionToMimeConverterSpec.ts">
@@ -116,6 +118,7 @@
     <Folder Include="common\mocks\" />
     <Folder Include="server\" />
     <Folder Include="server\apiCommands\" />
+    <Folder Include="server\jobs\" />
     <Folder Include="server\requestHandlers\" />
     <Folder Include="typings\" />
     <Folder Include="typings\globals\" />
