@@ -61,6 +61,9 @@
     <TypeScriptCompile Include="common\stringUtilsSpec.ts" />
     <TypeScriptCompile Include="server\apiCommands\apiCommand.ts" />
     <TypeScriptCompile Include="server\apiCommands\getJobsCommand.ts" />
+    <TypeScriptCompile Include="server\requestHandlers\fileRequestHandler_Spec.ts" />
+    <TypeScriptCompile Include="server\serverFoldersSpec.ts" />
+    <TypeScriptCompile Include="server\serverFolders.ts" />
     <TypeScriptCompile Include="server\jobs\index.ts" />
     <TypeScriptCompile Include="server\jobs\jobRepository.ts" />
     <TypeScriptCompile Include="server\requestHandlers\apiRequestHandler.ts" />
@@ -83,11 +86,6 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="server\requestHandlers\index.ts" />
     <TypeScriptCompile Include="server\requestHandlers\requestHandler.ts" />
-    <TypeScriptCompile Include="server\requestUrlNormalizer.ts" />
-    <TypeScriptCompile Include="server\requestUrlNormalizerSpec.ts">
-      <SubType>Code</SubType>
-      <TestFramework>Mocha</TestFramework>
-    </TypeScriptCompile>
     <TypeScriptCompile Include="server\server.ts" />
     <TypeScriptCompile Include="server.ts" />
     <Content Include="client\images\logo.png" />

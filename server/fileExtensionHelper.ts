@@ -10,7 +10,7 @@ export class FileExtensionHelper {
             throw new Error('The filePath parameter cannot be an empty string');
         }
         let extension = path.extname(filePath);
-        if (extension.indexOf(FILE_EXTENSION_DELIMITER) === 0) {
+        if (StringUtils.startsWith(extension, FILE_EXTENSION_DELIMITER)) {
             extension = extension.substr(FILE_EXTENSION_DELIMITER.length);
         }
         return extension;

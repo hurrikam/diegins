@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Diegins - © 2016 Diego Di Mauro</title>
-    <link href="index.css" rel="stylesheet" />
+    <link href="client/index.css" rel="stylesheet" />
 
     <!-- 1. Load libraries -->
     <!-- Polyfill(s) for older browsers -->
@@ -13,14 +13,14 @@
     <script src="node_modules/reflect-metadata/Reflect.js"></script>
     <script src="node_modules/systemjs/dist/system.src.js"></script>
     <!-- 2. Configure SystemJS -->
-    <script src="systemjs.config.js"></script>
+    <script src="client/systemjs.config.js"></script>
     <script>
       System.import('app').catch(function(err){ console.error(err); });
     </script>
 </head>
 <body>
     <header>
-        <img id="header-logo-img" src="images/logo.png"/>
+        <img id="header-logo-img" src="client/images/logo.png"/>
         <span id="header-title">Diegins</span>
         <a id="header-author-link" href="http://github.com/hurrikam" target="_blank">© 2016 Diego Di Mauro</a>
     </header>
