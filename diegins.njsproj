@@ -52,35 +52,35 @@
     <TypeScriptCompile Include="client\mocks\jobs.ts" />
     <TypeScriptCompile Include="client\models\job.ts" />
     <TypeScriptCompile Include="common\api\endpoints.ts" />
-    <TypeScriptCompile Include="common\api\endpointsSpec.ts" />
+    <TypeScriptCompile Include="common\api\endpoints_Spec.ts" />
     <TypeScriptCompile Include="common\mocks\jobs.ts" />
     <TypeScriptCompile Include="client\network\apiUrlService.ts" />
     <TypeScriptCompile Include="client\network\httpService.ts" />
     <TypeScriptCompile Include="client\services\jobService.ts" />
     <TypeScriptCompile Include="common\stringUtils.ts" />
-    <TypeScriptCompile Include="common\stringUtilsSpec.ts" />
+    <TypeScriptCompile Include="common\stringUtils_Spec.ts" />
     <TypeScriptCompile Include="server\apiCommands\apiCommand.ts" />
     <TypeScriptCompile Include="server\apiCommands\getJobsCommand.ts" />
     <TypeScriptCompile Include="server\requestHandlers\fileRequestHandler_Spec.ts" />
-    <TypeScriptCompile Include="server\serverFoldersSpec.ts" />
+    <TypeScriptCompile Include="server\serverFolders_Spec.ts" />
     <TypeScriptCompile Include="server\serverFolders.ts" />
     <TypeScriptCompile Include="server\jobs\index.ts" />
     <TypeScriptCompile Include="server\jobs\jobRepository.ts" />
     <TypeScriptCompile Include="server\requestHandlers\apiRequestHandler.ts" />
     <TypeScriptCompile Include="server\extensionToMimeConverter.ts" />
-    <TypeScriptCompile Include="server\extensionToMimeConverterSpec.ts">
+    <TypeScriptCompile Include="server\extensionToMimeConverter_Spec.ts">
       <SubType>Code</SubType>
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
     <TypeScriptCompile Include="server\fileExtensionHelper.ts" />
-    <TypeScriptCompile Include="server\fileExtensionHelperSpec.ts">
+    <TypeScriptCompile Include="server\fileExtensionHelper_Spec.ts">
       <SubType>Code</SubType>
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
     <TypeScriptCompile Include="server\index.ts" />
     <TypeScriptCompile Include="server\mimeTypes.ts" />
     <TypeScriptCompile Include="server\requestHandlers\fileRequestHandler.ts" />
-    <TypeScriptCompile Include="server\mimeTypesSpec.ts">
+    <TypeScriptCompile Include="server\mimeTypes_Spec.ts">
       <SubType>Code</SubType>
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
@@ -93,7 +93,7 @@
     <Content Include="client\index.html" />
     <Content Include="package.json" />
     <Content Include="README.md" />
-    <TypeScriptCompile Include="server\serverSpec.ts">
+    <TypeScriptCompile Include="server\server_Spec.ts">
       <SubType>Code</SubType>
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
