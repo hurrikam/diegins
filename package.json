@@ -12,7 +12,7 @@
     "lint": "tslint ./*.ts ./client/**/*.ts ./common/**/*.ts ./server/**/*.ts -t verbose",
     "lite": "lite-server",
     "postinstall": "typings install",
-    "test": "tsc && mocha ./**/*_Spec.js --recursive",
+    "test": "tsc && mocha --recursive ./**/*_Spec.js",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "typings": "typings"
