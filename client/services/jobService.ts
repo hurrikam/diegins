@@ -1,8 +1,8 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import { Job } from '../models/job';
-import { JOBS } from '../mocks/jobs';
+import { Job } from '../../common/models/job';
+import { Endpoints } from '../../common/api/endpoints';
 import { ApiUrlService } from '../network/apiUrlService';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class JobService {
     }
 
     public getJobs(): Promise<Job[]> {
-        let apiUrl = this.getUrl('jobs');
+        let apiUrl = this.getUrl(Endpoints.GET_JOBS);
         return this.http.get(apiUrl)
             .toPromise()
             .then((response) => {
@@ -25,6 +25,18 @@ export class JobService {
             })
             .catch(() => {
                 return [];
+            });
+    }
+
+    public runJob(id: string): Promise<boolean> {
+        let apiUrl = this.getUrl(Endpoints.RUN_JOB);
+        return this.http.get(apiUrl)
+            .toPromise()
+            .then((response) => {
+                return response.json() as boolean;
+            })
+            .catch(() => {
+                return false;
             });
     }
 }

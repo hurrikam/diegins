@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { AppComponent } from './components/appComponent';
 import { JobListComponent } from './components/jobListComponent';
+import { JobListItemComponent } from './components/jobListItemComponent';
 
 @NgModule({
     imports: [
@@ -11,7 +12,8 @@ import { JobListComponent } from './components/jobListComponent';
     ],
     declarations: [
         AppComponent,
-        JobListComponent
+        JobListComponent,
+        JobListItemComponent
     ],
     bootstrap: [ AppComponent ]
 })

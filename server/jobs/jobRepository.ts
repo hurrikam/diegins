@@ -1,5 +1,5 @@
 ﻿import * as fs from 'fs';
-import { Job } from '../../client/models/job';
+import { Job } from '../../common/models/job';
 
 const JOBS_ROOT = 'jobs/';
 const JOB_CONFIG_FILE_NAME = 'config.json';

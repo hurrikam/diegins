@@ -1,4 +1,4 @@
-﻿import { Job } from '../models/job';
+﻿import { Job } from '../../common/models/job';
 
 export const JOBS: Array<Job> = [
     { id: 'job_1', displayName: 'Job 1' },

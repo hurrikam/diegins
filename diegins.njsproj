@@ -36,6 +36,8 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="client\components\views\jobListComponent.css" />
+    <Content Include="client\components\views\jobListItemComponent.css" />
     <Content Include="client\systemjs.config.js" />
     <Content Include="tsconfig.json" />
     <Content Include="tslint.json" />
@@ -47,10 +49,12 @@
     <Content Include="typings\modules\chai\typings.json" />
     <TypeScriptCompile Include="client\appModule.ts" />
     <TypeScriptCompile Include="client\components\appComponent.ts" />
+    <TypeScriptCompile Include="client\components\index.ts" />
     <TypeScriptCompile Include="client\components\jobListComponent.ts" />
+    <TypeScriptCompile Include="client\components\jobListItemComponent.ts" />
     <TypeScriptCompile Include="client\main.ts" />
     <TypeScriptCompile Include="client\mocks\jobs.ts" />
-    <TypeScriptCompile Include="client\models\job.ts" />
+    <TypeScriptCompile Include="common\models\job.ts" />
     <TypeScriptCompile Include="common\api\endpoints.ts" />
     <TypeScriptCompile Include="common\api\endpoints_Spec.ts" />
     <TypeScriptCompile Include="common\mocks\jobs.ts" />
@@ -60,7 +64,9 @@
     <TypeScriptCompile Include="common\stringUtils.ts" />
     <TypeScriptCompile Include="common\stringUtils_Spec.ts" />
     <TypeScriptCompile Include="server\apiCommands\apiCommand.ts" />
+    <TypeScriptCompile Include="server\apiCommands\runJobCommand.ts" />
     <TypeScriptCompile Include="server\apiCommands\getJobsCommand.ts" />
+    <TypeScriptCompile Include="server\jobs\jobRunner.ts" />
     <TypeScriptCompile Include="server\requestHandlers\fileRequestHandler_Spec.ts" />
     <TypeScriptCompile Include="server\serverFolders_Spec.ts" />
     <TypeScriptCompile Include="server\serverFolders.ts" />
@@ -105,10 +111,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="client\" />
+    <Folder Include="client\components\views\" />
     <Folder Include="client\images\" />
     <Folder Include="client\components\" />
     <Folder Include="client\mocks\" />
-    <Folder Include="client\models\" />
+    <Folder Include="common\models\" />
     <Folder Include="client\network\" />
     <Folder Include="client\services\" />
     <Folder Include="common\" />
