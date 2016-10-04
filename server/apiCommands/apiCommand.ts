@@ -4,5 +4,5 @@ export interface ApiCommand {
 
     endpoint: string;
 
-    execute(IncomingMessage, response: ServerResponse);
+    execute(request: IncomingMessage, response: ServerResponse);
 }

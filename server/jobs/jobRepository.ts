@@ -22,6 +22,12 @@ export class JobRepository {
         return this._jobs;
     }
 
+    public getJobById(id: string): Job {
+        return this.jobs.find((job) => {
+            return job.id === id;
+        });
+    }
+
     private scanJobDirectories(directories: string[]) {
         if (!directories) {
             return;
@@ -37,6 +43,8 @@ export class JobRepository {
     private createJobFromDir(directoryName: string) : Job {
         let jobConfigFilePath = JOBS_ROOT + directoryName + '/' + JOB_CONFIG_FILE_NAME;
         let fileContent = fs.readFileSync(jobConfigFilePath, 'utf8');
-        return JSON.parse(fileContent);
+        let job = <Job>JSON.parse(fileContent);
+        job.id = directoryName;
+        return job;
     }
 }

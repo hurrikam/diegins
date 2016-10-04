@@ -7,7 +7,7 @@ import { JobService } from '../services/jobService';
     template: `
         <div class="job-list-item">
             <span class="job-list-item-name">{{job.displayName}}</span>
-            <button class="job-list-item-button">run</button>
+            <button class="job-list-item-button" (click)="runJob()">run</button>
         </div>
         `,
     providers: [JobService]
