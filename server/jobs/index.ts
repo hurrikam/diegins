@@ -1,5 +1,6 @@
 ﻿import { JobRepository } from './jobRepository';
 import { JobRunner } from './jobRunner';
+import { JobStep } from './jobStep';
 
 const JOB_REPOSITORY = new JobRepository();
 const JOB_RUNNER = new JobRunner(JOB_REPOSITORY);
@@ -15,3 +16,5 @@ export function getJobRunner(): JobRunner {
 }
 
 export * from './jobRunner';
+
+export * from './jobStep';

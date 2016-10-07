@@ -3,6 +3,8 @@ import { JobInstance } from '../../common/models/jobInstance';
 
 export class JobRunner {
 
+    private readonly runningJobs: JobInstance[] = [];
+
     public constructor(private jobRepository: JobRepository) {
     }
 
@@ -16,11 +18,9 @@ export class JobRunner {
         return true;
     }
 
-    public get runningJobs(): any[] {
-        return null;
-    }
-
     private createJobInstance(id: string): JobInstance {
-        return new JobInstance();
+        return {
+            id: id
+        };
     }
 }

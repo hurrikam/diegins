@@ -62,7 +62,11 @@
     <TypeScriptCompile Include="client\network\apiUrlService.ts" />
     <TypeScriptCompile Include="client\network\httpService.ts" />
     <TypeScriptCompile Include="client\services\jobService.ts" />
-    <TypeScriptCompile Include="common\models\jobInstance.ts" />
+    <TypeScriptCompile Include="common\models\jobStepResult.ts" />
+    <TypeScriptCompile Include="server\jobSteps\dosShellJobStep.ts" />
+    <TypeScriptCompile Include="server\jobs\jobInstance.ts" />
+    <TypeScriptCompile Include="server\jobs\jobStep.ts" />
+    <TypeScriptCompile Include="server\jobs\jobStepInstance.ts" />
     <TypeScriptCompile Include="common\stringUtils.ts" />
     <TypeScriptCompile Include="common\stringUtils_Spec.ts" />
     <TypeScriptCompile Include="server\apiCommands\apiCommand.ts" />
@@ -127,6 +131,7 @@
     <Folder Include="server\" />
     <Folder Include="server\apiCommands\" />
     <Folder Include="server\jobs\" />
+    <Folder Include="server\jobSteps\" />
     <Folder Include="server\requestHandlers\" />
     <Folder Include="typings\" />
     <Folder Include="typings\globals\" />
