@@ -2,9 +2,9 @@
 
 export class JobStepInstance {
 
-    public readonly pluginId: string;
+    public readonly stepId: string;
 
     public execute(): Promise<JobStepResult> {
-
+        return null;
     }
 }

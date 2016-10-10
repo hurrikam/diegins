@@ -2,4 +2,5 @@
 
     id: string;
     displayName: string;
+    stepIds: string[];
 }

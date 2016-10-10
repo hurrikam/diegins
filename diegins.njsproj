@@ -55,6 +55,7 @@
     <TypeScriptCompile Include="client\main.ts" />
     <TypeScriptCompile Include="client\mocks\jobs.ts" />
     <TypeScriptCompile Include="common\api\commandsParameters.ts" />
+    <TypeScriptCompile Include="common\models\index.ts" />
     <TypeScriptCompile Include="common\models\job.ts" />
     <TypeScriptCompile Include="common\api\endpoints.ts" />
     <TypeScriptCompile Include="common\api\endpoints_Spec.ts" />
@@ -62,8 +63,12 @@
     <TypeScriptCompile Include="client\network\apiUrlService.ts" />
     <TypeScriptCompile Include="client\network\httpService.ts" />
     <TypeScriptCompile Include="client\services\jobService.ts" />
+    <TypeScriptCompile Include="common\models\jobInstanceInfo.ts" />
+    <TypeScriptCompile Include="common\models\jobResult.ts" />
+    <TypeScriptCompile Include="common\models\JobStatus.ts" />
     <TypeScriptCompile Include="common\models\jobStepResult.ts" />
-    <TypeScriptCompile Include="server\jobSteps\dosShellJobStep.ts" />
+    <TypeScriptCompile Include="server\apiCommands\getRunningJobsCommand.ts" />
+    <TypeScriptCompile Include="server\jobSteps\sampleJobStep.ts" />
     <TypeScriptCompile Include="server\jobs\jobInstance.ts" />
     <TypeScriptCompile Include="server\jobs\jobStep.ts" />
     <TypeScriptCompile Include="server\jobs\jobStepInstance.ts" />
@@ -74,6 +79,7 @@
     <TypeScriptCompile Include="server\apiCommands\runJobCommand.ts" />
     <TypeScriptCompile Include="server\apiCommands\getJobsCommand.ts" />
     <TypeScriptCompile Include="server\jobs\jobRunner.ts" />
+    <TypeScriptCompile Include="server\jobs\jobStepRepository.ts" />
     <TypeScriptCompile Include="server\requestHandlers\fileRequestHandler_Spec.ts" />
     <TypeScriptCompile Include="server\serverFolders_Spec.ts" />
     <TypeScriptCompile Include="server\serverFolders.ts" />
