@@ -2,15 +2,14 @@
 import { Http } from '@angular/http';
 import { format } from 'url';
 import 'rxjs/add/operator/toPromise';
-import { Job } from '../../common/models/job';
-import { Endpoints } from '../../common/api/endpoints';
+import { Job, JobInstanceInfo } from '../../common/models';
+import { Endpoints, RunJobCommandParameters } from '../../common/api';
 import { ApiUrlService } from '../network/apiUrlService';
-import { RunJobCommandParameters } from '../../common/api/commandsParameters';
 
 @Injectable()
 export class JobService {
 
-    public constructor(private http: Http) {
+    public constructor(private readonly http: Http) {
     }
 
     private buildApiUrl(apiEndpoint: string, parameters?: any): string {
@@ -50,6 +49,18 @@ export class JobService {
             })
             .catch(() => {
                 return false;
+            });
+    }
+
+    public getJobInstanceInfos(): Promise<JobInstanceInfo[]> {
+        let apiUrl = this.buildApiUrl(Endpoints.GET_JOB_INSTANCE_INFOS);
+        return this.http.get(apiUrl)
+            .toPromise()
+            .then((response) => {
+                return response.json() as JobInstanceInfo[];
+            })
+            .catch(() => {
+                return [];
             });
     }
 }

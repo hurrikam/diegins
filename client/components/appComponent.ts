@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'diegins-app',
-    template: '<div><job-list></job-list></div>'
+    template: '<job-list></job-list><job-instance-grid></job-instance-grid>'
 })
 export class AppComponent {
 }

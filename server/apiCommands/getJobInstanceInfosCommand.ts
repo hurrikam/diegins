@@ -2,9 +2,9 @@
 import { ApiCommand } from './apiCommand';
 import { Endpoints } from '../../common/api/endpoints';
 import { MimeTypes } from '../mimeTypes';
-import { JobRunner, getJobRunner } from '../jobs';
+import { getJobRunner, JobRunner } from '../jobs';
 
-export class GetRunningJobsCommand implements ApiCommand {
+export class GetJobInstanceInfosCommand implements ApiCommand {
 
     private jobRunner: JobRunner;
 
@@ -13,12 +13,13 @@ export class GetRunningJobsCommand implements ApiCommand {
     }
 
     public get endpoint(): string {
-        return Endpoints.GET_RUNNING_JOBS;
+        return Endpoints.GET_JOB_INSTANCE_INFOS;
     }
 
     public execute(request: IncomingMessage, response: ServerResponse): void {
         response.setHeader('Content-Type', MimeTypes.APPLICATION_JSON);
-        let jobsData = JSON.stringify(this.jobRunner.getRunningJobInfos());
+        const jobInstanceInfos = this.jobRunner.getRunningJobInfos();
+        const jobsData = JSON.stringify(jobInstanceInfos);
         response.end(jobsData);
     }
 }

@@ -1,4 +1,4 @@
-﻿import { Job, JobResult, JobStepResult } from '../../common/models';
+﻿import { Job, JobResult, JobStepOutcome } from '../../common/models';
 import { getJobStepRepository, JobStep, JobStepInstance, JobStepRepository } from '.';
 
 export class JobInstance {
@@ -21,11 +21,13 @@ export class JobInstance {
         if (!hasSteps) {
             return Promise.resolve(JobResult.Succeeded);
         }
-        return Promise.all(this.chainStepPromises()).then((result) => {
-            return Promise.resolve(JobResult.Succeeded);
-        }).catch((error) => {
-            return Promise.reject(JobResult.Failed);
-        });
+        return Promise.all(this.chainStepPromises())
+            .then((result) => {
+                return Promise.resolve(JobResult.Succeeded);
+            })
+            .catch((error) => {
+                return Promise.reject(JobResult.Failed);
+            });
     }
 
     private get stepIds(): string[] {
@@ -36,8 +38,8 @@ export class JobInstance {
         return this.jobStepRepository.getJobStep(id);
     }
 
-    private chainStepPromises(): Promise<JobStepResult>[] {
-        let stepPromises: Promise<JobStepResult>[] = [];
+    private chainStepPromises(): Promise<JobStepOutcome>[] {
+        let stepPromises: Promise<JobStepOutcome>[] = [];
         for (let i = 0; i < this.stepIds.length; i++) {
             let id = this.stepIds[i];
             let step = this.getJobStep(id);

@@ -36,6 +36,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="client\components\views\jobInstanceGridComponent.css" />
     <Content Include="client\components\views\jobListComponent.css" />
     <Content Include="client\components\views\jobListItemComponent.css" />
     <Content Include="client\systemjs.config.js" />
@@ -51,10 +52,13 @@
     <TypeScriptCompile Include="client\components\appComponent.ts" />
     <TypeScriptCompile Include="client\components\index.ts" />
     <TypeScriptCompile Include="client\components\jobListComponent.ts" />
+    <TypeScriptCompile Include="client\components\jobInstanceGridItemComponent.ts" />
     <TypeScriptCompile Include="client\components\jobListItemComponent.ts" />
+    <TypeScriptCompile Include="client\components\jobInstanceGridComponent.ts" />
     <TypeScriptCompile Include="client\main.ts" />
     <TypeScriptCompile Include="client\mocks\jobs.ts" />
     <TypeScriptCompile Include="common\api\commandsParameters.ts" />
+    <TypeScriptCompile Include="common\api\index.ts" />
     <TypeScriptCompile Include="common\models\index.ts" />
     <TypeScriptCompile Include="common\models\job.ts" />
     <TypeScriptCompile Include="common\api\endpoints.ts" />
@@ -66,8 +70,8 @@
     <TypeScriptCompile Include="common\models\jobInstanceInfo.ts" />
     <TypeScriptCompile Include="common\models\jobResult.ts" />
     <TypeScriptCompile Include="common\models\JobStatus.ts" />
-    <TypeScriptCompile Include="common\models\jobStepResult.ts" />
-    <TypeScriptCompile Include="server\apiCommands\getRunningJobsCommand.ts" />
+    <TypeScriptCompile Include="common\models\jobStepOutcome.ts" />
+    <TypeScriptCompile Include="server\apiCommands\getJobInstanceInfosCommand.ts" />
     <TypeScriptCompile Include="server\jobSteps\sampleJobStep.ts" />
     <TypeScriptCompile Include="server\jobs\jobInstance.ts" />
     <TypeScriptCompile Include="server\jobs\jobStep.ts" />
