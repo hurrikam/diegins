@@ -71,7 +71,7 @@
     <TypeScriptCompile Include="client\services\jobService.ts" />
     <TypeScriptCompile Include="common\models\jobInstanceInfo.ts" />
     <TypeScriptCompile Include="common\models\jobResult.ts" />
-    <TypeScriptCompile Include="common\models\JobStatus.ts" />
+    <TypeScriptCompile Include="common\models\jobStatus.ts" />
     <TypeScriptCompile Include="common\models\jobStepOutcome.ts" />
     <TypeScriptCompile Include="server\apiCommands\getJobInstanceInfosCommand.ts" />
     <TypeScriptCompile Include="server\jobSteps\sampleJobStep.ts" />
