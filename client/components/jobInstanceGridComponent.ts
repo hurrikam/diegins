@@ -5,9 +5,7 @@ import { JobService } from '../services/jobService';
 @Component({
     selector: 'job-instance-grid',
     template: `
-        <div class="job-instance-grid" *ngFor="let jobInstanceInfo of jobInstanceInfos">
-            <job-instance-grid-item [jobInstanceInfo]="jobInstanceInfo"></job-instance-grid-item>
-        </div>
+        <job-instance-grid-item *ngFor="let jobInstanceInfo of jobInstanceInfos" [jobInstanceInfo]="jobInstanceInfo"></job-instance-grid-item>
         `,
     providers: [JobService]
 })

@@ -1,3 +1,5 @@
 ﻿.job-instance-grid {
-    border: 2px solid red;
+    border: 1px dashed darkgray;
+    height: 100%;
+    overflow-y: auto;
 }

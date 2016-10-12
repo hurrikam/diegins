@@ -5,8 +5,10 @@ import { JobService } from '../services/jobService';
 @Component({
     selector: 'job-instance-grid-item',
     template: `
-        <div class="job-list-item">
-            <span class="job-list-item-name">{{jobInstanceInfo.id}}</span>
+        <div class="job-instance-grid-item">
+            <span class="job-instance-grid-item-displayname">{{jobInstanceInfo.displayName}}</span>
+            <br/>
+            <span class="job-instance-grid-item-displayname">{{jobInstanceInfo.status}}</span>
         </div>
         `,
     providers: [JobService]

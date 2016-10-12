@@ -1,9 +1,10 @@
-﻿import { Job, JobResult, JobStepOutcome } from '../../common/models';
+﻿import { Job, JobResult, JobStatus, JobStepOutcome } from '../../common/models';
 import { getJobStepRepository, JobStep, JobStepInstance, JobStepRepository } from '.';
 
 export class JobInstance {
 
     private readonly jobStepRepository: JobStepRepository;
+    private _status: JobStatus;
 
     public constructor(private readonly job: Job) {
         if (!job) {
@@ -17,17 +18,32 @@ export class JobInstance {
     }
 
     public run(): Promise<JobResult> {
+        if (this.isRunning()) {
+            throw new Error('Job instance already started');
+        }
         let hasSteps = this.stepIds && this.stepIds.length > 0;
         if (!hasSteps) {
+            this._status = JobStatus.Succeeded;
             return Promise.resolve(JobResult.Succeeded);
         }
+        this._status = JobStatus.Running;
         return Promise.all(this.chainStepPromises())
             .then((result) => {
+                this._status = JobStatus.Succeeded;
                 return Promise.resolve(JobResult.Succeeded);
             })
             .catch((error) => {
+                this._status = JobStatus.Failed;
                 return Promise.reject(JobResult.Failed);
             });
+    }
+
+    public get status(): JobStatus {
+        return this._status;
+    }
+
+    public isRunning(): boolean {
+        return this.status === JobStatus.Running;
     }
 
     private get stepIds(): string[] {

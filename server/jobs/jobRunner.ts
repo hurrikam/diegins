@@ -22,7 +22,8 @@ export class JobRunner {
         return this.runningJobs.map((jobInstance) => {
             return <JobInstanceInfo>{
                 id: jobInstance.id,
-                status: JobStatus.Running
+                displayName: jobInstance.id,
+                status: jobInstance.status
             };
         });
     }

@@ -36,6 +36,8 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="client\components\views\appComponent.css" />
+    <Content Include="client\components\views\jobInstanceGridItemComponent.css" />
     <Content Include="client\components\views\jobInstanceGridComponent.css" />
     <Content Include="client\components\views\jobListComponent.css" />
     <Content Include="client\components\views\jobListItemComponent.css" />
