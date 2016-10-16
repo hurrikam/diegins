@@ -8,7 +8,7 @@ import { JobService } from '../services/jobService';
         <div class="job-instance-grid-item">
             <span class="job-instance-grid-item-displayname">{{jobInstanceInfo.displayName}}</span>
             <br/>
-            <span class="job-instance-grid-item-displayname">{{jobInstanceInfo.status}}</span>
+            <span class="job-instance-grid-item-displayname">{{jobInstanceInfo.status | jobStatus}}</span>
         </div>
         `,
     providers: [JobService]

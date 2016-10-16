@@ -59,6 +59,7 @@
     <TypeScriptCompile Include="client\components\jobInstanceGridComponent.ts" />
     <TypeScriptCompile Include="client\main.ts" />
     <TypeScriptCompile Include="client\mocks\jobs.ts" />
+    <TypeScriptCompile Include="client\pipes\jobStatusPipe.ts" />
     <TypeScriptCompile Include="common\api\commandsParameters.ts" />
     <TypeScriptCompile Include="common\api\index.ts" />
     <TypeScriptCompile Include="common\models\index.ts" />
@@ -134,6 +135,7 @@
     <Folder Include="client\images\" />
     <Folder Include="client\components\" />
     <Folder Include="client\mocks\" />
+    <Folder Include="client\pipes\" />
     <Folder Include="common\models\" />
     <Folder Include="client\network\" />
     <Folder Include="client\services\" />

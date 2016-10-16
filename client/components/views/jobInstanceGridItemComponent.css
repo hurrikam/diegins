@@ -1,5 +1,6 @@
 ﻿.job-instance-grid-item {
     background-color: whitesmoke;
+    border: 1px solid darkgray;
     display: inline-block;
     height: 150px;
     margin: 5px;
