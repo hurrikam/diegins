@@ -1,14 +1,23 @@
 ﻿.job-instance-grid-item {
+    align-items: center;
     background-color: whitesmoke;
     border: 1px solid darkgray;
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: column;
     height: 150px;
-    margin: 5px;
+    margin: 5px 0px 0px 5px;
     text-align: center;
     width: 200px;
 }
 
-.job-instance-grid-item-displayname {
+.job-instance-grid-item .cancel-icon {
+    align-self: flex-end;
+    height: 16px;
+    margin: 2px;
+    text-align: right;
+}
+
+.job-instance-grid-item .display-name {
     color: darkslategray;
     font-size: 24px;
     font-weight: bold;

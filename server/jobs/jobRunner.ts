@@ -18,6 +18,18 @@ export class JobRunner {
         return true;
     }
 
+    public cancelJob(id: string, number: number): boolean {
+        let jobInstance = this.runningJobs.find((instance) => {
+            return instance.id === id;
+        });
+        if (!jobInstance) {
+            return false;
+        }
+        jobInstance.cancel();
+        this.removeJobInstance(jobInstance);
+        return true;
+    }
+
     public getRunningJobInfos(): JobInstanceInfo[] {
         return this.runningJobs.map((jobInstance) => {
             return <JobInstanceInfo>{

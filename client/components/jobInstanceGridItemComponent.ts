@@ -6,17 +6,26 @@ import { JobService } from '../services/jobService';
     selector: 'job-instance-grid-item',
     template: `
         <div class="job-instance-grid-item">
-            <span class="job-instance-grid-item-displayname">{{jobInstanceInfo.displayName}}</span>
+            <img src="client/icons/close.png" class="cancel-icon" (click)="cancel()"/>
+            <span class="display-name">{{jobInstanceInfo.displayName}}</span>            
             <br/>
-            <span class="job-instance-grid-item-displayname">{{jobInstanceInfo.status | jobStatus}}</span>
+            <span class="display-name">{{jobInstanceInfo.status | jobStatus}}</span>
         </div>
         `,
     providers: [JobService]
 })
 export class JobInstanceGridItemComponent {
 
-    @Input() public jobInstanceInfo: JobInstanceInfo;
+    @Input() jobInstanceInfo: JobInstanceInfo;
 
-    public constructor(private jobService: JobService) {
+    constructor(private jobService: JobService) {
+    }
+
+    canCancel() {
+        return true;
+    }
+
+    cancel() {
+        this.jobService.cancelJob(this.jobInstanceInfo.id, this.jobInstanceInfo.number);
     }
 }

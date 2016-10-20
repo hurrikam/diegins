@@ -5,6 +5,7 @@ export class JobInstance {
 
     private readonly jobStepRepository: JobStepRepository;
     private _status: JobStatus;
+    private jobRunPromise: Promise<JobResult>;
 
     public constructor(private readonly job: Job) {
         if (!job) {
@@ -27,7 +28,7 @@ export class JobInstance {
             return Promise.resolve(JobResult.Succeeded);
         }
         this._status = JobStatus.Running;
-        return Promise.all(this.chainStepPromises())
+        this.jobRunPromise = Promise.all(this.chainStepPromises())
             .then((result) => {
                 this._status = JobStatus.Succeeded;
                 return Promise.resolve(JobResult.Succeeded);
@@ -36,6 +37,11 @@ export class JobInstance {
                 this._status = JobStatus.Failed;
                 return Promise.reject(JobResult.Failed);
             });
+        return this.jobRunPromise;
+    }
+
+    public cancel() {
+        
     }
 
     public get status(): JobStatus {

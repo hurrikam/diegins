@@ -8,7 +8,8 @@ import * as commands from '../apiCommands';
 export class ApiRequestHandler implements RequestHandler {
 
     private readonly commands: commands.ApiCommand[] = [
-        new commands.GetJobInstanceInfosCommand,
+        new commands.CancelJobCommand(),
+        new commands.GetJobInstanceInfosCommand(),
         new commands.GetJobsCommand(),
         new commands.RunJobCommand()
     ];
