@@ -21,6 +21,9 @@
     'url':                        { main: 'url.js', defaultExtension: 'js' },
     'punycode': { main: 'punycode.js' },
     'querystring': { main: 'index.js' },
+    './common/api': { main: 'index.js' },
+    './common/models': { main: 'index.js' },
+    './client/components': { main: 'index.js' }
   };
   var ngPackageNames = [
     'common',

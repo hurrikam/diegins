@@ -1,8 +1,8 @@
-﻿import { JobStepResult } from '../../common/models/jobStepResult';
+﻿import { JobStepOutcome } from '../../common/models';
 
 export interface JobStep {
 
     id: string;
 
-    execute(): Promise<JobStepResult>;
+    execute(): Promise<JobStepOutcome>;
 }

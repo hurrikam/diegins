@@ -1,5 +1,5 @@
 ﻿import * as fs from 'fs';
-import { Job } from '../../common/models/job';
+import { Job } from '../../common/models';
 
 const JOBS_ROOT = 'jobs/';
 const JOB_CONFIG_FILE_NAME = 'config.json';
@@ -22,7 +22,7 @@ export class JobRepository {
         return this._jobs;
     }
 
-    public getJobById(id: string): Job {
+    public getJob(id: string): Job {
         return this.jobs.find((job) => {
             return job.id === id;
         });

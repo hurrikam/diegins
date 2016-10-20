@@ -1,12 +1,12 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Job } from '../../common/models/job';
+import { Job } from '../../common/models';
 import { JobService } from '../services/jobService';
 
 @Component({
     selector: 'job-list',
     template: `
-        <div class="job-list" *ngFor="let job of jobs">
-            <job-list-item [job]="job"></job-list-item>
+        <div class="job-list">
+            <job-list-item *ngFor="let job of jobs" [job]="job"></job-list-item>
         </div>
         `,
     providers: [ JobService ]
