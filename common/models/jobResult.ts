@@ -1,5 +1,6 @@
 ﻿export enum JobResult {
 
     Succeeded,
-    Failed
+    Failed,
+    Canceled
 }

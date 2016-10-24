@@ -60,7 +60,7 @@
     <TypeScriptCompile Include="client\components\jobInstanceGridComponent.ts" />
     <TypeScriptCompile Include="client\main.ts" />
     <TypeScriptCompile Include="client\mocks\jobs.ts" />
-    <TypeScriptCompile Include="client\pipes\jobStatusPipe.ts" />
+    <TypeScriptCompile Include="client\pipes\jobResultPipe.ts" />
     <TypeScriptCompile Include="common\api\commandsParameters.ts" />
     <TypeScriptCompile Include="common\api\index.ts" />
     <TypeScriptCompile Include="common\models\index.ts" />
@@ -73,7 +73,6 @@
     <TypeScriptCompile Include="client\services\jobService.ts" />
     <TypeScriptCompile Include="common\models\jobInstanceInfo.ts" />
     <TypeScriptCompile Include="common\models\jobResult.ts" />
-    <TypeScriptCompile Include="common\models\jobStatus.ts" />
     <TypeScriptCompile Include="common\models\jobStepOutcome.ts" />
     <TypeScriptCompile Include="server\apiCommands\getJobInstanceInfosCommand.ts" />
     <TypeScriptCompile Include="server\apiCommands\cancelJobCommand.ts" />
@@ -89,6 +88,7 @@
     <TypeScriptCompile Include="server\apiCommands\getJobsCommand.ts" />
     <TypeScriptCompile Include="server\jobs\jobRunner.ts" />
     <TypeScriptCompile Include="server\jobs\jobStepRepository.ts" />
+    <TypeScriptCompile Include="server\jobs\JobStepWrapper.ts" />
     <TypeScriptCompile Include="server\requestHandlers\fileRequestHandler_Spec.ts" />
     <TypeScriptCompile Include="server\serverFolders_Spec.ts" />
     <TypeScriptCompile Include="server\serverFolders.ts" />

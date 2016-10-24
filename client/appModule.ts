@@ -2,7 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { AppComponent, JobListComponent, JobListItemComponent, JobInstanceGridComponent, JobInstanceGridItemComponent } from './components';
-import { JobStatusPipe } from './pipes/jobStatusPipe';
+import { JobResultPipe } from './pipes/jobResultPipe';
 
 @NgModule({
     imports: [
@@ -15,7 +15,7 @@ import { JobStatusPipe } from './pipes/jobStatusPipe';
         JobListItemComponent,
         JobInstanceGridComponent,
         JobInstanceGridItemComponent,
-        JobStatusPipe
+        JobResultPipe
     ],
     bootstrap: [ AppComponent ]
 })

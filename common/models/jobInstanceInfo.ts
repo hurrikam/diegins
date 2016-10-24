@@ -1,9 +1,12 @@
-﻿import { JobStatus } from './jobStatus';
+﻿import { JobResult } from './jobResult';
 
 export interface JobInstanceInfo {
 
     id: string;
+    currentStepIndex: number;
     displayName: string;
+    isRunning: boolean;
     number: number;
-    status: JobStatus;
+    result?: JobResult;
+    stepCount: number;
 }
