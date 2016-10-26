@@ -1,6 +1,12 @@
-﻿import dieginsServer = require('./server/server');
+﻿import * as dieginsServer from './server/server';
+import { getJobRepository, getJobStepRepository } from './server/jobs';
 
-let port: number = process.env.port || 1337;
-let server = new dieginsServer.Server(port);
+const jobStepRepository = getJobStepRepository();
+jobStepRepository.initialize();
+
+const jobRepository = getJobRepository();
+jobRepository.initialize();
+
+const port: number = process.env.port || 1337;
+const server = new dieginsServer.Server(port);
 server.start();
-

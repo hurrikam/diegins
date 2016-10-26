@@ -1,29 +1,30 @@
-﻿import http = require('http');
+﻿import * as http from 'http';
 import * as server from './index';
+import * as requestHandlers from './requestHandlers/index';
 
-const MinimumPortNumber = 0;
-const MaximumPortNumber = 65535;
+export const MINIMUM_SERVER_PORT_NUMBER = 0;
+export const MAXIMUM_SERVER_PORT_NUMBER = 65535;
 
 export class Server {
 
     private httpServer: http.Server;
-    private fileRequestHandler: server.FileRequestHandler;
-    private requestUrlNormalizer: server.RequestUrlNormalizer;
+    private requestHandlers: Array<requestHandlers.RequestHandler>;
 
     public constructor(private port: number) {
-        if (port < MinimumPortNumber || port > MaximumPortNumber) {
+        if (port < MINIMUM_SERVER_PORT_NUMBER || port > MAXIMUM_SERVER_PORT_NUMBER) {
             throw new Error(`The 'port' parameter must be a value in the range (inclusive) ` +
-                `${MinimumPortNumber} and ${MaximumPortNumber}`);
+                `${MINIMUM_SERVER_PORT_NUMBER} and ${MAXIMUM_SERVER_PORT_NUMBER}`);
         }
-        this.fileRequestHandler = new server.FileRequestHandler();
-        this.requestUrlNormalizer = new server.RequestUrlNormalizer();
+        this.requestHandlers = [
+            new requestHandlers.ApiRequestHandler(),
+            new requestHandlers.FileRequestHandler()
+        ];
     }
 
     private handleRequest(request: http.IncomingMessage, response: http.ServerResponse): void {
-        let url = this.requestUrlNormalizer.normalize(request.url);
-        if (this.fileRequestHandler.isFileRequest(url)) {
-            this.fileRequestHandler.serveFile(url, response);
-        }
+        this.requestHandlers.some((handler) => {
+            return handler.tryHandle(request, response);
+        });
     }
 
     public start(): void {

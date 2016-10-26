@@ -36,24 +36,84 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="client\components\views\appComponent.css" />
+    <Content Include="client\components\views\jobInstanceGridItemComponent.css" />
+    <Content Include="client\components\views\jobInstanceGridComponent.css" />
+    <Content Include="client\components\views\jobListComponent.css" />
+    <Content Include="client\components\views\jobListItemComponent.css" />
+    <Content Include="client\icons\close.png" />
     <Content Include="client\systemjs.config.js" />
+    <Content Include="tsconfig.json" />
+    <Content Include="tslint.json" />
     <Content Include="typings.json" />
     <Content Include="typings\globals\core-js\typings.json" />
     <Content Include="typings\globals\jasmine\typings.json" />
+    <Content Include="typings\globals\mocha\typings.json" />
     <Content Include="typings\globals\node\typings.json" />
+    <Content Include="typings\modules\chai\typings.json" />
     <TypeScriptCompile Include="client\appModule.ts" />
     <TypeScriptCompile Include="client\components\appComponent.ts" />
+    <TypeScriptCompile Include="client\components\index.ts" />
     <TypeScriptCompile Include="client\components\jobListComponent.ts" />
+    <TypeScriptCompile Include="client\components\jobInstanceGridItemComponent.ts" />
+    <TypeScriptCompile Include="client\components\jobListItemComponent.ts" />
+    <TypeScriptCompile Include="client\components\jobInstanceGridComponent.ts" />
     <TypeScriptCompile Include="client\main.ts" />
     <TypeScriptCompile Include="client\mocks\jobs.ts" />
-    <TypeScriptCompile Include="client\models\job.ts" />
+    <TypeScriptCompile Include="client\pipes\jobResultPipe.ts" />
+    <TypeScriptCompile Include="common\api\commandsParameters.ts" />
+    <TypeScriptCompile Include="common\api\index.ts" />
+    <TypeScriptCompile Include="common\models\index.ts" />
+    <TypeScriptCompile Include="common\models\job.ts" />
+    <TypeScriptCompile Include="common\api\endpoints.ts" />
+    <TypeScriptCompile Include="common\api\endpoints_Spec.ts" />
+    <TypeScriptCompile Include="common\mocks\jobs.ts" />
+    <TypeScriptCompile Include="client\network\apiUrlService.ts" />
+    <TypeScriptCompile Include="client\network\httpService.ts" />
     <TypeScriptCompile Include="client\services\jobService.ts" />
+    <TypeScriptCompile Include="common\models\jobInstanceInfo.ts" />
+    <TypeScriptCompile Include="common\models\jobResult.ts" />
+    <TypeScriptCompile Include="common\models\jobStepOutcome.ts" />
+    <TypeScriptCompile Include="server\apiCommands\getJobInstanceInfosCommand.ts" />
+    <TypeScriptCompile Include="server\apiCommands\cancelJobCommand.ts" />
+    <TypeScriptCompile Include="server\jobSteps\sampleJobStep.ts" />
+    <TypeScriptCompile Include="server\jobs\jobInstance.ts" />
+    <TypeScriptCompile Include="server\jobs\jobStep.ts" />
+    <TypeScriptCompile Include="server\jobs\jobStepInstance.ts" />
+    <TypeScriptCompile Include="common\stringUtils.ts" />
+    <TypeScriptCompile Include="common\stringUtils_Spec.ts" />
+    <TypeScriptCompile Include="server\apiCommands\apiCommand.ts" />
+    <TypeScriptCompile Include="server\apiCommands\index.ts" />
+    <TypeScriptCompile Include="server\apiCommands\runJobCommand.ts" />
+    <TypeScriptCompile Include="server\apiCommands\getJobsCommand.ts" />
+    <TypeScriptCompile Include="server\jobs\jobRunner.ts" />
+    <TypeScriptCompile Include="server\jobs\jobStepRepository.ts" />
+    <TypeScriptCompile Include="server\jobs\JobStepWrapper.ts" />
+    <TypeScriptCompile Include="server\requestHandlers\fileRequestHandler_Spec.ts" />
+    <TypeScriptCompile Include="server\serverFolders_Spec.ts" />
+    <TypeScriptCompile Include="server\serverFolders.ts" />
+    <TypeScriptCompile Include="server\jobs\index.ts" />
+    <TypeScriptCompile Include="server\jobs\jobRepository.ts" />
+    <TypeScriptCompile Include="server\requestHandlers\apiRequestHandler.ts" />
     <TypeScriptCompile Include="server\extensionToMimeConverter.ts" />
+    <TypeScriptCompile Include="server\extensionToMimeConverter_Spec.ts">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="server\fileExtensionHelper.ts" />
+    <TypeScriptCompile Include="server\fileExtensionHelper_Spec.ts">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="server\index.ts" />
     <TypeScriptCompile Include="server\mimeTypes.ts" />
-    <TypeScriptCompile Include="server\fileRequestHandler.ts" />
-    <TypeScriptCompile Include="server\requestUrlNormalizer.ts" />
+    <TypeScriptCompile Include="server\requestHandlers\fileRequestHandler.ts" />
+    <TypeScriptCompile Include="server\mimeTypes_Spec.ts">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="server\requestHandlers\index.ts" />
+    <TypeScriptCompile Include="server\requestHandlers\requestHandler.ts" />
     <TypeScriptCompile Include="server\server.ts" />
     <TypeScriptCompile Include="server.ts" />
     <Content Include="client\images\logo.png" />
@@ -61,24 +121,43 @@
     <Content Include="client\index.html" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <TypeScriptCompile Include="server\server_Spec.ts">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="typings\globals\core-js\index.d.ts" />
-    <TypeScriptCompile Include="typings\globals\jasmine\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\mocha\index.d.ts" />
     <TypeScriptCompile Include="typings\globals\node\index.d.ts" />
     <TypeScriptCompile Include="typings\index.d.ts" />
+    <TypeScriptCompile Include="typings\modules\chai\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="client\" />
+    <Folder Include="client\components\views\" />
     <Folder Include="client\images\" />
     <Folder Include="client\components\" />
-    <Folder Include="client\models\" />
     <Folder Include="client\mocks\" />
+    <Folder Include="client\icons\" />
+    <Folder Include="client\pipes\" />
+    <Folder Include="common\models\" />
+    <Folder Include="client\network\" />
     <Folder Include="client\services\" />
+    <Folder Include="common\" />
+    <Folder Include="common\api\" />
+    <Folder Include="common\mocks\" />
     <Folder Include="server\" />
+    <Folder Include="server\apiCommands\" />
+    <Folder Include="server\jobs\" />
+    <Folder Include="server\jobSteps\" />
+    <Folder Include="server\requestHandlers\" />
     <Folder Include="typings\" />
     <Folder Include="typings\globals\" />
     <Folder Include="typings\globals\core-js\" />
     <Folder Include="typings\globals\jasmine\" />
+    <Folder Include="typings\globals\mocha\" />
     <Folder Include="typings\globals\node\" />
+    <Folder Include="typings\modules\" />
+    <Folder Include="typings\modules\chai\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">

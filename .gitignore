@@ -4,6 +4,7 @@ tsOutput
 *.js.map
 [Cc]lient/**/*.js
 ![Cc]lient/systemjs.config.js
+[Cc]ommon/**/*.js
 [Ss]erver/**/*.js
 
 ## Ignore Visual Studio temporary files, build results, and

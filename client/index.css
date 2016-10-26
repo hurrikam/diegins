@@ -1,4 +1,8 @@
-﻿header {
+﻿body {
+    background-color: azure;
+}
+
+header {
     display: flex;
     align-items: center;
     background-color: deepskyblue;
