@@ -10,7 +10,7 @@ header {
     width: 100%;
 }
 
-#header-logo-img {
+.header-logo-img {
     width: 80px;
     height: 80px;
     border: 2px solid white;
@@ -18,7 +18,7 @@ header {
     margin-left: 10px;
 }
 
-#header-title {
+.header-title {
     color: white;
     font: bold 60px arial;
     text-shadow: 5px 5px 5px dodgerblue;
@@ -26,7 +26,17 @@ header {
     margin-right: 15px;
 }
 
-#header-author-link {
+.header-version {
+    color: white;
+    font-size: 12px;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    text-decoration: none; 
+}
+
+.header-author-link {
     color: white;
     font-size: 12px;
     margin-left: auto;

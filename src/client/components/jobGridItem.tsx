@@ -22,7 +22,7 @@ export default class JobGridItemComponent extends React.Component<JobGridItemPro
             <div className={className}>
                 <span className="job-number">{jobInfo.number}</span>
                 {this.renderCancelButton()}
-                <span className="display-name">{jobInfo.id}</span>
+                <span className="job-id">{jobInfo.id}</span>
                 <br/>
                 <progress value={this.getPercentageCompleted()} max="100"></progress>
                 <br/>

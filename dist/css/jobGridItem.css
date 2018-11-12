@@ -34,7 +34,7 @@
     margin: -16px 2px 0px 0px;
 }
 
-.job-grid-item .display-name {
+.job-grid-item .job-id {
     color: darkslategray;
     font-size: 22px;
     font-weight: bold;

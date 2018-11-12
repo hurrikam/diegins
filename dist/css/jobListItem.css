@@ -7,16 +7,23 @@
     width: 100%;
 }
 
-.job-list-item-name {
+.job-list-item .job-id {
     align-self: center;
     color: whitesmoke;
     margin-left: 10px;
-    width: 100%;
+    width: 130px;
 }
 
-.job-list-item-button {
+.job-list-item .run-button {
     align-self: center;
     font-size: 12px;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.job-list-item .exclamation-icon {
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
+    height: 16px;
 }

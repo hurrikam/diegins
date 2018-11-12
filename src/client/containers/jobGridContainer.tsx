@@ -21,11 +21,8 @@ export default class JobGridContainer extends React.Component<{}, JobGridContain
     }
 
     public componentDidMount(): void {
-        setInterval(() => {
-            jobService.getJobInfos()
-                .then(jobInfos => this.setState({ jobInfos }))
-                .catch(() => this.setState({ jobInfos: [] }));
-        }, GRID_UPDATE_INTERVAL_MS);
+        this.updateJobInfos();
+        setInterval(() => this.updateJobInfos(), GRID_UPDATE_INTERVAL_MS);
     }
 
     public render(): React.ReactElement<void> {
@@ -35,5 +32,11 @@ export default class JobGridContainer extends React.Component<{}, JobGridContain
                 cancelJob={jobService.cancelJob.bind(jobService)}>
             </JobGrid>
         );
+    }
+
+    private updateJobInfos(): void {
+        jobService.getJobInfos()
+            .then(jobInfos => this.setState({ jobInfos }))
+            .catch(() => this.setState({ jobInfos: [] }));
     }
 }
