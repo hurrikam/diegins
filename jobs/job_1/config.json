@@ -1,7 +1,0 @@
-{
-  "id": "job_1",
-	"displayName":  "Sample Job 1",
-  "stepIds" : [
-		"sample"
-  ]
-}

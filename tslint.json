@@ -32,7 +32,6 @@
         "ban": false,
         "curly": true,
         "label-position": true,
-        "label-undefined": true,
         "no-arg": true,
         "no-bitwise": true,
         "no-conditional-assignment": true,
@@ -41,7 +40,6 @@
         ],
         "no-construct": true,
         "no-debugger": true,
-        "no-duplicate-key": true,
         "no-duplicate-variable": true,
         "no-empty": true,
         "no-eval": true,
@@ -53,13 +51,7 @@
         "no-shadowed-variable": true,
         "no-string-literal": false,
         "no-switch-case-fall-through": true,
-        "no-unreachable": true,
         "no-unused-expression": true,
-        "no-unused-variable": [
-            true,
-            "react"
-        ],
-        "no-use-before-declare": true,
         "no-var-keyword": true,
         "radix": true,
         "switch-default": true,
@@ -69,11 +61,6 @@
             "allow-undefined-check"
         ],
         "use-isnan": true,
-        "use-strict": [
-            true,
-            "check-module",
-            "check-function"
-        ],
         "eofline": true,
         "indent": [
             true,
@@ -113,7 +100,6 @@
         "new-parens": true,
         "no-angle-bracket-type-assertion": true,
         "no-consecutive-blank-lines": true,
-        "no-constructor-vars": false,
         "one-line": [
             true,
             "check-catch",

@@ -1,7 +1,0 @@
-﻿{
-  "globalDependencies": {
-    "core-js": "registry:dt/core-js#0.0.0+20160602141332",
-    "node": "registry:dt/node#6.0.0+20160807145350",
-    "mocha": "registry:dt/mocha#2.2.5+20160720003353"
-  }
-}
