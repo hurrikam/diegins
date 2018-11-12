@@ -1,7 +1,5 @@
 # TypeScript
 [Oo]utput
-/*.js
-*.js.map
 [Dd]ist/index.js
 [Cc]lient/**/*.js
 [Cc]ommon/**/*.js
