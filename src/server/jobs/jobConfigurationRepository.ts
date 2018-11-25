@@ -4,7 +4,7 @@ import { readdirSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 import JobConfiguration from '../../common/models/jobConfiguration';
 
-const JOB_CONFIGURATIONS_ROOT = resolve(__dirname + '/../../../job_configurations');
+const JOB_CONFIGURATIONS_FOLDER = resolve(__dirname + '/../../../job_configurations');
 const JOB_CONFIG_FILE_NAME = 'config.json';
 
 export default class JobConfigurationRepository {
@@ -17,7 +17,7 @@ export default class JobConfigurationRepository {
             return;
         }
         this.isInitialized = true;
-        let directoryNames = readdirSync(JOB_CONFIGURATIONS_ROOT);
+        let directoryNames = readdirSync(JOB_CONFIGURATIONS_FOLDER);
         this.scanJobDirectories(directoryNames);
     }
 
@@ -38,10 +38,10 @@ export default class JobConfigurationRepository {
     }
 
     private getJobConfigurationFromDir(directoryName: string): JobConfiguration {
-        const jobConfigFilePath = `${JOB_CONFIGURATIONS_ROOT}/${directoryName}/${JOB_CONFIG_FILE_NAME}`;
+        const jobConfigFilePath = `${JOB_CONFIGURATIONS_FOLDER}/${directoryName}/${JOB_CONFIG_FILE_NAME}`;
         const fileContent = readFileSync(jobConfigFilePath, 'utf8');
-        const job = JSON.parse(fileContent) as JobConfiguration;
-        job.id = directoryName;
-        return job;
+        const jobConfiguration = JSON.parse(fileContent) as JobConfiguration;
+        jobConfiguration.id = directoryName;
+        return jobConfiguration;
     }
 }

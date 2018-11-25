@@ -1,3 +1,6 @@
+# Diegins development files and folders
+/jobs/
+
 # TypeScript
 [Oo]utput
 [Dd]ist/index.js

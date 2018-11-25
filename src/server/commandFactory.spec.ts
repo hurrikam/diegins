@@ -9,7 +9,7 @@ describe('commandFactory', () => {
 
     beforeAll(() => {
         jest.mock('./services', () => ({
-            getJobRepository: () => ({}),
+            getJobConfigurationRepository: () => ({}),
             getJobRunner: () => ({})
         }));
     });

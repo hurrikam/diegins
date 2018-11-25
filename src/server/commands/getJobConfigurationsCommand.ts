@@ -11,13 +11,13 @@ export default class GetJobConfigurationsCommand implements Command {
     public readonly endpoint = GET_JOB_CONFIGURATIONS;
     public readonly method = GET;
 
-    public constructor(private readonly jobRepository: JobConfigurationRepository) {
-        if (!jobRepository) {
-            throw new Error('jobRepository not specified');
+    public constructor(private readonly jobConfigurationRepository: JobConfigurationRepository) {
+        if (!jobConfigurationRepository) {
+            throw new Error('jobConfigurationRepository not specified');
         }
     }
 
     public execute(request: Request, response: Response): void {
-        response.send(this.jobRepository.jobConfigurations);
+        response.send(this.jobConfigurationRepository.jobConfigurations);
     }
 }
