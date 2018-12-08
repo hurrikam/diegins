@@ -1,10 +1,8 @@
 ﻿'use strict';
 
-import * as fs from 'fs';
-import { resolve, join } from 'path';
+import { readdirSync } from 'fs';
+import { join } from 'path';
 import JobStep from './jobStep';
-
-const JOB_STEPS_ROOT = resolve(__dirname + '/../jobSteps');
 
 interface JobStepConstructor {
     new(): JobStep;
@@ -15,9 +13,15 @@ export default class JobStepRepository {
     private readonly jobStepConstructors: { [id: string]: JobStepConstructor } = {};
     private isInitialized = false;
 
+    constructor(private readonly jobStepsRootPath: string) {
+        if (!jobStepsRootPath) {
+            throw new Error('jobStepsRootPath not specified');
+        }
+    }
+
     public initialize() {
         if (this.isInitialized) {
-            return;
+            throw new Error('job step repository already initialized');
         }
         this.isInitialized = true;
         this.scanJobStepsDirectory();
@@ -32,7 +36,7 @@ export default class JobStepRepository {
     }
 
     private scanJobStepsDirectory(): void {
-        const jobStepFiles = fs.readdirSync(JOB_STEPS_ROOT);
+        const jobStepFiles = readdirSync(this.jobStepsRootPath);
         jobStepFiles.forEach(fileName => {
             const jobStepDefinition = this.readJobStepDefinitionFile(fileName);
             if (jobStepDefinition) {
@@ -45,7 +49,7 @@ export default class JobStepRepository {
         ID: string,
         default: JobStepConstructor
     } {
-        const jobStepFilePath = join(JOB_STEPS_ROOT, fileName);
+        const jobStepFilePath = join(this.jobStepsRootPath, fileName);
         try {
             return require(jobStepFilePath);
         } catch (error) {

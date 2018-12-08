@@ -27,7 +27,7 @@ describe('CommandManager', () => {
 
     describe('registerCommand', () => {
 
-        test('should ensure a DELETE command is called for the right endpoint and HTTP method', () => {
+        test('ensures a DELETE command is called for the right endpoint and HTTP method', () => {
             const expressApp = createMockExpressApp();
             const commandManager = new CommandManager(expressApp);
             const command = createTestCommand(DELETE);
@@ -44,7 +44,7 @@ describe('CommandManager', () => {
             expect(command.execute).toHaveBeenCalledWith(request, response);
         });
 
-        test('should ensure a GET command is called for the right endpoint and HTTP method', () => {
+        test('ensures a GET command is called for the right endpoint and HTTP method', () => {
             const expressApp = createMockExpressApp();
             const commandManager = new CommandManager(expressApp);
             const command = createTestCommand(GET);
@@ -61,7 +61,7 @@ describe('CommandManager', () => {
             expect(command.execute).toHaveBeenCalledWith(request, response);
         });
 
-        test('should ensure a POST command is called for the right endpoint and HTTP method', () => {
+        test('ensures a POST command is called for the right endpoint and HTTP method', () => {
             const expressApp = createMockExpressApp();
             const commandManager = new CommandManager(expressApp);
             const command = createTestCommand(POST);

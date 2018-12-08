@@ -36,22 +36,23 @@ export default class JobRunner {
         }
         let jobInfo = this.createJobInfo();
         this.jobEventEmitter.emit(JOB_STARTED_EVENT, jobInfo);
+        let result = JobResult.Succeeded;
         try {
-            this.result = await this.runSteps();
+            result = await this.runSteps();
         } catch (error) {
             this.cancelCurrentStep();
-            jobInfo = this.createJobInfo(JobResult.Failed);
-            this.result = jobInfo.result;
+            result = JobResult.Failed;
+        } finally {
+            this.result = result;
+            jobInfo = this.createJobInfo(result);
             this.emitJobFinished(jobInfo);
         }
-        return this.result;
+        return result;
     }
 
     public cancel(): void {
         this.isCancelling = true;
         this.cancelCurrentStep();
-        const jobInfo = this.createJobInfo(JobResult.Canceled);
-        this.emitJobFinished(jobInfo);
     }
 
     private createJobInfo(result?: JobResult): JobInfo {

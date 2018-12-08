@@ -1,11 +1,9 @@
 ﻿'use strict';
 
 import { readdirSync, readFileSync } from 'fs';
-import { resolve } from 'path';
+import { join } from 'path';
 import JobConfiguration from '../../common/models/jobConfiguration';
-
-const JOB_CONFIGURATIONS_FOLDER = resolve(__dirname + '/../../../job_configurations');
-const JOB_CONFIG_FILE_NAME = 'config.json';
+import { JOB_CONFIGURATIONS_FOLDER, JOB_CONFIG_FILE_NAME } from './jobFileConstants';
 
 export default class JobConfigurationRepository {
 
@@ -14,10 +12,10 @@ export default class JobConfigurationRepository {
 
     public initialize() {
         if (this.isInitialized) {
-            return;
+            throw new Error('Job configuration repository already initialized');
         }
         this.isInitialized = true;
-        let directoryNames = readdirSync(JOB_CONFIGURATIONS_FOLDER);
+        const directoryNames = readdirSync(JOB_CONFIGURATIONS_FOLDER);
         this.scanJobDirectories(directoryNames);
     }
 
@@ -38,10 +36,14 @@ export default class JobConfigurationRepository {
     }
 
     private getJobConfigurationFromDir(directoryName: string): JobConfiguration {
-        const jobConfigFilePath = `${JOB_CONFIGURATIONS_FOLDER}/${directoryName}/${JOB_CONFIG_FILE_NAME}`;
-        const fileContent = readFileSync(jobConfigFilePath, 'utf8');
-        const jobConfiguration = JSON.parse(fileContent) as JobConfiguration;
-        jobConfiguration.id = directoryName;
-        return jobConfiguration;
+        const jobConfigFilePath = join(JOB_CONFIGURATIONS_FOLDER, directoryName, JOB_CONFIG_FILE_NAME);
+        try {
+            const fileContent = readFileSync(jobConfigFilePath, 'utf8');
+            const jobConfiguration = JSON.parse(fileContent) as JobConfiguration;
+            jobConfiguration.id = directoryName;
+            return jobConfiguration;
+        // tslint:disable-next-line:no-empty
+        } catch (error) {
+        }
     }
 }

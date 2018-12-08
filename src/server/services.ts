@@ -8,6 +8,7 @@ import JobCreator from './jobs/jobCreator';
 import JobRepository from './jobs/jobRepository';
 import JobLogger from './jobs/jobLogger';
 import JobEventEmitter from './jobs/jobEventEmitter';
+import { JOB_STEPS_ROOT } from './jobs/jobFileConstants';
 
 let jobEventEmitter: JobEventEmitter;
 let jobInstanceCreator: JobCreator;
@@ -21,7 +22,7 @@ export async function initializeServices(): Promise<void> {
     jobEventEmitter = new EventEmitter();
     jobConfigurationRepository = new JobConfigurationRepository();
     jobConfigurationRepository.initialize();
-    jobStepRepository = new JobStepRepository();
+    jobStepRepository = new JobStepRepository(JOB_STEPS_ROOT);
     jobStepRepository.initialize();
     jobInstanceCreator = new JobCreator(jobStepRepository);
     jobRepository = new JobRepository();

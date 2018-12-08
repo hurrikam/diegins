@@ -18,7 +18,7 @@ describe('commandFactory', () => {
 
     describe('createCommands', () => {
 
-        test('should return an array containing expected commands', () => {
+        test('returns an array containing expected commands', () => {
             const { createCommands } = require('./commandFactory');
             const commands = createCommands();
             expect(commands).toHaveLength(4);

@@ -7,7 +7,7 @@ import JobRunner from './jobRunner';
 import JobCreator from './jobCreator';
 import JobConfiguration from '../../common/models/jobConfiguration';
 import JobInfo from '../../common/models/jobInfo';
-import { JOBS_FOLDER } from './jobLocations';
+import { JOBS_FOLDER } from './jobFileConstants';
 import JobResult from '../../common/models/jobResult';
 import { JOB_FINISHED_EVENT } from './jobEvents';
 import JobEventEmitter from './jobEventEmitter';
@@ -36,7 +36,7 @@ export default class JobScheduler {
 
     public async run(jobConfiguration: JobConfiguration): Promise<void> {
         if (!jobConfiguration) {
-            throw new Error('job not specified');
+            throw new Error('no job configuration specified');
         }
         this.lastJobNumber++;
         try {
@@ -55,11 +55,7 @@ export default class JobScheduler {
         const job = this.jobCreator.create(jobConfiguration, this.lastJobNumber);
         const jobRunner = new JobRunner(job, this.jobEventEmitter);
         this.jobRunners.push(jobRunner);
-        try {
-            await jobRunner.run();
-        } catch (error) {
-            jobRunner.cancel();
-        }
+        await jobRunner.run();
     }
 
     public cancel(jobNumber: number): void {
