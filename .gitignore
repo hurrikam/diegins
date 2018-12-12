@@ -1,5 +1,6 @@
 # Diegins development files and folders
 /jobs/
+/job_configurations/
 
 # TypeScript
 [Oo]utput
