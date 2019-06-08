@@ -29,7 +29,7 @@ const VALID_JOB_FOLDER = join(JOBS_FOLDER, '1');
 function createTestJobConfiguration(): JobConfiguration {
     return {
         id: TEST_JOB_ID,
-        stepIds: []
+        stepConfigurations: []
     };
 }
 

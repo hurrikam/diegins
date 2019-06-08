@@ -19,8 +19,8 @@ export default class JobCreator {
         if (jobNumber <= 0) {
             throw new Error('jobNumber must be positive');
         }
-        const steps = jobConfiguration.stepIds
-            .map(stepId => this.jobStepRepository.createJobStep(stepId))
+        const steps = jobConfiguration.stepConfigurations
+            .map(stepConfiguration => this.jobStepRepository.createJobStep(stepConfiguration.stepId))
             .filter(step => step);
         return {
             id: jobConfiguration.id,

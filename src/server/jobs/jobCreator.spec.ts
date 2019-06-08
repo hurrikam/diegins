@@ -45,7 +45,7 @@ describe('JobCreator', () => {
             const jobCreator = new JobCreator(jobStepRepository);
             const jobConfiguration: JobConfiguration = {
                 id: testJobId,
-                stepIds: []
+                stepConfigurations: []
             };
             const testJob = jobCreator.create(jobConfiguration, testJobNumber);
             expect(testJob).toEqual({
@@ -62,7 +62,9 @@ describe('JobCreator', () => {
             const jobCreator = new JobCreator(jobStepRepository);
             const jobConfiguration: JobConfiguration = {
                 id: testJobId,
-                stepIds: [TEST_STEP_ID]
+                stepConfigurations: [{
+                    stepId: TEST_STEP_ID
+                }]
             };
             const testJob = jobCreator.create(jobConfiguration, testJobNumber);
             expect(testJob).toEqual({
@@ -79,7 +81,9 @@ describe('JobCreator', () => {
             const jobCreator = new JobCreator(jobStepRepository);
             const jobConfiguration: JobConfiguration = {
                 id: testJobId,
-                stepIds: ['missing_test_step']
+                stepConfigurations: [{
+                    stepId: 'missing_test_step'
+                }]
             };
             const testJob = jobCreator.create(jobConfiguration, testJobNumber);
             expect(testJob).toEqual({

@@ -42,7 +42,7 @@ export default class JobListItem extends React.Component<JobListItemProps> {
     }
 
     private canRun(): boolean {
-        const stepIds = this.props.jobConfiguration.stepIds;
+        const stepIds = this.props.jobConfiguration.stepConfigurations;
         return stepIds && stepIds.length > 0;
     }
 }

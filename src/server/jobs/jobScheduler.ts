@@ -47,7 +47,7 @@ export default class JobScheduler {
                 currentStepIndex: -1,
                 number: this.lastJobNumber,
                 result: JobResult.Failed,
-                stepCount: jobConfiguration.stepIds.length
+                stepCount: jobConfiguration.stepConfigurations.length
             };
             this.emitJobFinished(jobInfo);
             return;
