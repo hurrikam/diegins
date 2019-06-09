@@ -5,6 +5,7 @@ import JobConfiguration from '../../common/models/jobConfiguration';
 
 interface JobListItemProps {
     jobConfiguration: JobConfiguration;
+    configureJob: (jobId: string) => void;
     runJob: (jobId: string) => void;
 }
 
@@ -25,20 +26,27 @@ export default class JobListItem extends React.Component<JobListItemProps> {
         if (!this.canRun()) {
             return;
         }
-        return (<img src="icons/right.png" className="run-icon" title="Run the job"
-            onClick={() => this.props.runJob(this.props.jobConfiguration.id)}/>);
+        return (
+            <img src="icons/right.png" className="run-icon" title="Run the job"
+                onClick={() => this.props.runJob(this.props.jobConfiguration.id)}/>
+        );
     }
 
     private renderWarningIcon(): JSX.Element {
         if (this.canRun()) {
             return;
         }
-        return (<img src="icons/exclamation.png" className="exclamation-icon"
-                title="The job can't run because no steps are defined or it is misconfigured."/>);
+        return (
+            <img src="icons/exclamation.png" className="exclamation-icon"
+                title="The job can't run because no steps are defined or it is misconfigured."/>
+        );
     }
 
     private renderConfigureIcon(): JSX.Element {
-        return (<img src="icons/gear.png" className="gear-icon" title="Configure the job"/>);
+        return (
+            <img src="icons/gear.png" className="gear-icon" title="Configure the job"
+                onClick={() => this.props.configureJob(this.props.jobConfiguration.id)}/>
+        );
     }
 
     private canRun(): boolean {

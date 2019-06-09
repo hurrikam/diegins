@@ -6,16 +6,18 @@ import JobListItem from './jobListItem';
 
 interface JobListProps {
     jobConfigurations: Array<JobConfiguration>;
+    configureJob: (jobId: string) => void;
     runJob: (jobId: string) => void;
 }
 
 export default class JobList extends React.Component<JobListProps> {
 
-    public render(): React.ReactElement<JobListProps> {
+    public render(): JSX.Element {
         const jobConfigurationElements = this.props.jobConfigurations.map(jobConfiguration =>
             (<JobListItem
                 key={jobConfiguration.id}
                 jobConfiguration={jobConfiguration}
+                configureJob={this.props.configureJob}
                 runJob={this.props.runJob}
             >
             </JobListItem>)
