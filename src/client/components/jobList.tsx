@@ -11,7 +11,7 @@ interface JobListProps {
 
 export default class JobList extends React.Component<JobListProps> {
 
-    public render(): React.ReactElement<JobListProps> {
+    public render(): React.ReactNode {
         const jobConfigurationElements = this.props.jobConfigurations.map(jobConfiguration =>
             (<JobListItem
                 key={jobConfiguration.id}
