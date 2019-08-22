@@ -10,8 +10,8 @@ export default class Home extends React.Component<RouteComponentProps> {
     public render(): React.ReactNode {
         return (
             <div>
-                <JobListContainer></JobListContainer>
-                <JobGridContainer></JobGridContainer>
+                <JobListContainer />
+                <JobGridContainer />
             </div>
         );
     }
