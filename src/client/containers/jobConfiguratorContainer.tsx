@@ -12,15 +12,22 @@ interface JobConfiguratorContainerRouteProps extends RouteComponentProps {
 
 interface JobConfiguratorContainerState {
     isLoading: boolean;
-    jobConfiguration: JobConfiguration;
+    jobConfiguration?: JobConfiguration;
     jobStepIds: Array<string>;
 }
 
 export default class JobConfiguratorContainer extends React.Component<RouteComponentProps, JobConfiguratorContainerState> {
 
+    constructor(props: RouteComponentProps) {
+        super(props);
+        this.state = {
+            isLoading: true,
+            jobStepIds: []
+        };
+    }
+
     public async componentDidMount(): Promise<void> {
         try {
-            this.setState({ isLoading: true });
             const jobStepIds = await getJobStepIds();
             this.setState({ jobStepIds });
             const isNewJob = !(this.props as JobConfiguratorContainerRouteProps).jobId;
