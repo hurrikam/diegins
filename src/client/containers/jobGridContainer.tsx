@@ -25,7 +25,7 @@ export default class JobGridContainer extends React.Component<{}, JobGridContain
         setInterval(() => this.updateJobInfos(), GRID_UPDATE_INTERVAL_MS);
     }
 
-    public render(): React.ReactElement<void> {
+    public render(): React.ReactNode {
         return (
             <JobGrid
                 jobInfos={this.state.jobInfos}
