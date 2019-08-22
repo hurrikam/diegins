@@ -11,7 +11,7 @@ interface JobGridItemProps {
 
 export default class JobGridItemComponent extends React.Component<JobGridItemProps> {
 
-    public render(): React.ReactElement<JobGridItemProps> {
+    public render(): React.ReactNode {
         const { jobInfo } = this.props;
         let className = 'job-grid-item';
         const resultClass = this.getJobResultClass();

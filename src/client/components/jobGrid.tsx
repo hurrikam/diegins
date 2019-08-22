@@ -11,7 +11,7 @@ interface JobGridProps {
 
 export default class JobGridComponent extends React.Component<JobGridProps> {
 
-    public render(): React.ReactElement<JobGridProps> {
+    public render(): React.ReactNode {
         const jobInfoElements = this.props.jobInfos
             .reverse()
             .map(jobInfo =>

@@ -24,7 +24,7 @@ export default class JobListContainer extends React.Component<{}, JobListContain
             .catch(() => this.setState({ jobConfigurations: [] }));
     }
 
-    public render(): React.ReactElement<void> {
+    public render(): React.ReactNode {
         return (
             <JobList
                 jobConfigurations={this.state.jobConfigurations}
