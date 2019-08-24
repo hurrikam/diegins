@@ -8,7 +8,7 @@ import JobStepConfigurator from './jobStepConfigurator';
 interface JobConfiguratorProps {
     jobConfiguration?: JobConfiguration;
     jobStepIds: Array<string>;
-    save: () => void;
+    save: (newJobConfiguration: JobConfiguration) => void;
 }
 
 interface JobConfiguratorState {
@@ -46,7 +46,6 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
                     <input className="job-configurator-id" type="text" value={this.state.jobId}
                         onChange={(event) => this.setState({ jobId: event.currentTarget.value })} />
                 </div>
-                <br />
                 <div className="job-configurator-steps-container">
                     {this.state.stepConfigurations.map((stepConfiguration, index) =>
                         (<JobStepConfigurator
@@ -66,6 +65,11 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
                             {this.props.jobStepIds.map(stepId => (<option value={stepId}>{stepId}</option>))}
                         </select>
                     </div>
+                </div>
+                <div className="job-configurator-update-controls">
+                    <button className="job-configurator-save-button" onClick={() => this.save()}>
+                        Save
+                    </button>
                 </div>
             </div>
         );
@@ -89,5 +93,12 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
         const modifiedStepConfigurations = [...this.state.stepConfigurations];
         modifiedStepConfigurations[index].data = newData;
         this.setState({ stepConfigurations: modifiedStepConfigurations });
+    }
+
+    private save(): void {
+        this.props.save({
+            id: this.state.jobId,
+            stepConfigurations: this.state.stepConfigurations
+        });
     }
 }

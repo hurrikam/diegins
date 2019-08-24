@@ -12,6 +12,7 @@ interface JobConfiguratorContainerRouteProps extends RouteComponentProps {
 
 interface JobConfiguratorContainerState {
     isLoading: boolean;
+    isSaving: boolean;
     jobConfiguration?: JobConfiguration;
     jobStepIds: Array<string>;
 }
@@ -22,6 +23,7 @@ export default class JobConfiguratorContainer extends React.Component<RouteCompo
         super(props);
         this.state = {
             isLoading: true,
+            isSaving: false,
             jobStepIds: []
         };
     }
@@ -43,15 +45,32 @@ export default class JobConfiguratorContainer extends React.Component<RouteCompo
     }
 
     public render(): React.ReactNode {
-        if (this.state.isLoading) {
-            return (<div>Loading...</div>);
-        }
-        const jobConfiguration = this.state.jobConfiguration;
         return (
-            <JobConfigurator
-                jobConfiguration={jobConfiguration}
-                jobStepIds={this.state.jobStepIds}
-                save={() => saveJobConfiguration(jobConfiguration)} />
+            <div>
+                {this.state.isLoading ? (<div className="job-configurator-container-overlay">Loading...</div>) : ''}
+                {this.state.isSaving ? (<div className="job-configurator-container-overlay">Saving...</div>) : ''}
+                <JobConfigurator
+                    jobConfiguration={this.state.jobConfiguration}
+                    jobStepIds={this.state.jobStepIds}
+                    save={this.save.bind(this)} />
+            </div>
         );
+    }
+
+    private async save(newJobConfiguration: JobConfiguration): Promise<void> {
+        if (this.state.isSaving) {
+            return;
+        }
+        this.setState({
+            isSaving: true,
+            jobConfiguration: newJobConfiguration
+        });
+        try {
+            await saveJobConfiguration(newJobConfiguration);
+        } catch (error) {
+            alert(error);
+        } finally {
+            this.setState({ isSaving: false });
+        }
     }
 }

@@ -7,5 +7,7 @@ export function getJobStepIds(): Promise<Array<string>> {
 }
 
 export function saveJobConfiguration(jobConfiguration: JobConfiguration): Promise<void> {
-    return Promise.reject('Save functionality not implemented yet :)');
+    return new Promise((resolve, reject) =>
+        setTimeout(() => reject('Save functionality not implemented yet :)'), 2000)
+    );
 }

@@ -1,0 +1,10 @@
+.job-configurator-container-overlay {
+    background: darkslategray;
+    color: white;
+    font-size: 24px;
+    height: 100%;
+    opacity: 0.8;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
