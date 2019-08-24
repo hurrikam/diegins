@@ -27,7 +27,7 @@ export default class JobListItem extends React.Component<JobListItemProps> {
             return;
         }
         return (
-            <img src="icons/right.png" className="run-icon" title="Run the job"
+            <img src="/icons/right.png" className="run-icon" title="Run the job"
                 onClick={() => this.props.runJob(this.props.jobConfiguration.id)}/>
         );
     }
@@ -37,14 +37,14 @@ export default class JobListItem extends React.Component<JobListItemProps> {
             return;
         }
         return (
-            <img src="icons/exclamation.png" className="exclamation-icon"
+            <img src="/icons/exclamation.png" className="exclamation-icon"
                 title="The job can't run because no steps are defined or it is misconfigured."/>
         );
     }
 
     private renderConfigureIcon(): JSX.Element {
         return (
-            <img src="icons/gear.png" className="gear-icon" title="Configure the job"
+            <img src="/icons/gear.png" className="gear-icon" title="Configure the job"
                 onClick={() => this.props.configureJob(this.props.jobConfiguration.id)}/>
         );
     }

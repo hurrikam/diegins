@@ -1,0 +1,35 @@
+.job-step-configurator-container {
+    background: azure;
+    border: 1px solid deepskyblue;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+.job-step-configurator-header {
+    background: deepskyblue;
+    color: white;
+    display: flex;
+    padding: 5px;
+}
+
+.job-step-configurator-number {
+    font-size: 22px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.job-step-configurator-id {
+    font-size: 22px;
+}
+
+.job-step-configurator-delete-button {
+    margin-left: auto;
+}
+
+.job-step-configurator-data {
+    margin: 5px;
+    min-height: 50px;
+    min-width: calc(100% - 15px);
+    resize: vertical;
+}

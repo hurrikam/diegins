@@ -3,6 +3,7 @@
 import * as React from 'react';
 import JobConfiguration from '../../common/models/jobConfiguration';
 import JobStepConfiguration from '../../common/models/jobStepConfiguration';
+import JobStepConfigurator from './jobStepConfigurator';
 
 interface JobConfiguratorProps {
     jobConfiguration?: JobConfiguration;
@@ -48,7 +49,14 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
                 <br />
                 <div className="job-configurator-steps-container">
                     {this.state.stepConfigurations.map((stepConfiguration, index) =>
-                        this.renderJobStepConfiguration(stepConfiguration, index))}
+                        (<JobStepConfigurator
+                            data={stepConfiguration.data}
+                            deleteStepConfiguration={this.deleteStepConfiguration.bind(this)}
+                            onDataChanged={(newData) => this.onStepConfigurationDataChanged(index, newData)}
+                            stepId={stepConfiguration.stepId}
+                            stepIndex={index}
+                        />))
+                    }
                     <div className="job-configurator-add-step-controls">
                         <button className="job-configurator-add-step-button"
                             onClick={() => this.addStepConfiguration()}>
@@ -63,23 +71,23 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
         );
     }
 
-    private renderJobStepConfiguration(stepConfiguration: JobStepConfiguration, stepIndex: number): JSX.Element {
-        return (
-            <div className="job-configurator-step-container">
-                <div className="job-configurator-step-header">
-                    <span className="job-configurator-step-number">{stepIndex + 1}. </span>
-                    <span className="job-configurator-step-id">{stepConfiguration.stepId}</span>
-                    <br/>
-                    <textarea className="job-configurator-step-data" rows={3}></textarea>
-                </div>
-            </div>
-        );
-    }
-
     private addStepConfiguration(): void {
         const newStepConfiguration = {
             stepId: this.state.newStepId
         } as JobStepConfiguration;
-        this.setState({ stepConfigurations: [...this.state.stepConfigurations, newStepConfiguration] });
+        const modifiedStepConfigurations = [...this.state.stepConfigurations, newStepConfiguration];
+        this.setState({ stepConfigurations: modifiedStepConfigurations });
+    }
+
+    private deleteStepConfiguration(stepIndex: number): void {
+        const splicedStepConfigurations = [...this.state.stepConfigurations];
+        splicedStepConfigurations.splice(stepIndex, 1);
+        this.setState({ stepConfigurations: splicedStepConfigurations });
+    }
+
+    private onStepConfigurationDataChanged(index: number, newData: string): void {
+        const modifiedStepConfigurations = [...this.state.stepConfigurations];
+        modifiedStepConfigurations[index].data = newData;
+        this.setState({ stepConfigurations: modifiedStepConfigurations });
     }
 }
