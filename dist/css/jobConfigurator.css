@@ -1,0 +1,52 @@
+.job-configurator {
+    height: 100%;
+}
+
+.job-configurator-id-container {
+    font-size: 30px;
+    margin: 5px;
+    text-align: center;
+}
+
+.job-configurator-id {
+    font-size: 30px;
+}
+
+.job-configurator-steps-container {
+    height: calc(100% - 150px);
+    overflow-y: auto;
+}
+
+.job-configurator-step-container {
+    background: white;
+    border: 1px solid deepskyblue;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+.job-configurator-step-header {
+    background: deepskyblue;
+    color: white;
+    padding: 5px;
+}
+
+.job-configurator-step-number {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.job-configurator-step-data {
+    margin: 5px;
+    min-height: 50px;
+    min-width: calc(100% - 10px);
+    resize: vertical;
+}
+
+.job-configurator-add-step-controls {
+    text-align: center;
+}
+
+.job-configurator-add-step-button {
+    margin-right: 10px;
+}

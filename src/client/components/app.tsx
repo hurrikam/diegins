@@ -9,12 +9,10 @@ export default class App extends React.Component {
 
     public render(): React.ReactNode {
         return (
-            <div className="app">
-                <Router>
-                    <Home path="/" />
-                    <JobConfiguratorContainer path="job/configure/:jobId" />
-                </Router>
-            </div>
+            <Router className="app-router">
+                <Home path="/" />
+                <JobConfiguratorContainer path="job/configure/:jobId" />
+            </Router>
         );
     }
 }
