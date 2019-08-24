@@ -13,7 +13,7 @@
     "package": "./node_modules/.bin/webpack",
     "build": "npm run compile && npm run package",
     "build-dev": "npm run compile && npm run package -- --mode=development",
-    "server": "node ./output/server/app.js",
+    "start": "node ./output/server/app.js",
     "test": "npm run lint && npm run unit-test",
     "unit-test": "npm run compile && jest ./output --testPathPattern='/.*\\.spec.js$'"
   },
