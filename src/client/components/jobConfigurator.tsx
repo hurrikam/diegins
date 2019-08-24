@@ -41,7 +41,7 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
         return (
             <div className="job-configurator">
                 <div className="job-configurator-id-container">
-                    <span>Job ID: </span>
+                    <span>Job ID </span>
                     <input className="job-configurator-id" type="text" value={this.state.jobId}
                         onChange={(event) => this.setState({ jobId: event.currentTarget.value })} />
                 </div>
@@ -67,8 +67,8 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
         return (
             <div className="job-configurator-step-container">
                 <div className="job-configurator-step-header">
-                    <span className="job-configurator-step-number">{`Step ${stepIndex + 1}`}</span>
-                    <span>({stepConfiguration.stepId})</span>
+                    <span className="job-configurator-step-number">{stepIndex + 1}. </span>
+                    <span className="job-configurator-step-id">{stepConfiguration.stepId}</span>
                     <br/>
                     <textarea className="job-configurator-step-data" rows={3}></textarea>
                 </div>

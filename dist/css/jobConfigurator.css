@@ -3,13 +3,13 @@
 }
 
 .job-configurator-id-container {
-    font-size: 30px;
-    margin: 5px;
+    font-size: 24px;
+    margin: 10px;
     text-align: center;
 }
 
 .job-configurator-id {
-    font-size: 30px;
+    font-size: 24px;
 }
 
 .job-configurator-steps-container {
@@ -32,8 +32,12 @@
 }
 
 .job-configurator-step-number {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
+}
+
+.job-configurator-step-id {
+    font-size: 22px;
 }
 
 .job-configurator-step-data {
