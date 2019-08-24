@@ -1,0 +1,26 @@
+.job-configurator {
+    height: 100%;
+}
+
+.job-configurator-id-container {
+    font-size: 24px;
+    margin: 10px;
+    text-align: center;
+}
+
+.job-configurator-id {
+    font-size: 24px;
+}
+
+.job-configurator-steps-container {
+    height: calc(100% - 150px);
+    overflow-y: auto;
+}
+
+.job-configurator-add-step-controls {
+    text-align: center;
+}
+
+.job-configurator-add-step-button {
+    margin-right: 10px;
+}

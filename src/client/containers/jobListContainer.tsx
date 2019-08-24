@@ -28,7 +28,8 @@ export default class JobListContainer extends React.Component<{}, JobListContain
         return (
             <JobList
                 jobConfigurations={this.state.jobConfigurations}
-                runJob={jobService.runJob.bind(jobService)}>
+                runJob={jobService.runJob.bind(jobService)}
+                configureJob={() => undefined}>
             </JobList>
         );
     }

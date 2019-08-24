@@ -39,7 +39,7 @@ export default class JobGridItemComponent extends React.Component<JobGridItemPro
         if (!this.canCancel()) {
             return;
         }
-        return (<img src="icons/close.png" className="cancel-icon"
+        return (<img src="/icons/close.png" className="cancel-icon"
             onClick={() => cancelJob(jobInfo.number)}/>);
     }
 

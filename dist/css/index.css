@@ -1,8 +1,10 @@
 ﻿body {
-    background-color: azure;
+    background-color: lightyellow;
+    height: calc(100vh);
+    overflow-y: hidden;
 }
 
-header {
+.header {
     display: flex;
     align-items: center;
     background-color: deepskyblue;
