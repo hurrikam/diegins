@@ -66,7 +66,6 @@ export default class JobConfiguratorContainer extends React.Component<RouteCompo
             jobConfiguration: newJobConfiguration
         });
         try {
-            console.log('Saving config', newJobConfiguration)
             await saveJobConfiguration(newJobConfiguration);
         } catch (error) {
             alert(error);

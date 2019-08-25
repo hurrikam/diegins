@@ -18,8 +18,7 @@ export default class JobConfigurationRepository {
             throw new Error('Job configuration repository already initialized');
         }
         this.isInitialized = true;
-        const directoryNames = readdirSync(JOB_CONFIGURATIONS_FOLDER);
-        this.scanJobDirectories(directoryNames);
+        this.jobConfigurations.push(...this.readJobConfigurations());
     }
 
     public getJobConfiguration(id: string): JobConfiguration {
@@ -34,25 +33,16 @@ export default class JobConfigurationRepository {
         return writeFileAsync(configurationFileName, JSON.stringify(jobConfiguration));
     }
 
-    private scanJobDirectories(directories: string[]) {
-        if (!directories) {
-            return;
-        }
-        directories.forEach(directoryName => {
-            const jobConfiguration = this.getJobConfigurationFromDir(directoryName);
-            if (jobConfiguration) {
-                this.jobConfigurations.push(jobConfiguration);
-            }
-        });
+    private readJobConfigurations(): Array<JobConfiguration> {
+        const configurationFileNames = readdirSync(JOB_CONFIGURATIONS_FOLDER);
+        return configurationFileNames.map(fileName => this.readJobConfigurationFile(fileName));
     }
 
-    private getJobConfigurationFromDir(directoryName: string): JobConfiguration {
-        const jobConfigFilePath = join(JOB_CONFIGURATIONS_FOLDER, directoryName, JOB_CONFIG_FILE_NAME);
+    private readJobConfigurationFile(jobConfigurationFile: string): JobConfiguration {
+        const jobConfigFilePath = join(JOB_CONFIGURATIONS_FOLDER, jobConfigurationFile);
         try {
             const fileContent = readFileSync(jobConfigFilePath, 'utf8');
-            const jobConfiguration = JSON.parse(fileContent) as JobConfiguration;
-            jobConfiguration.id = directoryName;
-            return jobConfiguration;
+            return JSON.parse(fileContent) as JobConfiguration;
             // tslint:disable-next-line:no-empty
         } catch (error) {
         }

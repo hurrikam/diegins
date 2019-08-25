@@ -4,6 +4,7 @@ import * as React from 'react';
 import { jobService } from '../services';
 import JobConfiguration from '../../common/models/jobConfiguration';
 import JobList from '../components/jobList';
+import { getJobConfigurations } from '../services/jobConfigurationServices';
 
 interface JobListContainerState {
     jobConfigurations: Array<JobConfiguration>;
@@ -21,7 +22,7 @@ export default class JobListContainer extends React.Component<{}, JobListContain
     public async componentDidMount(): Promise<void> {
         let jobConfigurations = new Array<JobConfiguration>();
         try {
-            jobConfigurations = await jobService.getJobConfigurations();
+            jobConfigurations = await getJobConfigurations();
         } finally {
             this.setState({ jobConfigurations });
         }

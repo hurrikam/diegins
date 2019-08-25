@@ -19,7 +19,6 @@ export default class SaveJobConfigurationsCommand implements Command {
     }
 
     public async execute(request: Request, response: Response): Promise<void> {
-        console.log('Received request', request)
         const jobConfiguration = request.body as JobConfiguration;
         try {
             await this.jobConfigurationRepository.saveJobConfiguration(jobConfiguration);
