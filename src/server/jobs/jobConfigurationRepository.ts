@@ -1,9 +1,12 @@
 ﻿'use strict';
 
-import { readdirSync, readFileSync } from 'fs';
+import { promisify } from 'util';
+import { readdirSync, readFileSync, writeFile } from 'fs';
 import { join } from 'path';
 import JobConfiguration from '../../common/models/jobConfiguration';
 import { JOB_CONFIGURATIONS_FOLDER, JOB_CONFIG_FILE_NAME } from './jobFileConstants';
+
+const writeFileAsync = promisify(writeFile);
 
 export default class JobConfigurationRepository {
 
@@ -21,6 +24,14 @@ export default class JobConfigurationRepository {
 
     public getJobConfiguration(id: string): JobConfiguration {
         return this.jobConfigurations.find(jobConfiguration => jobConfiguration.id === id);
+    }
+
+    public saveJobConfiguration(jobConfiguration: JobConfiguration): Promise<void> {
+        if (!jobConfiguration || !jobConfiguration.id) {
+            throw new Error('Invalid job configuration passed');
+        }
+        const configurationFileName = join(JOB_CONFIGURATIONS_FOLDER, `${jobConfiguration.id}.json`);
+        return writeFileAsync(configurationFileName, JSON.stringify(jobConfiguration));
     }
 
     private scanJobDirectories(directories: string[]) {
@@ -42,7 +53,7 @@ export default class JobConfigurationRepository {
             const jobConfiguration = JSON.parse(fileContent) as JobConfiguration;
             jobConfiguration.id = directoryName;
             return jobConfiguration;
-        // tslint:disable-next-line:no-empty
+            // tslint:disable-next-line:no-empty
         } catch (error) {
         }
     }

@@ -9,5 +9,6 @@ describe('Endpoints', () => {
         expect(endpoints.GET_JOB_INFOS).toBe('/api/jobs');
         expect(endpoints.GET_JOB_CONFIGURATIONS).toBe('/api/jobdefinitions');
         expect(endpoints.RUN_JOB).toBe('/api/runjob/:jobId');
+        expect(endpoints.SAVE_JOB_CONFIGURATION).toBe('/api/jobconfiguration');
     });
 });
