@@ -3,7 +3,7 @@
 import JobConfiguration from '../../common/models/jobConfiguration';
 
 export function getJobStepIds(): Promise<Array<string>> {
-    return Promise.resolve(['sample']);
+    return new Promise((resolve, reject) => setTimeout(() => resolve(['sample']), 1000));
 }
 
 export function saveJobConfiguration(jobConfiguration: JobConfiguration): Promise<void> {

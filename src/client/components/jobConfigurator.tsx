@@ -13,27 +13,26 @@ interface JobConfiguratorProps {
 
 interface JobConfiguratorState {
     jobId: string;
-    newStepId: string;
     stepConfigurations: Array<JobStepConfiguration>;
 }
 
 export default class JobConfigurator extends React.Component<JobConfiguratorProps, JobConfiguratorState> {
 
+    private readonly newJobStepIdSelect: React.RefObject<HTMLSelectElement>;
+
     constructor(props: JobConfiguratorProps) {
         super(props);
         const jobConfiguration = this.props.jobConfiguration;
-        const defaultJobStepId = this.props.jobStepIds[0];
+        this.newJobStepIdSelect = React.createRef();
         if (jobConfiguration) {
             this.state = {
                 jobId: jobConfiguration.id,
-                newStepId: defaultJobStepId,
                 stepConfigurations: jobConfiguration.stepConfigurations || []
             };
             return;
         }
         this.state = {
             jobId: '',
-            newStepId: defaultJobStepId,
             stepConfigurations: []
         };
     }
@@ -61,7 +60,7 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
                             onClick={() => this.addStepConfiguration()}>
                             Add step:
                         </button>
-                        <select onChange={(event) => this.setState({ newStepId: event.currentTarget.value })}>
+                        <select ref={this.newJobStepIdSelect}>
                             {this.props.jobStepIds.map(stepId => (<option value={stepId}>{stepId}</option>))}
                         </select>
                     </div>
@@ -77,7 +76,7 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
 
     private addStepConfiguration(): void {
         const newStepConfiguration = {
-            stepId: this.state.newStepId
+            stepId: this.newJobStepIdSelect.current.value
         } as JobStepConfiguration;
         const modifiedStepConfigurations = [...this.state.stepConfigurations, newStepConfiguration];
         this.setState({ stepConfigurations: modifiedStepConfigurations });

@@ -36,7 +36,7 @@ export default class JobConfiguratorContainer extends React.Component<RouteCompo
             if (isNewJob) {
                 return;
             }
-        // tslint:disable-next-line:no-empty
+            // tslint:disable-next-line:no-empty
         } catch (error) {
 
         } finally {
