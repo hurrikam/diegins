@@ -3,13 +3,13 @@
 import * as React from 'react';
 import JobConfiguration from '../../common/models/jobConfiguration';
 
-interface JobListItemProps {
+interface JobConfigurationListItemProps {
     jobConfiguration: JobConfiguration;
     configureJob: (jobId: string) => void;
     runJob: (jobId: string) => void;
 }
 
-export default class JobListItem extends React.Component<JobListItemProps> {
+export default class JobConfigurationListItem extends React.Component<JobConfigurationListItemProps> {
 
     public render(): JSX.Element {
         return (

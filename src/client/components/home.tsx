@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { RouteComponentProps } from '@reach/router';
-import JobListContainer from '../containers/jobListContainer';
+import JobConfigurationListContainer from '../containers/jobConfigurationListContainer';
 import JobGridContainer from '../containers/jobGridContainer';
 
 export default class Home extends React.Component<RouteComponentProps> {
@@ -10,7 +10,7 @@ export default class Home extends React.Component<RouteComponentProps> {
     public render(): React.ReactNode {
         return (
             <div className="home">
-                <JobListContainer />
+                <JobConfigurationListContainer />
                 <JobGridContainer />
             </div>
         );

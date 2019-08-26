@@ -3,14 +3,14 @@
 import * as React from 'react';
 import { jobService } from '../services';
 import JobConfiguration from '../../common/models/jobConfiguration';
-import JobList from '../components/jobList';
+import JobConfigurationList from '../components/jobConfigurationList';
 import { getJobConfigurations } from '../services/jobConfigurationServices';
 
-interface JobListContainerState {
+interface JobConfigurationListContainerState {
     jobConfigurations: Array<JobConfiguration>;
 }
 
-export default class JobListContainer extends React.Component<{}, JobListContainerState> {
+export default class JobConfigurationListContainer extends React.Component<{}, JobConfigurationListContainerState> {
 
     constructor(props: {}) {
         super(props);
@@ -30,11 +30,11 @@ export default class JobListContainer extends React.Component<{}, JobListContain
 
     public render(): React.ReactNode {
         return (
-            <JobList
+            <JobConfigurationList
                 jobConfigurations={this.state.jobConfigurations}
                 runJob={jobService.runJob.bind(jobService)}
                 configureJob={() => undefined}>
-            </JobList>
+            </JobConfigurationList>
         );
     }
 }
