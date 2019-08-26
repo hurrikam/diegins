@@ -2,8 +2,9 @@
 
 import Command from './command';
 import CancelJobCommand from './commands/cancelJobCommand';
-import GetJobInfosCommand from './commands/getJobInfosCommand';
+import GetJobConfigurationCommand from './commands/getJobConfigurationCommand';
 import GetJobConfigurationsCommand from './commands/getJobConfigurationsCommand';
+import GetJobInfosCommand from './commands/getJobInfosCommand';
 import RunJobCommand from './commands/runJobCommand';
 import SaveJobConfigurationsCommand from './commands/saveJobConfigurationCommand';
 import { getJobConfigurationRepository, getJobRunner } from './services';
@@ -14,8 +15,9 @@ export function createCommands(): Array<Command> {
 
     return [
         new CancelJobCommand(jobScheduler),
-        new GetJobInfosCommand(jobScheduler),
+        new GetJobConfigurationCommand(jobConfigurationRepository),
         new GetJobConfigurationsCommand(jobConfigurationRepository),
+        new GetJobInfosCommand(jobScheduler),
         new RunJobCommand(jobConfigurationRepository, jobScheduler),
         new SaveJobConfigurationsCommand(jobConfigurationRepository)
     ];

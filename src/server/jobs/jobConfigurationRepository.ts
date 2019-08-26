@@ -21,17 +21,24 @@ export default class JobConfigurationRepository {
         this.jobConfigurations.push(...this.readJobConfigurations());
     }
 
-    public getJobConfiguration(id: string): JobConfiguration {
-        return this.jobConfigurations.find(jobConfiguration => jobConfiguration.id === id);
+    public getJobConfiguration(jobId: string): JobConfiguration {
+        return this.jobConfigurations.find(configuration => configuration.id === jobId);
     }
 
-    public saveJobConfiguration(jobConfiguration: JobConfiguration): Promise<void> {
+    public async saveJobConfiguration(jobConfiguration: JobConfiguration): Promise<void> {
         if (!jobConfiguration || !jobConfiguration.id) {
             throw new Error('Invalid job configuration passed');
         }
-        const configurationFileName = `${jobConfiguration.id}${JOB_CONFIGURATION_FILE_EXTENSION}`;
+        const configurationFileName = this.configurationFileNameFromJobId(jobConfiguration.id);
         const configurationFilePath = join(JOB_CONFIGURATIONS_FOLDER, configurationFileName);
-        return writeFileAsync(configurationFilePath, JSON.stringify(jobConfiguration));
+        await writeFileAsync(configurationFilePath, JSON.stringify(jobConfiguration));
+        const indexOfExistingConfiguration = this.jobConfigurations
+            .findIndex(configuration => configuration.id === jobConfiguration.id);
+        if (indexOfExistingConfiguration >= 0) {
+            this.jobConfigurations[indexOfExistingConfiguration] = jobConfiguration;
+            return;
+        }
+        this.jobConfigurations.push(jobConfiguration);
     }
 
     private readJobConfigurations(): Array<JobConfiguration> {
@@ -50,5 +57,9 @@ export default class JobConfigurationRepository {
             // tslint:disable-next-line:no-empty
         } catch (error) {
         }
+    }
+
+    private configurationFileNameFromJobId(jobId: string): string {
+        return jobId + JOB_CONFIGURATION_FILE_EXTENSION;
     }
 }

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { jobService } from '../services';
 import JobConfiguration from '../../common/models/jobConfiguration';
 import JobConfigurationList from '../components/jobConfigurationList';
-import { getJobConfigurations } from '../services/jobConfigurationServices';
+import { getJobConfigurations, openJobConfiguration } from '../services/jobConfigurationServices';
 
 interface JobConfigurationListContainerState {
     jobConfigurations: Array<JobConfiguration>;
@@ -33,7 +33,7 @@ export default class JobConfigurationListContainer extends React.Component<{}, J
             <JobConfigurationList
                 jobConfigurations={this.state.jobConfigurations}
                 runJob={jobService.runJob.bind(jobService)}
-                configureJob={() => undefined}>
+                openJobConfiguration={openJobConfiguration}>
             </JobConfigurationList>
         );
     }

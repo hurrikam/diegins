@@ -6,7 +6,7 @@ import JobConfigurationListItem from './jobConfigurationListItem';
 
 interface JobConfigurationListProps {
     jobConfigurations: Array<JobConfiguration>;
-    configureJob: (jobId: string) => void;
+    openJobConfiguration: (jobId: string) => void;
     runJob: (jobId: string) => void;
 }
 
@@ -17,7 +17,7 @@ export default class JobConfigurationList extends React.Component<JobConfigurati
             (<JobConfigurationListItem
                 key={jobConfiguration.id}
                 jobConfiguration={jobConfiguration}
-                configureJob={this.props.configureJob}
+                openJobConfiguration={this.props.openJobConfiguration}
                 runJob={this.props.runJob}
             >
             </JobConfigurationListItem>)

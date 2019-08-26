@@ -21,10 +21,6 @@
     height: 20px;    
 }
 
-.job-list-item .run-icon:hover {
-    transform: scale(1.5);
-}
-
 .job-list-item .exclamation-icon {
     align-self: center;
     margin-left: auto;
