@@ -23,7 +23,7 @@ describe('commandFactory', () => {
         test('returns an array containing expected commands', () => {
             const { createCommands } = require('./commandFactory');
             const commands = createCommands();
-            expect(commands).toHaveLength(5);
+            expect(commands).toHaveLength(6);
             expect(commands[0] instanceof CancelJobCommand);
             expect(commands[1] instanceof GetJobConfigurationCommand);
             expect(commands[2] instanceof GetJobConfigurationsCommand);
