@@ -4,7 +4,7 @@ import { promisify } from 'util';
 import { readdirSync, readFileSync, writeFile } from 'fs';
 import { join } from 'path';
 import JobConfiguration from '../../common/models/jobConfiguration';
-import { JOB_CONFIGURATIONS_FOLDER, JOB_CONFIG_FILE_NAME } from './jobFileConstants';
+import { JOB_CONFIGURATIONS_FOLDER, JOB_CONFIGURATION_FILE_EXTENSION } from './jobFileConstants';
 
 const writeFileAsync = promisify(writeFile);
 
@@ -29,17 +29,21 @@ export default class JobConfigurationRepository {
         if (!jobConfiguration || !jobConfiguration.id) {
             throw new Error('Invalid job configuration passed');
         }
-        const configurationFileName = join(JOB_CONFIGURATIONS_FOLDER, `${jobConfiguration.id}.json`);
-        return writeFileAsync(configurationFileName, JSON.stringify(jobConfiguration));
+        const configurationFileName = `${jobConfiguration.id}${JOB_CONFIGURATION_FILE_EXTENSION}`;
+        const configurationFilePath = join(JOB_CONFIGURATIONS_FOLDER, configurationFileName);
+        return writeFileAsync(configurationFilePath, JSON.stringify(jobConfiguration));
     }
 
     private readJobConfigurations(): Array<JobConfiguration> {
         const configurationFileNames = readdirSync(JOB_CONFIGURATIONS_FOLDER);
-        return configurationFileNames.map(fileName => this.readJobConfigurationFile(fileName));
+        return configurationFileNames
+            .filter(fileName => fileName.endsWith(JOB_CONFIGURATION_FILE_EXTENSION))
+            .map(fileName => this.readJobConfigurationFile(fileName))
+            .filter(configuration => !!configuration);
     }
 
-    private readJobConfigurationFile(jobConfigurationFile: string): JobConfiguration {
-        const jobConfigFilePath = join(JOB_CONFIGURATIONS_FOLDER, jobConfigurationFile);
+    private readJobConfigurationFile(jobConfigurationFileName: string): JobConfiguration {
+        const jobConfigFilePath = join(JOB_CONFIGURATIONS_FOLDER, jobConfigurationFileName);
         try {
             const fileContent = readFileSync(jobConfigFilePath, 'utf8');
             return JSON.parse(fileContent) as JobConfiguration;

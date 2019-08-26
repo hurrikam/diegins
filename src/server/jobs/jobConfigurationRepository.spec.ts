@@ -4,19 +4,19 @@ jest.mock('fs');
 
 import JobConfigurationRepository from './jobConfigurationRepository';
 import { join } from 'path';
-import { JOB_CONFIGURATIONS_FOLDER, JOB_CONFIG_FILE_NAME } from './jobFileConstants';
+import { JOB_CONFIGURATIONS_FOLDER, JOB_CONFIGURATION_FILE_EXTENSION } from './jobFileConstants';
 
 function readdirSyncWithJobConfiguration(path: string): Array<String> {
     if (path === JOB_CONFIGURATIONS_FOLDER) {
-        return ['test_job'];
+        return ['test_job.json'];
     }
     return [];
 }
 
-function readFileSyncWithJobConfiguration(path: string) {
-    const testJobConfigurationPath = join(JOB_CONFIGURATIONS_FOLDER, 'test_job', JOB_CONFIG_FILE_NAME);
+function readFileSyncWithJobConfiguration(path: string): string {
+    const testJobConfigurationPath = join(JOB_CONFIGURATIONS_FOLDER, 'test_job.json');
     if (path === testJobConfigurationPath) {
-        return '{ }';
+        return '{"id": "test_job"}';
     }
 }
 
