@@ -1,9 +1,12 @@
 ﻿'use strict';
 
-import { readdirSync, readFileSync } from 'fs';
+import { promisify } from 'util';
+import { readdirSync, readFileSync, writeFile } from 'fs';
 import { join } from 'path';
 import JobConfiguration from '../../common/models/jobConfiguration';
-import { JOB_CONFIGURATIONS_FOLDER, JOB_CONFIG_FILE_NAME } from './jobFileConstants';
+import { JOB_CONFIGURATIONS_FOLDER, JOB_CONFIGURATION_FILE_EXTENSION } from './jobFileConstants';
+
+const writeFileAsync = promisify(writeFile);
 
 export default class JobConfigurationRepository {
 
@@ -15,34 +18,36 @@ export default class JobConfigurationRepository {
             throw new Error('Job configuration repository already initialized');
         }
         this.isInitialized = true;
-        const directoryNames = readdirSync(JOB_CONFIGURATIONS_FOLDER);
-        this.scanJobDirectories(directoryNames);
+        this.jobConfigurations.push(...this.readJobConfigurations());
     }
 
     public getJobConfiguration(id: string): JobConfiguration {
         return this.jobConfigurations.find(jobConfiguration => jobConfiguration.id === id);
     }
 
-    private scanJobDirectories(directories: string[]) {
-        if (!directories) {
-            return;
+    public saveJobConfiguration(jobConfiguration: JobConfiguration): Promise<void> {
+        if (!jobConfiguration || !jobConfiguration.id) {
+            throw new Error('Invalid job configuration passed');
         }
-        directories.forEach(directoryName => {
-            const jobConfiguration = this.getJobConfigurationFromDir(directoryName);
-            if (jobConfiguration) {
-                this.jobConfigurations.push(jobConfiguration);
-            }
-        });
+        const configurationFileName = `${jobConfiguration.id}${JOB_CONFIGURATION_FILE_EXTENSION}`;
+        const configurationFilePath = join(JOB_CONFIGURATIONS_FOLDER, configurationFileName);
+        return writeFileAsync(configurationFilePath, JSON.stringify(jobConfiguration));
     }
 
-    private getJobConfigurationFromDir(directoryName: string): JobConfiguration {
-        const jobConfigFilePath = join(JOB_CONFIGURATIONS_FOLDER, directoryName, JOB_CONFIG_FILE_NAME);
+    private readJobConfigurations(): Array<JobConfiguration> {
+        const configurationFileNames = readdirSync(JOB_CONFIGURATIONS_FOLDER);
+        return configurationFileNames
+            .filter(fileName => fileName.endsWith(JOB_CONFIGURATION_FILE_EXTENSION))
+            .map(fileName => this.readJobConfigurationFile(fileName))
+            .filter(configuration => !!configuration);
+    }
+
+    private readJobConfigurationFile(jobConfigurationFileName: string): JobConfiguration {
+        const jobConfigFilePath = join(JOB_CONFIGURATIONS_FOLDER, jobConfigurationFileName);
         try {
             const fileContent = readFileSync(jobConfigFilePath, 'utf8');
-            const jobConfiguration = JSON.parse(fileContent) as JobConfiguration;
-            jobConfiguration.id = directoryName;
-            return jobConfiguration;
-        // tslint:disable-next-line:no-empty
+            return JSON.parse(fileContent) as JobConfiguration;
+            // tslint:disable-next-line:no-empty
         } catch (error) {
         }
     }

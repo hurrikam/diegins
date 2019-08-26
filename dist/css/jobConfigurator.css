@@ -1,5 +1,5 @@
 .job-configurator {
-    height: 100%;
+    height: calc(100vh - 110px);
 }
 
 .job-configurator-id-container {
@@ -13,7 +13,7 @@
 }
 
 .job-configurator-steps-container {
-    height: calc(100% - 150px);
+    height: calc(100% - 110px);
     overflow-y: auto;
 }
 
@@ -23,4 +23,13 @@
 
 .job-configurator-add-step-button {
     margin-right: 10px;
+}
+
+.job-configurator-update-controls {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.job-configurator-save-button {
+    margin: 5px;
 }

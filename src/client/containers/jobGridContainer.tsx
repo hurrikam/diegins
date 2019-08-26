@@ -34,9 +34,12 @@ export default class JobGridContainer extends React.Component<{}, JobGridContain
         );
     }
 
-    private updateJobInfos(): void {
-        jobService.getJobInfos()
-            .then(jobInfos => this.setState({ jobInfos }))
-            .catch(() => this.setState({ jobInfos: [] }));
+    private async updateJobInfos(): Promise<void> {
+        let jobInfos = new Array<JobInfo>();
+        try {
+            jobInfos = await jobService.getJobInfos();
+        } finally {
+            this.setState({ jobInfos });
+        }
     }
 }

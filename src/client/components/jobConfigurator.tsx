@@ -8,32 +8,31 @@ import JobStepConfigurator from './jobStepConfigurator';
 interface JobConfiguratorProps {
     jobConfiguration?: JobConfiguration;
     jobStepIds: Array<string>;
-    save: () => void;
+    save: (newJobConfiguration: JobConfiguration) => void;
 }
 
 interface JobConfiguratorState {
     jobId: string;
-    newStepId: string;
     stepConfigurations: Array<JobStepConfiguration>;
 }
 
 export default class JobConfigurator extends React.Component<JobConfiguratorProps, JobConfiguratorState> {
 
+    private readonly newJobStepIdSelect: React.RefObject<HTMLSelectElement>;
+
     constructor(props: JobConfiguratorProps) {
         super(props);
         const jobConfiguration = this.props.jobConfiguration;
-        const defaultJobStepId = this.props.jobStepIds[0];
+        this.newJobStepIdSelect = React.createRef();
         if (jobConfiguration) {
             this.state = {
                 jobId: jobConfiguration.id,
-                newStepId: defaultJobStepId,
                 stepConfigurations: jobConfiguration.stepConfigurations || []
             };
             return;
         }
         this.state = {
             jobId: '',
-            newStepId: defaultJobStepId,
             stepConfigurations: []
         };
     }
@@ -46,7 +45,6 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
                     <input className="job-configurator-id" type="text" value={this.state.jobId}
                         onChange={(event) => this.setState({ jobId: event.currentTarget.value })} />
                 </div>
-                <br />
                 <div className="job-configurator-steps-container">
                     {this.state.stepConfigurations.map((stepConfiguration, index) =>
                         (<JobStepConfigurator
@@ -62,10 +60,15 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
                             onClick={() => this.addStepConfiguration()}>
                             Add step:
                         </button>
-                        <select onChange={(event) => this.setState({ newStepId: event.currentTarget.value })}>
+                        <select ref={this.newJobStepIdSelect}>
                             {this.props.jobStepIds.map(stepId => (<option value={stepId}>{stepId}</option>))}
                         </select>
                     </div>
+                </div>
+                <div className="job-configurator-update-controls">
+                    <button className="job-configurator-save-button" onClick={() => this.save()}>
+                        Save
+                    </button>
                 </div>
             </div>
         );
@@ -73,7 +76,7 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
 
     private addStepConfiguration(): void {
         const newStepConfiguration = {
-            stepId: this.state.newStepId
+            stepId: this.newJobStepIdSelect.current.value
         } as JobStepConfiguration;
         const modifiedStepConfigurations = [...this.state.stepConfigurations, newStepConfiguration];
         this.setState({ stepConfigurations: modifiedStepConfigurations });
@@ -89,5 +92,12 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
         const modifiedStepConfigurations = [...this.state.stepConfigurations];
         modifiedStepConfigurations[index].data = newData;
         this.setState({ stepConfigurations: modifiedStepConfigurations });
+    }
+
+    private save(): void {
+        this.props.save({
+            id: this.state.jobId,
+            stepConfigurations: this.state.stepConfigurations
+        });
     }
 }
