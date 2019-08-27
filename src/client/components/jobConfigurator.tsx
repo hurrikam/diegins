@@ -42,8 +42,7 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
             <div className="job-configurator">
                 <div className="job-configurator-id-container">
                     <span>Job ID </span>
-                    <input className="job-configurator-id" type="text" value={this.state.jobId}
-                        onChange={(event) => this.setState({ jobId: event.currentTarget.value })} />
+                    {this.renderJobId()}
                 </div>
                 <div className="job-configurator-steps-container">
                     {this.state.stepConfigurations.map((stepConfiguration, index) =>
@@ -72,6 +71,19 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
                 </div>
             </div>
         );
+    }
+
+    private renderJobId(): JSX.Element {
+        if (this.isNewJob()) {
+            return (<input className="job-configurator-id" type="text" value={this.state.jobId}
+                onChange={(event) => this.setState({ jobId: event.currentTarget.value })} />);
+        }
+        return (<span className="job-configurator-id">{this.props.jobConfiguration.id}</span>);
+    }
+
+    private isNewJob(): boolean {
+        const { jobConfiguration } = this.props;
+        return !jobConfiguration || !jobConfiguration.id;
     }
 
     private addStepConfiguration(): void {

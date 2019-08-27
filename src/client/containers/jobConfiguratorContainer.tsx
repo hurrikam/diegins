@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from '@reach/router';
 import JobConfiguration from '../../common/models/jobConfiguration';
-import { getJobStepIds, saveJobConfiguration } from '../services/jobConfigurationServices';
+import { getJobConfiguration, getJobStepIds, saveJobConfiguration } from '../services/jobConfigurationServices';
 import JobConfigurator from '../components/jobConfigurator';
 
 interface JobConfiguratorContainerRouteProps extends RouteComponentProps {
@@ -29,25 +29,32 @@ export default class JobConfiguratorContainer extends React.Component<RouteCompo
     }
 
     public async componentDidMount(): Promise<void> {
+        let jobConfiguration = {} as JobConfiguration;
+        let jobStepIds = new Array<string>();
         try {
-            const jobStepIds = await getJobStepIds();
-            this.setState({ jobStepIds });
-            const isNewJob = !(this.props as JobConfiguratorContainerRouteProps).jobId;
+            jobStepIds = await getJobStepIds();
+            const jobId = (this.props as JobConfiguratorContainerRouteProps).jobId;
+            const isNewJob = !jobId;
             if (isNewJob) {
                 return;
             }
+            jobConfiguration = await getJobConfiguration(jobId);
             // tslint:disable-next-line:no-empty
-        } catch (error) {
-
         } finally {
-            this.setState({ isLoading: false });
+            this.setState({
+                isLoading: false,
+                jobConfiguration,
+                jobStepIds
+            });
         }
     }
 
     public render(): React.ReactNode {
+        if (this.state.isLoading) {
+            return (<div className="job-configurator-container-overlay">Loading...</div>);
+        }
         return (
             <div>
-                {this.state.isLoading ? (<div className="job-configurator-container-overlay">Loading...</div>) : ''}
                 {this.state.isSaving ? (<div className="job-configurator-container-overlay">Saving...</div>) : ''}
                 <JobConfigurator
                     jobConfiguration={this.state.jobConfiguration}

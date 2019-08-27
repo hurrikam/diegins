@@ -19,8 +19,8 @@ export default class JobStepConfigurator extends React.Component<JobStepConfigur
                 <div className="job-step-configurator-header">
                     <span className="job-step-configurator-number">{stepIndex + 1}.</span>
                     <span className="job-step-configurator-id">{this.props.stepId}</span>
-                    <img className="job-step-configurator-delete-button" src="/icons/close.png"
-                        title="Delete the step"
+                    <img className="job-step-configurator-delete-button img-button"
+                        src="/icons/close.png" title="Delete the step"
                         onClick={() => this.props.deleteStepConfiguration(stepIndex)} />
                 </div>
                 <textarea className="job-step-configurator-data" rows={3}

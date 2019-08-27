@@ -1,0 +1,12 @@
+.toolbar {
+    background-color: dodgerblue;
+    display: flex;
+    height: 30px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 5px;
+}
+
+.toolbar .new-job-configuration-icon {
+    align-self: center;
+}

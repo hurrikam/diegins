@@ -18,23 +18,16 @@
     align-self: center;
     margin-left: auto;
     margin-right: auto;
-    height: 20px;    
-}
-
-.job-list-item .run-icon:hover {
-    transform: scale(1.5);
 }
 
 .job-list-item .exclamation-icon {
     align-self: center;
     margin-left: auto;
     margin-right: auto;
-    height: 20px;
 }
 
 .job-list-item .gear-icon {
     align-self: center;
     margin-left: auto;
     margin-right: 10px;
-    height: 20px;
 }

@@ -30,8 +30,7 @@
 
 .job-grid-item .cancel-icon {
     align-self: flex-end;
-    height: 16px;
-    margin: -16px 2px 0px 0px;
+    margin: -20px 2px 0px 0px;
 }
 
 .job-grid-item .job-id {

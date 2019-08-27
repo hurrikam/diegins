@@ -5,7 +5,7 @@ import JobConfiguration from '../../common/models/jobConfiguration';
 
 interface JobConfigurationListItemProps {
     jobConfiguration: JobConfiguration;
-    configureJob: (jobId: string) => void;
+    openJobConfiguration: (jobId: string) => void;
     runJob: (jobId: string) => void;
 }
 
@@ -27,7 +27,7 @@ export default class JobConfigurationListItem extends React.Component<JobConfigu
             return;
         }
         return (
-            <img src="/icons/right.png" className="run-icon" title="Run the job"
+            <img src="/icons/right.png" className="run-icon img-button" title="Run the job"
                 onClick={() => this.props.runJob(this.props.jobConfiguration.id)}/>
         );
     }
@@ -44,8 +44,8 @@ export default class JobConfigurationListItem extends React.Component<JobConfigu
 
     private renderConfigureIcon(): JSX.Element {
         return (
-            <img src="/icons/gear.png" className="gear-icon" title="Configure the job"
-                onClick={() => this.props.configureJob(this.props.jobConfiguration.id)}/>
+            <img src="/icons/gear.png" className="gear-icon img-button" title="Configure the job"
+                onClick={() => this.props.openJobConfiguration(this.props.jobConfiguration.id)}/>
         );
     }
 
