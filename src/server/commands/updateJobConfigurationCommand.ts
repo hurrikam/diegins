@@ -7,7 +7,7 @@ import JobConfigurationRepository from '../jobs/jobConfigurationRepository';
 import { POST } from '../httpMethods';
 import JobConfiguration from '../../common/models/jobConfiguration';
 
-export default class SaveJobConfigurationsCommand implements Command {
+export default class UpdateJobConfigurationCommand implements Command {
 
     public readonly endpoint = SAVE_JOB_CONFIGURATION;
     public readonly method = POST;

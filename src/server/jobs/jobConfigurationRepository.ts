@@ -5,6 +5,7 @@ import { readdirSync, readFileSync, writeFile } from 'fs';
 import { join } from 'path';
 import JobConfiguration from '../../common/models/jobConfiguration';
 import { JOB_CONFIGURATIONS_FOLDER, JOB_CONFIGURATION_FILE_EXTENSION } from './jobFileConstants';
+import { validateJobConfiguration } from '../../common/validation/jobConfigurationValidation';
 
 const writeFileAsync = promisify(writeFile);
 
@@ -26,14 +27,13 @@ export default class JobConfigurationRepository {
     }
 
     public async saveJobConfiguration(jobConfiguration: JobConfiguration): Promise<void> {
-        if (!jobConfiguration || !jobConfiguration.id) {
-            throw new Error('Invalid job configuration passed');
-        }
-        const configurationFileName = this.configurationFileNameFromJobId(jobConfiguration.id);
+        validateJobConfiguration(jobConfiguration);
+        const configurationId = jobConfiguration.id;
+        const configurationFileName = this.configurationFileNameFromJobId(configurationId);
         const configurationFilePath = join(JOB_CONFIGURATIONS_FOLDER, configurationFileName);
         await writeFileAsync(configurationFilePath, JSON.stringify(jobConfiguration));
         const indexOfExistingConfiguration = this.jobConfigurations
-            .findIndex(configuration => configuration.id === jobConfiguration.id);
+            .findIndex(configuration => configuration.id === configurationId);
         if (indexOfExistingConfiguration >= 0) {
             this.jobConfigurations[indexOfExistingConfiguration] = jobConfiguration;
             return;

@@ -41,7 +41,7 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
         return (
             <div className="job-configurator">
                 <div className="job-configurator-id-container">
-                    <span>Job ID </span>
+                    {this.isNewJob() ? (<span>Job ID </span>) : ''}
                     {this.renderJobId()}
                 </div>
                 <div className="job-configurator-steps-container">

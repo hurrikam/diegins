@@ -5,7 +5,8 @@ import JobConfiguration from '../../common/models/jobConfiguration';
 import {
     GET_JOB_CONFIGURATION,
     GET_JOB_CONFIGURATIONS,
-    SAVE_JOB_CONFIGURATION
+    SAVE_JOB_CONFIGURATION,
+    CREATE_JOB_CONFIGURATION
 } from '../../common/api/endpoints';
 import { JOB_CONFIGURATION } from '../routes';
 
@@ -13,8 +14,21 @@ function getFullUrl(endpoint: string): string {
     return window.location.origin + endpoint;
 }
 
+async function postJobConfiguration(jobConfiguration: JobConfiguration, endpoint: string): Promise<void> {
+    const apiUrl = getFullUrl(endpoint);
+    try {
+        await axios.post(apiUrl, jobConfiguration);
+    } catch (error) {
+        return Promise.reject(new Error(error.response.data));
+    }
+}
+
 export function getJobStepIds(): Promise<Array<string>> {
     return new Promise((resolve, reject) => setTimeout(() => resolve(['sample']), 1000));
+}
+
+export async function createJobConfiguration(jobConfiguration: JobConfiguration): Promise<void> {
+    return postJobConfiguration(jobConfiguration, CREATE_JOB_CONFIGURATION);
 }
 
 export async function getJobConfiguration(jobId: string): Promise<JobConfiguration> {
@@ -39,8 +53,7 @@ export async function getJobConfigurations(): Promise<Array<JobConfiguration>> {
 }
 
 export function saveJobConfiguration(jobConfiguration: JobConfiguration): Promise<any> {
-    const apiUrl = getFullUrl(SAVE_JOB_CONFIGURATION);
-    return axios.post(apiUrl, jobConfiguration);
+    return postJobConfiguration(jobConfiguration, SAVE_JOB_CONFIGURATION);
 }
 
 export function openJobConfiguration(jobId: string): void {
