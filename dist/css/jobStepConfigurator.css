@@ -1,9 +1,5 @@
 .job-step-configurator-container {
-    background: azure;
-    border: 1px solid deepskyblue;
-    border-radius: 3px;
     margin-bottom: 20px;
-    padding: 5px;
 }
 
 .job-step-configurator-header {

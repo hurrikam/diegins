@@ -15,3 +15,10 @@
 .img-button:hover {
     transform: scale(1.25);
 }
+
+.text-block-container {
+    background: azure;
+    border: 1px solid deepskyblue;
+    border-radius: 3px;
+    padding: 5px;
+}

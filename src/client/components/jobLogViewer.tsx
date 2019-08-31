@@ -12,8 +12,10 @@ export default class JobLogViewer extends React.Component<JobLogViewerProps> {
         const text = this.props.text || '';
         const textRows = text.split('\n');
         return (
-            <div className="job-log-viewer">
-                {textRows.map(row => (<div>{row}</div>))}
+            <div className="job-log-viewer text-block-container">
+                <div className="job-log-viewer-content">
+                    {textRows.map(row => (<div>{row}</div>))}
+                </div>
             </div>
         );
     }
