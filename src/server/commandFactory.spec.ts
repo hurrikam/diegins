@@ -7,6 +7,7 @@ import GetJobConfigurationCommand from './commands/getJobConfigurationCommand';
 import GetJobConfigurationsCommand from './commands/getJobConfigurationsCommand';
 import GetJobInfosCommand from './commands/getJobInfosCommand';
 import GetJobLogCommand from './commands/getJobLogCommand';
+import GetJobStepIdsCommand from './commands/getJobStepIdsCommand';
 import RunJobCommand from './commands/runJobCommand';
 import UpdateJobConfigurationCommand from './commands/updateJobConfigurationCommand';
 
@@ -34,6 +35,7 @@ describe('commandFactory', () => {
                 GetJobConfigurationsCommand,
                 GetJobInfosCommand,
                 GetJobLogCommand,
+                GetJobStepIdsCommand,
                 RunJobCommand,
                 UpdateJobConfigurationCommand
             ];

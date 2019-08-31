@@ -72,7 +72,8 @@ export default class JobRunner {
             const step = this.job.steps[i];
             step.onOutput = this.onStepOutput.bind(this);
             try {
-                result = await step.execute();
+                const stepData = this.job.stepsData[i];
+                result = await step.execute(stepData);
             } catch (error) {
                 result = JobResult.Failed;
             } finally {

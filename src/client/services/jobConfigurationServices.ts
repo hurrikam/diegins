@@ -6,7 +6,8 @@ import {
     GET_JOB_CONFIGURATION,
     GET_JOB_CONFIGURATIONS,
     SAVE_JOB_CONFIGURATION,
-    CREATE_JOB_CONFIGURATION
+    CREATE_JOB_CONFIGURATION,
+    GET_JOB_STEP_IDS
 } from '../../common/api/endpoints';
 import { JOB_CONFIGURATION } from '../routes';
 
@@ -21,10 +22,6 @@ async function postJobConfiguration(jobConfiguration: JobConfiguration, endpoint
     } catch (error) {
         return Promise.reject(new Error(error.response.data));
     }
-}
-
-export function getJobStepIds(): Promise<Array<string>> {
-    return new Promise((resolve, reject) => setTimeout(() => resolve(['sample']), 1000));
 }
 
 export async function createJobConfiguration(jobConfiguration: JobConfiguration): Promise<void> {
@@ -49,6 +46,16 @@ export async function getJobConfigurations(): Promise<Array<JobConfiguration>> {
         return response.data as Array<JobConfiguration>;
     } catch (error) {
         return [];
+    }
+}
+
+export async function getJobStepIds(): Promise<Array<string>> {
+    const apiUrl = getFullUrl(GET_JOB_STEP_IDS);
+    try {
+        const response = await axios.get(apiUrl);
+        return response.data as Array<string>;
+    } catch (error) {
+        return Promise.reject(new Error(error.response.data));
     }
 }
 
