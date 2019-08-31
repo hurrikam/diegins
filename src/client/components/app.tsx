@@ -4,7 +4,8 @@ import * as React from 'react';
 import { Router } from '@reach/router';
 import Home from './home';
 import JobConfiguratorContainer from '../containers/jobConfiguratorContainer';
-import { NEW_JOB_CONFIGURATION, JOB_CONFIGURATION } from '../routes';
+import JobLogViewerContainer from '../containers/JobLogViewerContainer';
+import { NEW_JOB_CONFIGURATION, JOB_CONFIGURATION, JOB_LOG } from '../routes';
 
 export default class App extends React.Component {
 
@@ -14,6 +15,7 @@ export default class App extends React.Component {
                 <Home path="/" />
                 <JobConfiguratorContainer path={NEW_JOB_CONFIGURATION} />
                 <JobConfiguratorContainer path={JOB_CONFIGURATION} />
+                <JobLogViewerContainer path={JOB_LOG} />
             </Router>
         );
     }

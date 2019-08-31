@@ -1,0 +1,12 @@
+.job-log-viewer {
+    height: 100%;
+}
+
+.job-log-viewer-content {
+    background-color: white;
+    border: 1px solid lightgray;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: auto;
+    padding: 5px;
+}

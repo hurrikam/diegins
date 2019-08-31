@@ -15,7 +15,7 @@ export default class JobStepConfigurator extends React.Component<JobStepConfigur
     public render(): JSX.Element {
         const stepIndex = this.props.stepIndex;
         return (
-            <div className="job-step-configurator-container">
+            <div className="job-step-configurator-container text-block-container">
                 <div className="job-step-configurator-header">
                     <span className="job-step-configurator-number">{stepIndex + 1}.</span>
                     <span className="job-step-configurator-id">{this.props.stepId}</span>
