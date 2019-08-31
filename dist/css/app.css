@@ -7,12 +7,13 @@
     height: 100%;
 }
 
-.img-button {
+.icon-button {
     height: 20px;
-    width: 20px;    
+    width: 20px;
 }
 
-.img-button:hover {
+.icon-button:hover {
+    cursor: pointer;
     transform: scale(1.25);
 }
 

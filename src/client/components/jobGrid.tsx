@@ -7,6 +7,7 @@ import JobGridItem from './jobGridItem';
 interface JobGridProps {
     jobInfos: Array<JobInfo>;
     cancelJob: (jobNumber: number) => void;
+    openJobLog: (jobNumber: number) => void;
 }
 
 export default class JobGridComponent extends React.Component<JobGridProps> {
@@ -19,6 +20,7 @@ export default class JobGridComponent extends React.Component<JobGridProps> {
                     key={jobInfo.number}
                     jobInfo={jobInfo}
                     cancelJob={this.props.cancelJob}
+                    openJobLog={this.props.openJobLog}
                 >
                 </JobGridItem>)
             );

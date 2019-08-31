@@ -7,19 +7,18 @@ import JobResult from '../../common/models/jobResult';
 interface JobGridItemProps {
     jobInfo: JobInfo;
     cancelJob: (jobNumber: number) => void;
+    openJobLog: (jobNumber: number) => void;
 }
 
 export default class JobGridItemComponent extends React.Component<JobGridItemProps> {
 
     public render(): React.ReactNode {
         const { jobInfo } = this.props;
-        let className = 'job-grid-item';
         const resultClass = this.getJobResultClass();
-        if (resultClass) {
-            className += ` ${resultClass}`;
-        }
         return (
-            <div className={className}>
+            <div className={`job-grid-item ${resultClass}`}
+                title="View the job log"
+                onClick={this.onClick.bind(this)}>
                 <span className="job-number">{jobInfo.number}</span>
                 {this.renderCancelButton()}
                 <span className="job-id">{jobInfo.id}</span>
@@ -39,7 +38,7 @@ export default class JobGridItemComponent extends React.Component<JobGridItemPro
         if (!this.canCancel()) {
             return;
         }
-        return (<img src="/icons/close.png" className="cancel-icon img-button"
+        return (<img src="/icons/close.png" className="cancel-icon icon-button"
             title="Cancel the job"
             onClick={() => cancelJob(jobInfo.number)}/>);
     }
@@ -83,5 +82,9 @@ export default class JobGridItemComponent extends React.Component<JobGridItemPro
         }
         const progressRatio = jobInfo.currentStepIndex / jobInfo.stepCount;
         return progressRatio * 100;
+    }
+
+    private onClick(): void {
+        this.props.openJobLog(this.props.jobInfo.number);
     }
 }

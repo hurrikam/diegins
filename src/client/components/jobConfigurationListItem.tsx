@@ -27,7 +27,7 @@ export default class JobConfigurationListItem extends React.Component<JobConfigu
             return;
         }
         return (
-            <img src="/icons/right.png" className="run-icon img-button" title="Run the job"
+            <img src="/icons/right.png" className="run-icon icon-button" title="Run the job"
                 onClick={() => this.props.runJob(this.props.jobConfiguration.id)}/>
         );
     }
@@ -44,7 +44,7 @@ export default class JobConfigurationListItem extends React.Component<JobConfigu
 
     private renderConfigureIcon(): JSX.Element {
         return (
-            <img src="/icons/gear.png" className="gear-icon img-button" title="Configure the job"
+            <img src="/icons/gear.png" className="gear-icon icon-button" title="Configure the job"
                 onClick={() => this.props.openJobConfiguration(this.props.jobConfiguration.id)}/>
         );
     }

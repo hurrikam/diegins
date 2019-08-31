@@ -8,11 +8,16 @@ import {
     RUN_JOB
 } from '../../common/api/endpoints';
 import JobInfo from '../../common/models/jobInfo';
+import { JOB_LOG } from '../routes';
+
+function getFullUrl(endpoint: string): string {
+    return window.location.origin + endpoint;
+}
 
 export default class JobService {
 
     public cancelJob(jobNumber: number): Promise<boolean> {
-        const apiUrl = this.getApiUrl(CANCEL_JOB)
+        const apiUrl = getFullUrl(CANCEL_JOB)
             .replace(':jobNumber', jobNumber.toString());
         return axios.delete(apiUrl)
             .then(response => response.data as boolean)
@@ -20,7 +25,7 @@ export default class JobService {
     }
 
     public runJob(id: string): Promise<boolean> {
-        const apiUrl = this.getApiUrl(RUN_JOB)
+        const apiUrl = getFullUrl(RUN_JOB)
             .replace(':jobId', id);
         return axios.get(apiUrl)
             .then(response => response.data as boolean)
@@ -28,20 +33,22 @@ export default class JobService {
     }
 
     public getJobInfos(): Promise<JobInfo[]> {
-        const apiUrl = this.getApiUrl(GET_JOB_INFOS);
+        const apiUrl = getFullUrl(GET_JOB_INFOS);
         return axios.get(apiUrl)
             .then(response => response.data as JobInfo[])
             .catch(() => []);
     }
 
     public async getJobLog(jobNumber: number): Promise<string> {
-        const apiUrl = this.getApiUrl(GET_JOB_LOG)
+        const apiUrl = getFullUrl(GET_JOB_LOG)
             .replace(':jobNumber', jobNumber.toString());
         const response = await axios.get(apiUrl);
         return response.data;
     }
+}
 
-    private getApiUrl(endpoint: string) {
-        return window.location.origin + endpoint;
-    }
+export function openJobLog(jobNumber: number): void {
+    const configurationUrl = getFullUrl(JOB_LOG)
+        .replace(':jobNumber', jobNumber.toString());
+    window.location.href = configurationUrl;
 }

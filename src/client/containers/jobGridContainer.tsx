@@ -4,6 +4,7 @@ import * as React from 'react';
 import { jobService } from '../services';
 import JobInfo from '../../common/models/jobInfo';
 import JobGrid from '../components/jobGrid';
+import { openJobLog } from '../services/jobService';
 
 const GRID_UPDATE_INTERVAL_MS = 2000;
 
@@ -29,7 +30,8 @@ export default class JobGridContainer extends React.Component<{}, JobGridContain
         return (
             <JobGrid
                 jobInfos={this.state.jobInfos}
-                cancelJob={jobService.cancelJob.bind(jobService)}>
+                cancelJob={jobService.cancelJob.bind(jobService)}
+                openJobLog={openJobLog}>
             </JobGrid>
         );
     }
