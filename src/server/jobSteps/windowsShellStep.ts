@@ -1,6 +1,6 @@
 'use strict';
 
-import { exec, ChildProcess } from 'child_process';
+import { ChildProcess, spawn } from 'child_process';
 import JobStep from '../jobs/jobStep';
 import JobResult from '../../common/models/jobResult';
 import { promises } from 'fs';
@@ -21,29 +21,29 @@ export default class WindowsShellStep implements JobStep {
         try {
             await promises.writeFile(batchFilePath, script);
         } catch (error) {
-            onStdData(error.message);
-            return Promise.resolve(JobResult.Failed);
+            this.onOutput(error.message);
+            return JobResult.Failed;
         }
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.resolve = resolve;
-            try {
-                this.childProcess = exec(`cmd /c ${batchFilePath}`);
-                this.childProcess.on('exit', onExitHandler);
-                this.childProcess.on('close', onExitHandler);
-                this.childProcess.on('message', onStdData);
-                this.childProcess.stdout.on('data', onStdData);
-                this.childProcess.stdout.on('readable', onStdData);
-                this.childProcess.stderr.on('data', onStdData);
-            } catch (error) {
-                this.onOutput(error.message);
-                resolve(JobResult.Failed);
-            }
+            this.childProcess = spawn(batchFilePath, [], { shell: true });
+            this.childProcess.on('error', this.onError.bind(this));
+            this.childProcess.on('exit', onExitHandler);
+            this.childProcess.on('message', onStdData);
+            this.childProcess.stdout.on('data', onStdData);
+            this.childProcess.stderr.on('data', onStdData);
         });
     }
 
     public cancel(): void {
         this.childProcess.kill();
         this.resolve(JobResult.Canceled);
+    }
+
+    private onError(error: Error): void {
+        this.childProcess.removeAllListeners('exit');
+        this.onOutput(error.message);
+        this.resolve(JobResult.Failed);
     }
 
     private onExit(code: number, signal: string): void {
