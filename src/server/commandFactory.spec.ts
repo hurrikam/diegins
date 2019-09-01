@@ -17,7 +17,9 @@ describe('commandFactory', () => {
         jest.mock('./services', () => ({
             getJobConfigurationRepository: () => ({}),
             getJobLogReader: () => ({}),
-            getJobRunner: () => ({})
+            getJobRunner: () => ({}),
+            getJobScheduler: () => ({}),
+            getJobStepRepository: () => ({})
         }));
     });
 

@@ -51,7 +51,8 @@ describe('JobCreator', () => {
             expect(testJob).toEqual({
                 id: testJobId,
                 number: testJobNumber,
-                steps: []
+                steps: [],
+                stepsData: []
             } as Job);
         });
 
@@ -70,7 +71,8 @@ describe('JobCreator', () => {
             expect(testJob).toEqual({
                 id: testJobId,
                 number: testJobNumber,
-                steps: [jobStepRepository.testStep]
+                steps: [jobStepRepository.testStep],
+                stepsData: [undefined]
             } as Job);
         });
 
@@ -89,7 +91,8 @@ describe('JobCreator', () => {
             expect(testJob).toEqual({
                 id: testJobId,
                 number: testJobNumber,
-                steps: []
+                steps: [],
+                stepsData: [undefined]
             } as Job);
         });
     });
