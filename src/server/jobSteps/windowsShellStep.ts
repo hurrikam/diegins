@@ -2,6 +2,7 @@
 
 import { ChildProcess, spawn } from 'child_process';
 import { constants, promises } from 'fs';
+import { tmpdir } from 'os';
 import { join } from 'path';
 import { v1 as uuid } from 'uuid';
 import JobStep from '../jobs/jobStep';
@@ -19,23 +20,26 @@ export default class WindowsShellStep implements JobStep {
     private resolve: (jobResult: JobResult) => void;
 
     public async execute(script: string): Promise<JobResult> {
-        const onExitHandler = this.onExit.bind(this);
-        const onStdData = this.onStdout.bind(this);
         const scriptFileName = TEMP_SCRIPT_FILENAME_PREFIX + uuid() + TEMP_SCRIPT_FILENAME_EXTENSION;
-        this.scriptFilePath = join(process.env.TEMP, scriptFileName);
+        const tempFolder = process.env.TEMP || tmpdir();
+        this.scriptFilePath = join(tempFolder, scriptFileName);
         // tslint:disable-next-line:no-bitwise
-        const writeFileFlag = constants.O_CREAT | constants.O_EXCL | constants.O_WRONLY;
+        const fileOptions = {
+            flag: constants.O_CREAT | constants.O_EXCL | constants.O_WRONLY,
+            mode: constants.S_IRUSR | constants.S_IXUSR
+        };
         try {
-            await promises.writeFile(this.scriptFilePath, script, { flag: writeFileFlag });
+            await promises.writeFile(this.scriptFilePath, script, fileOptions);
         } catch (error) {
             this.onOutput(error.message);
             return JobResult.Failed;
         }
+        const onStdData = this.onStdout.bind(this);
         return new Promise((resolve) => {
             this.resolve = resolve;
             this.childProcess = spawn(this.scriptFilePath, [], { shell: true });
             this.childProcess.on('error', this.onError.bind(this));
-            this.childProcess.on('exit', onExitHandler);
+            this.childProcess.on('exit', this.onExit.bind(this));
             this.childProcess.on('message', onStdData);
             this.childProcess.stdout.on('data', onStdData);
             this.childProcess.stderr.on('data', onStdData);
@@ -43,7 +47,10 @@ export default class WindowsShellStep implements JobStep {
     }
 
     public cancel(): void {
-        this.childProcess.kill();
+        if (this.childProcess) {
+            this.removeAllListeners();
+            this.childProcess.kill();
+        }
         this.resolve(JobResult.Canceled);
     }
 
@@ -53,20 +60,26 @@ export default class WindowsShellStep implements JobStep {
         }
         try {
             await promises.unlink(this.scriptFilePath);
-        // tslint:disable-next-line:no-empty
+            // tslint:disable-next-line:no-empty
         } catch (error) {
         }
     }
 
-    private onError(error: Error): void {
+    private removeAllListeners(): void {
         this.childProcess.removeAllListeners();
+        this.childProcess.stdout.removeAllListeners();
+        this.childProcess.stderr.removeAllListeners();
+    }
+
+    private onError(error: Error): void {
+        this.removeAllListeners();
         this.deleteScriptFile();
         this.onOutput(error.message);
         this.resolve(JobResult.Failed);
     }
 
     private onExit(code: number, signal: string): void {
-        this.childProcess.removeAllListeners();
+        this.removeAllListeners();
         this.deleteScriptFile();
         if (code === 0) {
             this.resolve(JobResult.Succeeded);
