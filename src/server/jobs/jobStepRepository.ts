@@ -43,7 +43,8 @@ export default class JobStepRepository {
         const jobStepFiles = readdirSync(this.jobStepsRootPath);
         jobStepFiles.forEach(fileName => {
             const jobStepDefinition = this.readJobStepDefinitionFile(fileName);
-            if (jobStepDefinition) {
+            const hasJobStepDefinitionId = jobStepDefinition && jobStepDefinition.ID;
+            if (hasJobStepDefinitionId) {
                 this.jobStepConstructors[jobStepDefinition.ID] = jobStepDefinition.default;
             }
         });

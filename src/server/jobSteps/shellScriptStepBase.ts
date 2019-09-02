@@ -8,26 +8,34 @@ import { v1 as uuid } from 'uuid';
 import JobStep from '../jobs/jobStep';
 import JobResult from '../../common/models/jobResult';
 
-export const ID = 'windows-shell';
 const TEMP_SCRIPT_FILENAME_PREFIX = 'diegins-script-';
-const TEMP_SCRIPT_FILENAME_EXTENSION = '.bat';
 
-export default class WindowsShellStep implements JobStep {
+export default abstract class ShellScriptStepBase implements JobStep {
 
     public onOutput: (output: string) => void;
     private scriptFilePath: string;
     private childProcess: ChildProcess;
     private resolve: (jobResult: JobResult) => void;
 
+    protected constructor(private readonly scriptFileExtension: string) {
+    }
+
     public async execute(script: string): Promise<JobResult> {
-        const scriptFileName = TEMP_SCRIPT_FILENAME_PREFIX + uuid() + TEMP_SCRIPT_FILENAME_EXTENSION;
+        try {
+            this.validatePlatform();
+        } catch (error) {
+            this.onOutput(error.message);
+            return JobResult.Failed;
+        }
+        const scriptFileName = TEMP_SCRIPT_FILENAME_PREFIX + uuid() + this.scriptFileExtension;
         const tempFolder = process.env.TEMP || tmpdir();
         this.scriptFilePath = join(tempFolder, scriptFileName);
-        // tslint:disable-next-line:no-bitwise
+        // tslint:disable:no-bitwise
         const fileOptions = {
             flag: constants.O_CREAT | constants.O_EXCL | constants.O_WRONLY,
             mode: constants.S_IRUSR | constants.S_IXUSR
         };
+        // tslint:enable:no-bitwise
         try {
             await promises.writeFile(this.scriptFilePath, script, fileOptions);
         } catch (error) {
@@ -53,6 +61,8 @@ export default class WindowsShellStep implements JobStep {
         }
         this.resolve(JobResult.Canceled);
     }
+
+    protected abstract validatePlatform(): void;
 
     private async deleteScriptFile(): Promise<void> {
         if (!this.scriptFilePath) {
