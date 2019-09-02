@@ -5,7 +5,7 @@ import ShellScriptStepBase from './shellScriptStepBase';
 export const ID = 'shell-script';
 const SHELL_SCRIPT_EXTENSION = '.sh';
 
-export default class BatchScriptStep extends ShellScriptStepBase {
+export default class ShellScriptStep extends ShellScriptStepBase {
 
     constructor() {
         super(SHELL_SCRIPT_EXTENSION);
