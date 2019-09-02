@@ -35,11 +35,16 @@ export default class JobStepRepository {
         return new jobStepConstructor();
     }
 
+    public getJobStepIds(): Array<string> {
+        return Object.keys(this.jobStepConstructors);
+    }
+
     private scanJobStepsDirectory(): void {
         const jobStepFiles = readdirSync(this.jobStepsRootPath);
         jobStepFiles.forEach(fileName => {
             const jobStepDefinition = this.readJobStepDefinitionFile(fileName);
-            if (jobStepDefinition) {
+            const hasJobStepDefinitionId = jobStepDefinition && jobStepDefinition.ID;
+            if (hasJobStepDefinitionId) {
                 this.jobStepConstructors[jobStepDefinition.ID] = jobStepDefinition.default;
             }
         });
@@ -52,8 +57,8 @@ export default class JobStepRepository {
         const jobStepFilePath = join(this.jobStepsRootPath, fileName);
         try {
             return require(jobStepFilePath);
+        // tslint:disable-next-line:no-empty
         } catch (error) {
-            return;
         }
     }
 }

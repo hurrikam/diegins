@@ -24,7 +24,8 @@ function createTestJob(): Job {
         steps: [
             createSuccessfulStep(),
             createSuccessfulStep()
-        ]
+        ],
+        stepsData: new Array(2)
     };
 }
 
@@ -38,7 +39,8 @@ function createFailingTestJob(): Job {
             execute: () => {
                 throw new Error();
             }
-        } as JobStep]
+        } as JobStep],
+        stepsData: new Array(1)
     };
 }
 

@@ -22,10 +22,13 @@ export default class JobCreator {
         const steps = jobConfiguration.stepConfigurations
             .map(stepConfiguration => this.jobStepRepository.createJobStep(stepConfiguration.stepId))
             .filter(step => step);
+        const stepsData = jobConfiguration.stepConfigurations
+            .map(stepConfiguration => stepConfiguration.data);
         return {
             id: jobConfiguration.id,
             number: jobNumber,
-            steps
+            steps,
+            stepsData
         };
     }
 }

@@ -51,7 +51,7 @@ export function getJobRepository(): JobRepository {
     return jobRepository;
 }
 
-export function getJobRunner(): JobScheduler {
+export function getJobScheduler(): JobScheduler {
     return jobScheduler;
 }
 

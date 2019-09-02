@@ -9,12 +9,19 @@ import GetJobInfosCommand from './commands/getJobInfosCommand';
 import GetJobLogCommand from './commands/getJobLogCommand';
 import RunJobCommand from './commands/runJobCommand';
 import UpdateJobConfigurationCommand from './commands/updateJobConfigurationCommand';
-import { getJobConfigurationRepository, getJobLogReader, getJobRunner } from './services';
+import {
+    getJobConfigurationRepository,
+    getJobLogReader,
+    getJobScheduler,
+    getJobStepRepository
+} from './services';
+import GetJobStepIdsCommand from './commands/getJobStepIdsCommand';
 
 export function createCommands(): Array<Command> {
     const jobConfigurationRepository = getJobConfigurationRepository();
     const jobLogReader = getJobLogReader();
-    const jobScheduler = getJobRunner();
+    const jobScheduler = getJobScheduler();
+    const jobStepRepository = getJobStepRepository();
     return [
         new CancelJobCommand(jobScheduler),
         new CreateJobConfigurationCommand(jobConfigurationRepository),
@@ -22,6 +29,7 @@ export function createCommands(): Array<Command> {
         new GetJobConfigurationsCommand(jobConfigurationRepository),
         new GetJobLogCommand(jobLogReader),
         new GetJobInfosCommand(jobScheduler),
+        new GetJobStepIdsCommand(jobStepRepository),
         new RunJobCommand(jobConfigurationRepository, jobScheduler),
         new UpdateJobConfigurationCommand(jobConfigurationRepository)
     ];

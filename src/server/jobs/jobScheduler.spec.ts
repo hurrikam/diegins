@@ -36,7 +36,7 @@ function createTestJobConfiguration(): JobConfiguration {
 function createSuccessfulStep(): JobStep {
     return {
         // tslint:disable-next-line:no-empty
-        cancel: () => {},
+        cancel: () => { },
         execute: () => Promise.resolve(JobResult.Succeeded)
     };
 }
@@ -46,7 +46,8 @@ function createMockJobCreator(): JobCreator {
         create: (jobConfiguration: JobConfiguration, jobNumber: number) => ({
             id: jobConfiguration.id,
             number: jobNumber,
-            steps: [createSuccessfulStep()]
+            steps: [createSuccessfulStep()],
+            stepsData: [undefined]
         } as Job)
     } as JobCreator;
 }
@@ -64,7 +65,7 @@ describe('JobScheduler', () => {
     describe('run', () => {
 
         test('throws an exception if no job configuration is passed', async () => {
-            const jobCreator = { } as JobCreator;
+            const jobCreator = {} as JobCreator;
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
             const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter);
             await expect(jobScheduler.run(undefined))
