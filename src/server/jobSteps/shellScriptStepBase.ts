@@ -7,8 +7,11 @@ import { join } from 'path';
 import { v1 as uuid } from 'uuid';
 import JobStep from '../jobs/jobStep';
 import JobResult from '../../common/models/jobResult';
+import JobArguments from '../jobs/jobArguments';
 
 const TEMP_SCRIPT_FILENAME_PREFIX = 'diegins-script-';
+const JOB_NUMBER_ENV_VARIABLE_NAME = 'DIEGINS_JOB_NUMBER';
+const WORKING_DIR_ENV_VARIABLE_NAME = 'DIEGINS_JOB_WORKDIR';
 
 export default abstract class ShellScriptStepBase implements JobStep {
 
@@ -20,7 +23,7 @@ export default abstract class ShellScriptStepBase implements JobStep {
     protected constructor(private readonly scriptFileExtension: string) {
     }
 
-    public async execute(script: string): Promise<JobResult> {
+    public async execute(script: string, jobArguments: JobArguments): Promise<JobResult> {
         try {
             this.validatePlatform();
         } catch (error) {
@@ -45,7 +48,15 @@ export default abstract class ShellScriptStepBase implements JobStep {
         const onStdData = this.onStdout.bind(this);
         return new Promise((resolve) => {
             this.resolve = resolve;
-            this.childProcess = spawn(this.scriptFilePath, [], { shell: true });
+            this.childProcess = spawn(this.scriptFilePath, [], {
+                cwd: jobArguments.workingDirectory,
+                env: {
+                    ...process.env,
+                    [JOB_NUMBER_ENV_VARIABLE_NAME]: jobArguments.number.toString(),
+                    [WORKING_DIR_ENV_VARIABLE_NAME]: jobArguments.workingDirectory
+                },
+                shell: true
+            });
             this.childProcess.on('error', this.onError.bind(this));
             this.childProcess.on('exit', this.onExit.bind(this));
             this.childProcess.on('message', onStdData);

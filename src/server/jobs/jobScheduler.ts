@@ -1,18 +1,17 @@
 ﻿'use strict';
 
-import { mkdir } from 'fs';
+// import { promises } from 'fs';
+const promises = require('fs').promises;
 import { join } from 'path';
-import { promisify } from 'util';
 import JobRunner from './jobRunner';
 import JobCreator from './jobCreator';
 import JobConfiguration from '../../common/models/jobConfiguration';
 import JobInfo from '../../common/models/jobInfo';
-import { JOBS_FOLDER } from './jobFileConstants';
+import { JOBS_FOLDER, JOB_WORKING_DIR_NAME } from './jobFileConstants';
 import JobResult from '../../common/models/jobResult';
 import { JOB_FINISHED_EVENT } from './jobEvents';
 import JobEventEmitter from './jobEventEmitter';
-
-const mkdirAsync = promisify(mkdir);
+import JobArguments from './jobArguments';
 
 export default class JobScheduler {
 
@@ -40,7 +39,7 @@ export default class JobScheduler {
         }
         this.lastJobNumber++;
         try {
-            await this.createJobFolder(this.lastJobNumber);
+            await this.createJobWorkingDirectory(this.lastJobNumber);
         } catch (error) {
             const jobInfo: JobInfo = {
                 id: jobConfiguration.id,
@@ -53,7 +52,11 @@ export default class JobScheduler {
             return;
         }
         const job = this.jobCreator.create(jobConfiguration, this.lastJobNumber);
-        const jobRunner = new JobRunner(job, this.jobEventEmitter);
+        const jobArguments = {
+            number: job.number,
+            workingDirectory: this.getJobWorkingDirectory(job.number)
+        } as JobArguments;
+        const jobRunner = new JobRunner(job, jobArguments, this.jobEventEmitter);
         this.jobRunners.push(jobRunner);
         await jobRunner.run();
     }
@@ -77,9 +80,13 @@ export default class JobScheduler {
         }));
     }
 
-    private createJobFolder(jobNumber: number): Promise<void> {
-        const jobFolder = join(JOBS_FOLDER, jobNumber.toString());
-        return mkdirAsync(jobFolder);
+    private getJobWorkingDirectory(jobNumber: number): string {
+        return join(JOBS_FOLDER, jobNumber.toString(), JOB_WORKING_DIR_NAME);
+    }
+
+    private createJobWorkingDirectory(jobNumber: number): Promise<void> {
+        const jobWorkingDirectory = this.getJobWorkingDirectory(jobNumber);
+        return promises.mkdir(jobWorkingDirectory, { recursive: true });
     }
 
     private emitJobFinished(jobInfo: JobInfo): void {
