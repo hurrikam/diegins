@@ -11,7 +11,6 @@ import JobArguments from '../jobs/jobArguments';
 
 const TEMP_SCRIPT_FILENAME_PREFIX = 'diegins-script-';
 const JOB_NUMBER_ENV_VARIABLE_NAME = 'DIEGINS_JOB_NUMBER';
-const WORKING_DIR_ENV_VARIABLE_NAME = 'DIEGINS_JOB_WORKDIR';
 
 export default abstract class ShellScriptStepBase implements JobStep {
 
@@ -52,8 +51,7 @@ export default abstract class ShellScriptStepBase implements JobStep {
                 cwd: jobArguments.workingDirectory,
                 env: {
                     ...process.env,
-                    [JOB_NUMBER_ENV_VARIABLE_NAME]: jobArguments.number.toString(),
-                    [WORKING_DIR_ENV_VARIABLE_NAME]: jobArguments.workingDirectory
+                    [JOB_NUMBER_ENV_VARIABLE_NAME]: jobArguments.number.toString()
                 },
                 shell: true
             });
