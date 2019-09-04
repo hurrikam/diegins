@@ -31,6 +31,7 @@ function createMockFileSystemService(): FileSystemService {
 function createTestJobConfiguration(): JobConfiguration {
     return {
         id: TEST_JOB_ID,
+        parameters: [],
         stepConfigurations: []
     };
 }

@@ -3,7 +3,9 @@
 import * as React from 'react';
 import JobConfiguration from '../../common/models/jobConfiguration';
 import JobStepConfiguration from '../../common/models/jobStepConfiguration';
+import JobParameterConfigurator from './jobParameterConfigurator';
 import JobStepConfigurator from './jobStepConfigurator';
+import JobParameter from '../../common/models/jobParameter';
 
 interface JobConfiguratorProps {
     jobConfiguration?: JobConfiguration;
@@ -13,6 +15,7 @@ interface JobConfiguratorProps {
 
 interface JobConfiguratorState {
     jobId: string;
+    parameters: Array<JobParameter>;
     stepConfigurations: Array<JobStepConfiguration>;
 }
 
@@ -27,12 +30,14 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
         if (jobConfiguration) {
             this.state = {
                 jobId: jobConfiguration.id,
+                parameters: jobConfiguration.parameters || [],
                 stepConfigurations: jobConfiguration.stepConfigurations || []
             };
             return;
         }
         this.state = {
             jobId: '',
+            parameters: [],
             stepConfigurations: []
         };
     }
@@ -45,6 +50,18 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
                     {this.renderJobId()}
                 </div>
                 <div className="job-configurator-steps-container">
+                    <div>Parameters</div>
+                    <div>
+                        {this.state.parameters.map((parameter, index) =>
+                            (<JobParameterConfigurator
+                                index={index}
+                                parameter={parameter}
+                                deleteParameter={this.deleteParameter.bind(this)}
+                                onParameterChanged={(newParameter) => this.onParameterChanged(index, newParameter)}
+                            />)
+                        )}
+                    </div>
+                    <div>Steps</div>
                     {this.state.stepConfigurations.map((stepConfiguration, index) =>
                         (<JobStepConfigurator
                             data={stepConfiguration.data}
@@ -94,9 +111,9 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
         this.setState({ stepConfigurations: modifiedStepConfigurations });
     }
 
-    private deleteStepConfiguration(stepIndex: number): void {
+    private deleteStepConfiguration(index: number): void {
         const splicedStepConfigurations = [...this.state.stepConfigurations];
-        splicedStepConfigurations.splice(stepIndex, 1);
+        splicedStepConfigurations.splice(index, 1);
         this.setState({ stepConfigurations: splicedStepConfigurations });
     }
 
@@ -106,9 +123,22 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
         this.setState({ stepConfigurations: modifiedStepConfigurations });
     }
 
+    private onParameterChanged(index: number, newParameter: JobParameter): void {
+        const modifiedParameters = [...this.state.parameters];
+        modifiedParameters[index] = newParameter;
+        this.setState({ parameters: modifiedParameters });
+    }
+
+    private deleteParameter(index: number): void {
+        const splicedParameters = [...this.state.parameters];
+        splicedParameters.splice(index, 1);
+        this.setState({ parameters: splicedParameters });
+    }
+
     private save(): void {
         this.props.save({
             id: this.state.jobId,
+            parameters: this.state.parameters,
             stepConfigurations: this.state.stepConfigurations
         });
     }
