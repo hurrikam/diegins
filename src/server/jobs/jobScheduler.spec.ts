@@ -1,15 +1,5 @@
 'use strict';
 
-jest.mock('fs');
-const fs = require('fs');
-fs.mkdir = jest.fn((path: string, callback: Function) => {
-    if (path === VALID_JOB_FOLDER) {
-        callback();
-        return;
-    }
-    callback('Error while creating the test job folder');
-});
-
 import { join } from 'path';
 import JobScheduler from './jobScheduler';
 import JobCreator from './jobCreator';
@@ -22,9 +12,21 @@ import { JOB_FINISHED_EVENT, JOB_STARTED_EVENT } from './jobEvents';
 import JobInfo from '../../common/models/jobInfo';
 import JobResult from '../../common/models/jobResult';
 import JobStep from './jobStep';
+import FileSystemService from '../services/fileSystemService';
 
 const TEST_JOB_ID = 'test_job';
-const VALID_JOB_FOLDER = join(JOBS_FOLDER, '1');
+const VALID_JOB_FOLDER = join(JOBS_FOLDER, '1', 'workdir');
+
+function createMockFileSystemService(): FileSystemService {
+    return {
+        mkdir: jest.fn((path: string, options: {}) => {
+            if (path === VALID_JOB_FOLDER) {
+                return Promise.resolve();
+            }
+            return Promise.reject('Error while creating the test job folder');
+        })
+    };
+}
 
 function createTestJobConfiguration(): JobConfiguration {
     return {
@@ -54,34 +56,28 @@ function createMockJobCreator(): JobCreator {
 
 describe('JobScheduler', () => {
 
-    afterAll(() => {
-        jest.resetModules();
-    });
-
-    afterEach(() => {
-        fs.mkdir.mockClear();
-    });
-
     describe('run', () => {
 
         test('throws an exception if no job configuration is passed', async () => {
+            const fs = createMockFileSystemService();
             const jobCreator = {} as JobCreator;
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
-            const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter);
+            const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
             await expect(jobScheduler.run(undefined))
                 .rejects.toEqual(new Error('no job configuration specified'));
         });
 
         test('creates a folder for the job and starts the job', async () => {
+            const fs = createMockFileSystemService();
             const jobCreator = createMockJobCreator();
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
             const jobStartedHandler = jest.fn();
             jobEventEmitter.on(JOB_STARTED_EVENT, jobStartedHandler);
-            const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter);
+            const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
             const jobConfiguration = createTestJobConfiguration();
             await jobScheduler.run(jobConfiguration);
             expect(fs.mkdir).toHaveBeenCalledTimes(1);
-            expect(fs.mkdir).toHaveBeenCalledWith(VALID_JOB_FOLDER, expect.any(Function));
+            expect(fs.mkdir).toHaveBeenCalledWith(VALID_JOB_FOLDER, { recursive: true });
             expect(jobStartedHandler).toHaveBeenCalledTimes(1);
             expect(jobStartedHandler).toHaveBeenCalledWith({
                 id: TEST_JOB_ID,
@@ -93,13 +89,14 @@ describe('JobScheduler', () => {
         });
 
         test('reports failure if the job folder cannot be created without starting the job', async () => {
+            const fs = createMockFileSystemService();
             const jobCreator = createMockJobCreator();
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
             const jobStartedHandler = jest.fn();
             jobEventEmitter.on(JOB_STARTED_EVENT, jobStartedHandler);
             const jobFinishedHandler = jest.fn();
             jobEventEmitter.on(JOB_FINISHED_EVENT, jobFinishedHandler);
-            const jobScheduler = new JobScheduler(jobCreator, 1, jobEventEmitter);
+            const jobScheduler = new JobScheduler(jobCreator, 1, jobEventEmitter, fs);
             const jobConfiguration = createTestJobConfiguration();
             await jobScheduler.run(jobConfiguration);
             expect(fs.mkdir).toHaveBeenCalledTimes(1);
@@ -118,12 +115,13 @@ describe('JobScheduler', () => {
     describe('cancel', () => {
 
         test('aborts a scheduled job', async () => {
+            const fs = createMockFileSystemService();
             const jobCreator = createMockJobCreator();
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
             jobEventEmitter.on(JOB_STARTED_EVENT, () => jobScheduler.cancel(1));
             const jobFinishedHandler = jest.fn();
             jobEventEmitter.on(JOB_FINISHED_EVENT, jobFinishedHandler);
-            const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter);
+            const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
             const jobConfiguration = createTestJobConfiguration();
             await jobScheduler.run(jobConfiguration);
             expect(jobFinishedHandler).toHaveBeenCalledTimes(1);
@@ -137,9 +135,10 @@ describe('JobScheduler', () => {
         });
 
         test('does nothing if the specified job is not running', () => {
+            const fs = createMockFileSystemService();
             const jobCreator = createMockJobCreator();
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
-            const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter);
+            const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
             jobScheduler.cancel(1);
         });
     });
@@ -147,16 +146,18 @@ describe('JobScheduler', () => {
     describe('getJobInfos', () => {
 
         test('returns an empty array if no job is running', () => {
+            const fs = createMockFileSystemService();
             const jobCreator = createMockJobCreator();
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
-            const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter);
+            const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
             expect(jobScheduler.getJobInfos()).toHaveLength(0);
         });
 
         test('returns an array containing information about scheduled jobs', async () => {
+            const fs = createMockFileSystemService();
             const jobCreator = createMockJobCreator();
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
-            const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter);
+            const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
             const jobConfiguration = createTestJobConfiguration();
             await jobScheduler.run(jobConfiguration);
             expect(jobScheduler.getJobInfos()).toEqual([{

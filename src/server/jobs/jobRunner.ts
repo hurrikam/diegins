@@ -3,6 +3,7 @@
 import Job from './job';
 import JobResult from '../../common/models/jobResult';
 import JobInfo from '../../common/models/jobInfo';
+import JobArguments from './jobArguments';
 import JobEventEmitter from './jobEventEmitter';
 import { JOB_STARTED_EVENT, JOB_OUTPUT_EVENT, JOB_FINISHED_EVENT } from './jobEvents';
 
@@ -16,11 +17,15 @@ export default class JobRunner {
     private isCancelling = false;
 
     public constructor(
-        public readonly job: Job,
+        private readonly job: Job,
+        private readonly jobArguments: JobArguments,
         private readonly jobEventEmitter: JobEventEmitter
     ) {
         if (!job) {
-            throw new Error('No job passed');
+            throw new Error('job not specified');
+        }
+        if (!jobArguments) {
+            throw new Error('jobArguments not specified');
         }
         if (!jobEventEmitter) {
             throw new Error('jobEventEmitter not specified');
@@ -73,7 +78,7 @@ export default class JobRunner {
             step.onOutput = this.onStepOutput.bind(this);
             try {
                 const stepData = this.job.stepsData[i];
-                result = await step.execute(stepData);
+                result = await step.execute(stepData, this.jobArguments);
             } catch (error) {
                 result = JobResult.Failed;
             } finally {

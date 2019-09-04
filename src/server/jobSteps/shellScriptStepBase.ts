@@ -1,14 +1,16 @@
 'use strict';
 
 import { ChildProcess, spawn } from 'child_process';
-import { constants, promises } from 'fs';
+import { constants, promises as fs } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
 import { v1 as uuid } from 'uuid';
 import JobStep from '../jobs/jobStep';
 import JobResult from '../../common/models/jobResult';
+import JobArguments from '../jobs/jobArguments';
 
 const TEMP_SCRIPT_FILENAME_PREFIX = 'diegins-script-';
+const JOB_NUMBER_ENV_VARIABLE_NAME = 'DIEGINS_JOB_NUMBER';
 
 export default abstract class ShellScriptStepBase implements JobStep {
 
@@ -20,7 +22,7 @@ export default abstract class ShellScriptStepBase implements JobStep {
     protected constructor(private readonly scriptFileExtension: string) {
     }
 
-    public async execute(script: string): Promise<JobResult> {
+    public async execute(script: string, jobArguments: JobArguments): Promise<JobResult> {
         try {
             this.validatePlatform();
         } catch (error) {
@@ -37,7 +39,7 @@ export default abstract class ShellScriptStepBase implements JobStep {
         };
         // tslint:enable:no-bitwise
         try {
-            await promises.writeFile(this.scriptFilePath, script, fileOptions);
+            await fs.writeFile(this.scriptFilePath, script, fileOptions);
         } catch (error) {
             this.onOutput(error.message);
             return JobResult.Failed;
@@ -45,7 +47,14 @@ export default abstract class ShellScriptStepBase implements JobStep {
         const onStdData = this.onStdout.bind(this);
         return new Promise((resolve) => {
             this.resolve = resolve;
-            this.childProcess = spawn(this.scriptFilePath, [], { shell: true });
+            this.childProcess = spawn(this.scriptFilePath, [], {
+                cwd: jobArguments.workingDirectory,
+                env: {
+                    ...process.env,
+                    [JOB_NUMBER_ENV_VARIABLE_NAME]: jobArguments.number.toString()
+                },
+                shell: true
+            });
             this.childProcess.on('error', this.onError.bind(this));
             this.childProcess.on('exit', this.onExit.bind(this));
             this.childProcess.on('message', onStdData);
@@ -69,7 +78,7 @@ export default abstract class ShellScriptStepBase implements JobStep {
             return;
         }
         try {
-            await promises.unlink(this.scriptFilePath);
+            await fs.unlink(this.scriptFilePath);
             // tslint:disable-next-line:no-empty
         } catch (error) {
         }

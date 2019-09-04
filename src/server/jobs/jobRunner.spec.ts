@@ -8,6 +8,7 @@ import { JOB_STARTED_EVENT, JOB_FINISHED_EVENT } from './jobEvents';
 import JobInfo from '../../common/models/jobInfo';
 import JobResult from '../../common/models/jobResult';
 import JobStep from './jobStep';
+import JobArguments from './jobArguments';
 
 function createSuccessfulStep(): JobStep {
     return {
@@ -26,6 +27,13 @@ function createTestJob(): Job {
             createSuccessfulStep()
         ],
         stepsData: new Array(2)
+    };
+}
+
+function createTestJobArguments(): JobArguments {
+    return {
+        number: 1,
+        workingDirectory: ''
     };
 }
 
@@ -50,16 +58,18 @@ describe('JobRunner', () => {
 
         test('throws an error if a job has been run already', async () => {
             const job = createTestJob();
+            const jobArguments = createTestJobArguments();
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
-            const jobRunner = new JobRunner(job, jobEventEmitter);
+            const jobRunner = new JobRunner(job, jobArguments, jobEventEmitter);
             await jobRunner.run();
             await expect(jobRunner.run()).rejects.toEqual(new Error('The job cannot be restarted'));
         });
 
         test('emits the job started event', () => {
             const job = createTestJob();
+            const jobArguments = createTestJobArguments();
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
-            const jobRunner = new JobRunner(job, jobEventEmitter);
+            const jobRunner = new JobRunner(job, jobArguments, jobEventEmitter);
             const jobStartedHandler = jest.fn();
             jobEventEmitter.on(JOB_STARTED_EVENT, jobStartedHandler);
             jobRunner.run();
@@ -75,8 +85,9 @@ describe('JobRunner', () => {
 
         test('reports success if all steps executed with no error', async () => {
             const job = createTestJob();
+            const jobArguments = createTestJobArguments();
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
-            const jobRunner = new JobRunner(job, jobEventEmitter);
+            const jobRunner = new JobRunner(job, jobArguments, jobEventEmitter);
             const jobFinishedHandler = jest.fn();
             jobEventEmitter.on(JOB_FINISHED_EVENT, jobFinishedHandler);
             await expect(jobRunner.run()).resolves.toBe(JobResult.Succeeded);
@@ -92,8 +103,9 @@ describe('JobRunner', () => {
 
         test('reports failure when a step fails', async () => {
             const job = createFailingTestJob();
+            const jobArguments = createTestJobArguments();
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
-            const jobRunner = new JobRunner(job, jobEventEmitter);
+            const jobRunner = new JobRunner(job, jobArguments, jobEventEmitter);
             const jobFinishedHandler = jest.fn();
             jobEventEmitter.on(JOB_FINISHED_EVENT, jobFinishedHandler);
             await expect(jobRunner.run()).resolves.toBe(JobResult.Failed);
@@ -112,8 +124,9 @@ describe('JobRunner', () => {
 
         test('abort the current step and reports cancellation', async () => {
             const job = createTestJob();
+            const jobArguments = createTestJobArguments();
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
-            const jobRunner = new JobRunner(job, jobEventEmitter);
+            const jobRunner = new JobRunner(job, jobArguments, jobEventEmitter);
             const jobFinishedHandler = jest.fn();
             jobEventEmitter.on(JOB_FINISHED_EVENT, jobFinishedHandler);
             const jobRunPromise = jobRunner.run();

@@ -11,6 +11,7 @@ import JobLogger from './jobs/jobLogger';
 import JobLogReader from './jobs/jobLogReader';
 import JobEventEmitter from './jobs/jobEventEmitter';
 import { JOB_STEPS_ROOT } from './jobs/jobFileConstants';
+import FileSystemService from './services/fileSystemService';
 
 let jobEventEmitter: JobEventEmitter;
 let jobInstanceCreator: JobCreator;
@@ -22,6 +23,9 @@ let jobLogger: JobLogger;
 let jobLogReader: JobLogReader;
 
 export async function initializeServices(): Promise<void> {
+    const fileSystemService = {
+        mkdir: fs.mkdir
+    } as FileSystemService;
     jobEventEmitter = new EventEmitter();
     jobConfigurationRepository = new JobConfigurationRepository();
     jobConfigurationRepository.initialize();
@@ -30,7 +34,11 @@ export async function initializeServices(): Promise<void> {
     jobInstanceCreator = new JobCreator(jobStepRepository);
     jobRepository = new JobRepository();
     const lastJobNumber = await jobRepository.getLastJobNumber();
-    jobScheduler = new JobScheduler(jobInstanceCreator, lastJobNumber, jobEventEmitter);
+    jobScheduler = new JobScheduler(
+        jobInstanceCreator,
+        lastJobNumber,
+        jobEventEmitter,
+        fileSystemService);
     jobLogger = new JobLogger(jobEventEmitter);
     jobLogReader = new JobLogReader(fs.readFile);
 }
