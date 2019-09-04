@@ -1,7 +1,7 @@
 'use strict';
 
 import { ChildProcess, spawn } from 'child_process';
-import { constants, promises } from 'fs';
+import { constants, promises as fs } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
 import { v1 as uuid } from 'uuid';
@@ -40,7 +40,7 @@ export default abstract class ShellScriptStepBase implements JobStep {
         };
         // tslint:enable:no-bitwise
         try {
-            await promises.writeFile(this.scriptFilePath, script, fileOptions);
+            await fs.writeFile(this.scriptFilePath, script, fileOptions);
         } catch (error) {
             this.onOutput(error.message);
             return JobResult.Failed;
@@ -80,7 +80,7 @@ export default abstract class ShellScriptStepBase implements JobStep {
             return;
         }
         try {
-            await promises.unlink(this.scriptFilePath);
+            await fs.unlink(this.scriptFilePath);
             // tslint:disable-next-line:no-empty
         } catch (error) {
         }

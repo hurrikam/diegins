@@ -1,7 +1,5 @@
 ﻿'use strict';
 
-// import { promises } from 'fs';
-const promises = require('fs').promises;
 import { join } from 'path';
 import JobRunner from './jobRunner';
 import JobCreator from './jobCreator';
@@ -12,6 +10,7 @@ import JobResult from '../../common/models/jobResult';
 import { JOB_FINISHED_EVENT } from './jobEvents';
 import JobEventEmitter from './jobEventEmitter';
 import JobArguments from './jobArguments';
+import FileSystemService from '../services/fileSystemService';
 
 export default class JobScheduler {
 
@@ -20,7 +19,8 @@ export default class JobScheduler {
     public constructor(
         private readonly jobCreator: JobCreator,
         private lastJobNumber: number,
-        private readonly jobEventEmitter: JobEventEmitter
+        private readonly jobEventEmitter: JobEventEmitter,
+        private readonly fileSystemService: FileSystemService
     ) {
         if (!jobCreator) {
             throw new Error('jobInstanceCreator not specified');
@@ -30,6 +30,9 @@ export default class JobScheduler {
         }
         if (!jobEventEmitter) {
             throw new Error('jobEventEmitter not specified');
+        }
+        if (!fileSystemService) {
+            throw new Error('fileSystemService not specified');
         }
     }
 
@@ -86,7 +89,7 @@ export default class JobScheduler {
 
     private createJobWorkingDirectory(jobNumber: number): Promise<void> {
         const jobWorkingDirectory = this.getJobWorkingDirectory(jobNumber);
-        return promises.mkdir(jobWorkingDirectory, { recursive: true });
+        return this.fileSystemService.mkdir(jobWorkingDirectory, { recursive: true });
     }
 
     private emitJobFinished(jobInfo: JobInfo): void {
