@@ -22,11 +22,11 @@ export default class JobParameterConfigurator
 
     public render(): React.ReactNode {
         return (
-            <div>
-                <span>Parameter name</span>
+            <div className="job-parameter-container text-block-container">
+                <span className="job-parameter-name">Name</span>
                 <input type="text" value={this.props.parameter.name}
                     onChange={(event) => this.notifyParameterChanged(event.currentTarget.value)} />
-                <img className="job-step-configurator-delete-button icon-button"
+                <img className="job-parameter-delete-button icon-button"
                     src="/icons/close.png" title="Delete the parameter"
                     onClick={() => this.props.deleteParameter(this.props.index)} />
             </div>
