@@ -25,7 +25,7 @@ export default class UpdateJobConfigurationCommand implements Command {
             response.send();
         } catch (error) {
             response.status(400);
-            response.send(error);
+            response.send(error.message);
         }
     }
 }
