@@ -45,6 +45,7 @@ describe('JobCreator', () => {
             const jobCreator = new JobCreator(jobStepRepository);
             const jobConfiguration: JobConfiguration = {
                 id: testJobId,
+                parameters: [],
                 stepConfigurations: []
             };
             const testJob = jobCreator.create(jobConfiguration, testJobNumber);
@@ -63,6 +64,7 @@ describe('JobCreator', () => {
             const jobCreator = new JobCreator(jobStepRepository);
             const jobConfiguration: JobConfiguration = {
                 id: testJobId,
+                parameters: [],
                 stepConfigurations: [{
                     stepId: TEST_STEP_ID
                 }]
@@ -83,6 +85,7 @@ describe('JobCreator', () => {
             const jobCreator = new JobCreator(jobStepRepository);
             const jobConfiguration: JobConfiguration = {
                 id: testJobId,
+                parameters: [],
                 stepConfigurations: [{
                     stepId: 'missing_test_step'
                 }]
