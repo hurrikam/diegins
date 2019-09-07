@@ -7,7 +7,8 @@ import { join } from 'path';
 import { v1 as uuid } from 'uuid';
 import JobStep from '../jobs/jobStep';
 import JobResult from '../../common/models/jobResult';
-import JobArguments from '../jobs/jobArguments';
+import JobEnvironmentVariables from '../jobs/jobEnvironmentVariables';
+import JobParameterValues from '../../common/models/jobParameterValues';
 
 const TEMP_SCRIPT_FILENAME_PREFIX = 'diegins-script-';
 const JOB_NUMBER_ENV_VARIABLE_NAME = 'DIEGINS_JOB_NUMBER';
@@ -22,7 +23,10 @@ export default abstract class ShellScriptStepBase implements JobStep {
     protected constructor(private readonly scriptFileExtension: string) {
     }
 
-    public async execute(script: string, jobArguments: JobArguments): Promise<JobResult> {
+    public async execute(
+        script: string,
+        jobEnvironmentVariables: JobEnvironmentVariables,
+        jobParameterValues: JobParameterValues): Promise<JobResult> {
         try {
             this.validatePlatform();
         } catch (error) {
@@ -48,10 +52,11 @@ export default abstract class ShellScriptStepBase implements JobStep {
         return new Promise((resolve) => {
             this.resolve = resolve;
             this.childProcess = spawn(this.scriptFilePath, [], {
-                cwd: jobArguments.workingDirectory,
+                cwd: jobEnvironmentVariables.workingDirectory,
                 env: {
                     ...process.env,
-                    [JOB_NUMBER_ENV_VARIABLE_NAME]: jobArguments.number.toString()
+                    [JOB_NUMBER_ENV_VARIABLE_NAME]: jobEnvironmentVariables.number.toString(),
+                    ...jobParameterValues
                 },
                 shell: true
             });

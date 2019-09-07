@@ -4,14 +4,15 @@ import { Request, Response } from 'express';
 import Command from '../command';
 import { RUN_JOB } from '../../common/api/endpoints';
 import JobScheduler from '../jobs/jobScheduler';
-import { GET } from '../httpMethods';
+import { POST } from '../httpMethods';
 import JobConfigurationRepository from '../jobs/jobConfigurationRepository';
 import { RunJobCommandParameters } from '../../common/api/commandsParameters';
+import JobParameterValues from '../../common/models/jobParameterValues';
 
 export default class RunJobCommand implements Command {
 
     public readonly endpoint = RUN_JOB;
-    public readonly method = GET;
+    public readonly method = POST;
 
     public constructor(
         private readonly jobConfigurationRepository: JobConfigurationRepository,
@@ -36,7 +37,7 @@ export default class RunJobCommand implements Command {
             return;
         }
 
-        this.jobScheduler.run(jobConfiguration);
+        this.jobScheduler.run(jobConfiguration, request.body as JobParameterValues);
         response.end();
     }
 }

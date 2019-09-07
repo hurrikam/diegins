@@ -1,6 +1,6 @@
 'use strict';
 
-export default interface JobArguments {
+export default interface JobEnvironmentVariables {
     number: number;
     workingDirectory: string;
 }

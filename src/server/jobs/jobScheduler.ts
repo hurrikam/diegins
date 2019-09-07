@@ -9,8 +9,9 @@ import { JOBS_FOLDER, JOB_WORKING_DIR_NAME } from './jobFileConstants';
 import JobResult from '../../common/models/jobResult';
 import { JOB_FINISHED_EVENT } from './jobEvents';
 import JobEventEmitter from './jobEventEmitter';
-import JobArguments from './jobArguments';
+import JobEnvironmentVariables from './jobEnvironmentVariables';
 import FileSystemService from '../services/fileSystemService';
+import JobParameterValues from '../../common/models/jobParameterValues';
 
 export default class JobScheduler {
 
@@ -36,7 +37,7 @@ export default class JobScheduler {
         }
     }
 
-    public async run(jobConfiguration: JobConfiguration): Promise<void> {
+    public async run(jobConfiguration: JobConfiguration, jobParameterValues?: JobParameterValues): Promise<void> {
         if (!jobConfiguration) {
             throw new Error('no job configuration specified');
         }
@@ -54,12 +55,12 @@ export default class JobScheduler {
             this.emitJobFinished(jobInfo);
             return;
         }
-        const job = this.jobCreator.create(jobConfiguration, this.lastJobNumber);
-        const jobArguments = {
+        const job = this.jobCreator.create(this.lastJobNumber, jobConfiguration, jobParameterValues);
+        const environmentVariables = {
             number: job.number,
             workingDirectory: this.getJobWorkingDirectory(job.number)
-        } as JobArguments;
-        const jobRunner = new JobRunner(job, jobArguments, this.jobEventEmitter);
+        } as JobEnvironmentVariables;
+        const jobRunner = new JobRunner(job, environmentVariables, this.jobEventEmitter);
         this.jobRunners.push(jobRunner);
         await jobRunner.run();
     }

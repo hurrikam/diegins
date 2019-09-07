@@ -27,14 +27,14 @@ describe('JobCreator', () => {
         test('throws an exception if no configuration is passed', () => {
             const jobStepRepository = {} as JobStepRepository;
             const jobCreator = new JobCreator(jobStepRepository);
-            expect(() => jobCreator.create(undefined, 1))
+            expect(() => jobCreator.create(1, undefined))
                 .toThrow(new Error('jobConfiguration not specified'));
         });
 
         test('throws an exception if a non positive job number is passed', () => {
             const jobStepRepository = {} as JobStepRepository;
             const jobCreator = new JobCreator(jobStepRepository);
-            expect(() => jobCreator.create({} as JobConfiguration, 0))
+            expect(() => jobCreator.create(0, {} as JobConfiguration))
                 .toThrow(new Error('jobNumber must be positive'));
         });
 
@@ -48,7 +48,7 @@ describe('JobCreator', () => {
                 parameters: [],
                 stepConfigurations: []
             };
-            const testJob = jobCreator.create(jobConfiguration, testJobNumber);
+            const testJob = jobCreator.create(testJobNumber, jobConfiguration);
             expect(testJob).toEqual({
                 id: testJobId,
                 number: testJobNumber,
@@ -69,7 +69,7 @@ describe('JobCreator', () => {
                     stepId: TEST_STEP_ID
                 }]
             };
-            const testJob = jobCreator.create(jobConfiguration, testJobNumber);
+            const testJob = jobCreator.create(testJobNumber, jobConfiguration);
             expect(testJob).toEqual({
                 id: testJobId,
                 number: testJobNumber,
@@ -90,7 +90,7 @@ describe('JobCreator', () => {
                     stepId: 'missing_test_step'
                 }]
             };
-            const testJob = jobCreator.create(jobConfiguration, testJobNumber);
+            const testJob = jobCreator.create(testJobNumber, jobConfiguration);
             expect(testJob).toEqual({
                 id: testJobId,
                 number: testJobNumber,

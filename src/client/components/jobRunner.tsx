@@ -3,14 +3,15 @@
 import * as React from 'react';
 import JobParameter from '../../common/models/jobParameter';
 import JobParameterValueControl from './jobParameterValueControl';
+import JobParameterValues from '../../common/models/jobParameterValues';
 
 interface JobRunnerProps {
-    runJob: (values: Array<string>) => void;
+    runJob: (parameterValues: JobParameterValues) => void;
     jobParameters: Array<JobParameter>;
 }
 
 interface JobRunnerState {
-    parameterValues: Array<string>;
+    parameterValues: { [parameterName: string]: string };
 }
 
 export default class JobRunner extends React.Component<JobRunnerProps, JobRunnerState> {
@@ -18,7 +19,7 @@ export default class JobRunner extends React.Component<JobRunnerProps, JobRunner
     constructor(props: JobRunnerProps) {
         super(props);
         this.state = {
-            parameterValues: new Array<string>(this.props.jobParameters.length)
+            parameterValues: {}
         };
     }
 
@@ -29,20 +30,19 @@ export default class JobRunner extends React.Component<JobRunnerProps, JobRunner
                     <JobParameterValueControl
                         parameter={parameter}
                         value={this.state.parameterValues[index]}
-                        onValueChanged={(newValue) => this.onParameterValueChanged(newValue, index)} />
+                        onValueChanged={(newValue) => this.onParameterValueChanged(parameter.name, newValue)} />
                 )}
                 <hr />
                 <div className="centered-content">
-                    <button>Run</button>
+                    <button onClick={() => this.props.runJob(this.state.parameterValues)}>Run</button>
                 </div>
             </div>
         );
     }
 
-    private onParameterValueChanged(newValue: string, index: number): void {
-        this.state.parameterValues[index] = newValue;
-        const modifiedParameterValues = [...this.state.parameterValues];
-        modifiedParameterValues[index] = newValue;
+    private onParameterValueChanged(name: string, newValue: string): void {
+        const modifiedParameterValues = {...this.state.parameterValues};
+        modifiedParameterValues[name] = newValue;
         this.setState({ parameterValues: modifiedParameterValues });
     }
 }

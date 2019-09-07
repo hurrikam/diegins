@@ -6,6 +6,9 @@ import JobRunner from '../components/jobRunner';
 import JobParameter from '../../common/models/jobParameter';
 import { getJobConfiguration } from '../services/jobConfigurationServices';
 import { jobService } from '../services';
+import JobParameterValues from '../../common/models/jobParameterValues';
+import { navigateTo } from '../services/navigationServices';
+import { HOME } from '../routes';
 
 interface JobRunnerContainerProps extends RouteComponentProps {
     jobId: string;
@@ -56,6 +59,11 @@ export default class JobRunnerContainer
             return (<div>Loading job parameters...</div>);
         }
         return (<JobRunner jobParameters={this.state.jobParameters}
-            runJob={() => jobService.runJob(this.jobId)} />);
+            runJob={this.runJob.bind(this)} />);
+    }
+
+    private runJob(parameterValues: JobParameterValues): void {
+        jobService.runJob(this.jobId, parameterValues);
+        navigateTo(HOME);
     }
 }

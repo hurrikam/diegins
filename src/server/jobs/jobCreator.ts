@@ -3,6 +3,7 @@
 import JobStepRepository from './jobStepRepository';
 import JobConfiguration from '../../common/models/jobConfiguration';
 import Job from './job';
+import JobParameterValues from '../../common/models/jobParameterValues';
 
 export default class JobCreator {
 
@@ -12,7 +13,10 @@ export default class JobCreator {
         }
     }
 
-    public create(jobConfiguration: JobConfiguration, jobNumber: number): Job {
+    public create(
+        jobNumber: number,
+        jobConfiguration: JobConfiguration,
+        jobParameterValues?: JobParameterValues): Job {
         if (!jobConfiguration) {
             throw new Error('jobConfiguration not specified');
         }
@@ -27,6 +31,7 @@ export default class JobCreator {
         return {
             id: jobConfiguration.id,
             number: jobNumber,
+            parameterValues: jobParameterValues,
             steps,
             stepsData
         };

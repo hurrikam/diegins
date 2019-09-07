@@ -8,7 +8,7 @@ import { JOB_STARTED_EVENT, JOB_FINISHED_EVENT } from './jobEvents';
 import JobInfo from '../../common/models/jobInfo';
 import JobResult from '../../common/models/jobResult';
 import JobStep from './jobStep';
-import JobArguments from './jobArguments';
+import JobEnvironmentVariables from './jobEnvironmentVariables';
 
 function createSuccessfulStep(): JobStep {
     return {
@@ -30,7 +30,7 @@ function createTestJob(): Job {
     };
 }
 
-function createTestJobArguments(): JobArguments {
+function createTestJobArguments(): JobEnvironmentVariables {
     return {
         number: 1,
         workingDirectory: ''

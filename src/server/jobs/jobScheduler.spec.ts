@@ -46,7 +46,7 @@ function createSuccessfulStep(): JobStep {
 
 function createMockJobCreator(): JobCreator {
     return {
-        create: (jobConfiguration: JobConfiguration, jobNumber: number) => ({
+        create: (jobNumber: number, jobConfiguration: JobConfiguration) => ({
             id: jobConfiguration.id,
             number: jobNumber,
             steps: [createSuccessfulStep()],
