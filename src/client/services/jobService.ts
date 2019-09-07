@@ -9,38 +9,37 @@ import {
 } from '../../common/api/endpoints';
 import JobInfo from '../../common/models/jobInfo';
 import { JOB_LOG, JOB_RUNNER } from '../routes';
-
-function getFullUrl(endpoint: string): string {
-    return window.location.origin + endpoint;
-}
+import JobParameterValues from '../../common/models/jobParameterValues';
+import { navigateTo } from './navigationServices';
+import { appendToServerUrl } from './urlServices';
 
 export default class JobService {
 
     public cancelJob(jobNumber: number): Promise<boolean> {
-        const apiUrl = getFullUrl(CANCEL_JOB)
+        const apiUrl = appendToServerUrl(CANCEL_JOB)
             .replace(':jobNumber', jobNumber.toString());
         return axios.delete(apiUrl)
             .then(response => response.data as boolean)
             .catch(() => false);
     }
 
-    public runJob(id: string): Promise<boolean> {
-        const apiUrl = getFullUrl(RUN_JOB)
+    public runJob(id: string, parameterValues?: JobParameterValues): Promise<boolean> {
+        const apiUrl = appendToServerUrl(RUN_JOB)
             .replace(':jobId', id);
-        return axios.get(apiUrl)
+        return axios.post(apiUrl, parameterValues)
             .then(response => response.data as boolean)
             .catch(() => false);
     }
 
     public getJobInfos(): Promise<JobInfo[]> {
-        const apiUrl = getFullUrl(GET_JOB_INFOS);
+        const apiUrl = appendToServerUrl(GET_JOB_INFOS);
         return axios.get(apiUrl)
             .then(response => response.data as JobInfo[])
             .catch(() => []);
     }
 
     public async getJobLog(jobNumber: number): Promise<string> {
-        const apiUrl = getFullUrl(GET_JOB_LOG)
+        const apiUrl = appendToServerUrl(GET_JOB_LOG)
             .replace(':jobNumber', jobNumber.toString());
         const response = await axios.get(apiUrl);
         return response.data;
@@ -48,13 +47,11 @@ export default class JobService {
 }
 
 export function openJobLog(jobNumber: number): void {
-    const configurationUrl = getFullUrl(JOB_LOG)
-        .replace(':jobNumber', jobNumber.toString());
-    window.location.href = configurationUrl;
+    const path = JOB_LOG.replace(':jobNumber', jobNumber.toString());
+    navigateTo(path);
 }
 
 export function openJobRunner(jobId: string): void {
-    const configurationUrl = getFullUrl(JOB_RUNNER)
-        .replace(':jobId', jobId);
-    window.location.href = configurationUrl;
+    const path = JOB_RUNNER.replace(':jobId', jobId);
+    navigateTo(path);
 }

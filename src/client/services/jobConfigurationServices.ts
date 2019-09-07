@@ -10,13 +10,11 @@ import {
     GET_JOB_STEP_IDS
 } from '../../common/api/endpoints';
 import { JOB_CONFIGURATION } from '../routes';
-
-function getFullUrl(endpoint: string): string {
-    return window.location.origin + endpoint;
-}
+import { navigateTo } from './navigationServices';
+import { appendToServerUrl } from './urlServices';
 
 async function postJobConfiguration(jobConfiguration: JobConfiguration, endpoint: string): Promise<void> {
-    const apiUrl = getFullUrl(endpoint);
+    const apiUrl = appendToServerUrl(endpoint);
     try {
         await axios.post(apiUrl, jobConfiguration);
     } catch (error) {
@@ -29,7 +27,7 @@ export async function createJobConfiguration(jobConfiguration: JobConfiguration)
 }
 
 export async function getJobConfiguration(jobId: string): Promise<JobConfiguration> {
-    const apiUrl = getFullUrl(GET_JOB_CONFIGURATION)
+    const apiUrl = appendToServerUrl(GET_JOB_CONFIGURATION)
         .replace(':jobId', jobId);
     try {
         const response = await axios.get(apiUrl);
@@ -40,7 +38,7 @@ export async function getJobConfiguration(jobId: string): Promise<JobConfigurati
 }
 
 export async function getJobConfigurations(): Promise<Array<JobConfiguration>> {
-    const apiUrl = getFullUrl(GET_JOB_CONFIGURATIONS);
+    const apiUrl = appendToServerUrl(GET_JOB_CONFIGURATIONS);
     try {
         const response = await axios.get(apiUrl);
         return response.data as Array<JobConfiguration>;
@@ -50,7 +48,7 @@ export async function getJobConfigurations(): Promise<Array<JobConfiguration>> {
 }
 
 export async function getJobStepIds(): Promise<Array<string>> {
-    const apiUrl = getFullUrl(GET_JOB_STEP_IDS);
+    const apiUrl = appendToServerUrl(GET_JOB_STEP_IDS);
     try {
         const response = await axios.get(apiUrl);
         return response.data as Array<string>;
@@ -64,7 +62,6 @@ export function saveJobConfiguration(jobConfiguration: JobConfiguration): Promis
 }
 
 export function openJobConfiguration(jobId: string): void {
-    const configurationUrl = getFullUrl(JOB_CONFIGURATION)
-        .replace(':jobId', jobId);
-    window.location.href = configurationUrl;
+    const path = JOB_CONFIGURATION.replace(':jobId', jobId);
+    navigateTo(path);
 }
