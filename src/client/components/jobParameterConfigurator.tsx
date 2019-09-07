@@ -23,7 +23,7 @@ export default class JobParameterConfigurator
     public render(): React.ReactNode {
         return (
             <div className="job-parameter-container text-block-container">
-                <span className="job-parameter-name">Name</span>
+                <span className="text-input-label">Name</span>
                 <input type="text" value={this.props.parameter.name}
                     onChange={(event) => this.notifyParameterChanged(event.currentTarget.value)} />
                 <img className="job-parameter-delete-button icon-button"

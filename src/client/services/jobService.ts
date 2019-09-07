@@ -8,7 +8,7 @@ import {
     RUN_JOB
 } from '../../common/api/endpoints';
 import JobInfo from '../../common/models/jobInfo';
-import { JOB_LOG } from '../routes';
+import { JOB_LOG, JOB_RUNNER } from '../routes';
 
 function getFullUrl(endpoint: string): string {
     return window.location.origin + endpoint;
@@ -50,5 +50,11 @@ export default class JobService {
 export function openJobLog(jobNumber: number): void {
     const configurationUrl = getFullUrl(JOB_LOG)
         .replace(':jobNumber', jobNumber.toString());
+    window.location.href = configurationUrl;
+}
+
+export function openJobRunner(jobId: string): void {
+    const configurationUrl = getFullUrl(JOB_RUNNER)
+        .replace(':jobId', jobId);
     window.location.href = configurationUrl;
 }
