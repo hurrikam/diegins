@@ -9,7 +9,7 @@ import {
     CREATE_JOB_CONFIGURATION,
     GET_JOB_STEP_IDS
 } from '../../common/api/endpoints';
-import { JOB_CONFIGURATION } from '../routes';
+import { JOB_CONFIGURATION, RUN_JOB } from '../routes';
 
 function getFullUrl(endpoint: string): string {
     return window.location.origin + endpoint;
@@ -65,6 +65,12 @@ export function saveJobConfiguration(jobConfiguration: JobConfiguration): Promis
 
 export function openJobConfiguration(jobId: string): void {
     const configurationUrl = getFullUrl(JOB_CONFIGURATION)
+        .replace(':jobId', jobId);
+    window.location.href = configurationUrl;
+}
+
+export function openJobRunner(jobId: string): void {
+    const configurationUrl = getFullUrl(RUN_JOB)
         .replace(':jobId', jobId);
     window.location.href = configurationUrl;
 }

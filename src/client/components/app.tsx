@@ -5,7 +5,9 @@ import { Router } from '@reach/router';
 import Home from './home';
 import JobConfiguratorContainer from '../containers/jobConfiguratorContainer';
 import JobLogViewerContainer from '../containers/JobLogViewerContainer';
+import JobRunnerContainer from '../containers/jobRunnerContainer';
 import { NEW_JOB_CONFIGURATION, JOB_CONFIGURATION, JOB_LOG } from '../routes';
+import { RUN_JOB } from '../../common/api/endpoints';
 
 export default class App extends React.Component {
 
@@ -16,6 +18,7 @@ export default class App extends React.Component {
                 <JobConfiguratorContainer path={NEW_JOB_CONFIGURATION} />
                 <JobConfiguratorContainer path={JOB_CONFIGURATION} />
                 <JobLogViewerContainer path={JOB_LOG} />
+                <JobRunnerContainer path={RUN_JOB} />
             </Router>
         );
     }
