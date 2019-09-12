@@ -24,11 +24,13 @@ let jobLogReader: JobLogReader;
 
 export async function initializeServices(): Promise<void> {
     const fileSystemService = {
-        mkdir: fs.mkdir
+        mkdir: fs.mkdir,
+        readdir: fs.readdir,
+        readFile: fs.readFile
     } as FileSystemService;
     jobEventEmitter = new EventEmitter();
-    jobConfigurationRepository = new JobConfigurationRepository();
-    jobConfigurationRepository.initialize();
+    jobConfigurationRepository = new JobConfigurationRepository(fileSystemService);
+    await jobConfigurationRepository.initialize();
     jobStepRepository = new JobStepRepository(JOB_STEPS_ROOT);
     jobStepRepository.initialize();
     jobInstanceCreator = new JobCreator(jobStepRepository);

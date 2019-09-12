@@ -2,14 +2,9 @@
     height: calc(100vh - 110px);
 }
 
-.job-configurator-id-container {
-    font-size: 24px;
-    margin: 10px;
-    text-align: center;
-}
-
-.job-configurator-id {
-    font-size: 30px;
+.job-configurator-id-field {
+    font-size: 20px;
+    margin: 5px;
 }
 
 .job-configurator-section-header {
