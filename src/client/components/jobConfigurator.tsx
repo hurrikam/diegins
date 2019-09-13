@@ -45,11 +45,8 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
     public render(): JSX.Element {
         return (
             <div className="job-configurator">
-                <div className="job-configurator-id-container">
-                    {this.isNewJob() ? (<span>Job ID </span>) : ''}
-                    {this.renderJobId()}
-                </div>
-                <hr/>
+                {this.renderJobId()}
+                <hr />
                 <div className="job-configurator-steps-container">
                     <div className="job-configurator-section-header">Parameters</div>
                     {this.state.parameters.map((parameter, index) =>
@@ -66,7 +63,7 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
                             Add parameter
                     </button>
                     </div>
-                    <hr/>
+                    <hr />
                     <div className="job-configurator-section-header">Steps</div>
                     {this.state.stepConfigurations.map((stepConfiguration, index) =>
                         (<JobStepConfigurator
@@ -87,7 +84,7 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
                         </select>
                     </div>
                 </div>
-                <hr/>
+                <hr />
                 <div className="job-configurator-update-controls">
                     <button className="job-configurator-save-button" onClick={() => this.save()}>
                         Save
@@ -99,10 +96,15 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
 
     private renderJobId(): JSX.Element {
         if (this.isNewJob()) {
-            return (<input className="job-configurator-id" type="text" value={this.state.jobId}
-                onChange={(event) => this.setState({ jobId: event.currentTarget.value })} />);
+            return (
+                <div className="page-header">
+                    <span>Job ID </span>
+                    <input className="job-configurator-id-field" type="text" value={this.state.jobId}
+                        onChange={(event) => this.setState({ jobId: event.currentTarget.value })} />
+                </div>
+            );
         }
-        return (<span className="job-configurator-id">{this.props.jobConfiguration.id}</span>);
+        return (<div className="page-header">{this.props.jobConfiguration.id}</div>);
     }
 
     private isNewJob(): boolean {

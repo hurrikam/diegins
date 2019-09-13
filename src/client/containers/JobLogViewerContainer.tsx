@@ -34,7 +34,7 @@ export default class JobLogViewerContainer
     public render(): React.ReactNode {
         return (
             <div className="job-log-viewer-container">
-                <div className="job-number">{this.getJobNumber()}</div>
+                <div className="page-header">{this.getJobNumber()}</div>
                 <JobLogViewer text={this.state.text} />
             </div>
         );
