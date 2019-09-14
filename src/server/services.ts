@@ -26,7 +26,8 @@ export async function initializeServices(): Promise<void> {
     const fileSystemService = {
         mkdir: fs.mkdir,
         readdir: fs.readdir,
-        readFile: fs.readFile
+        readFile: fs.readFile,
+        writeFile: fs.writeFile
     } as FileSystemService;
     jobEventEmitter = new EventEmitter();
     jobConfigurationRepository = new JobConfigurationRepository(fileSystemService);
