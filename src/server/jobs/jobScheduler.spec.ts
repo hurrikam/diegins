@@ -26,7 +26,8 @@ function createMockFileSystemService(): FileSystemService {
             return Promise.reject('Error while creating the test job folder');
         }),
         readdir: undefined,
-        readFile: undefined
+        readFile: undefined,
+        writeFile: undefined
     };
 }
 

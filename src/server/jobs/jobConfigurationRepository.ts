@@ -1,14 +1,11 @@
 ﻿'use strict';
 
-import { promisify } from 'util';
-import { writeFile, constants } from 'fs';
+import { constants } from 'fs';
 import { join } from 'path';
 import JobConfiguration from '../../common/models/jobConfiguration';
 import { JOB_CONFIGURATIONS_FOLDER, JOB_CONFIGURATION_FILE_EXTENSION } from './jobFileConstants';
 import { validateJobConfiguration } from '../../common/validation/jobConfigurationValidation';
 import FileSystemService from '../services/fileSystemService';
-
-const writeFileAsync = promisify(writeFile);
 
 export default class JobConfigurationRepository {
 
@@ -53,7 +50,7 @@ export default class JobConfigurationRepository {
         const configurationId = jobConfiguration.id;
         const configurationFileName = this.configurationFileNameFromJobId(configurationId);
         const configurationFilePath = join(JOB_CONFIGURATIONS_FOLDER, configurationFileName);
-        await writeFileAsync(configurationFilePath, JSON.stringify(jobConfiguration));
+        await this.fileSystemService.writeFile(configurationFilePath, JSON.stringify(jobConfiguration));
         const indexOfExistingConfiguration = this.jobConfigurations
             .findIndex(configuration => configuration.id === configurationId);
         if (indexOfExistingConfiguration >= 0) {

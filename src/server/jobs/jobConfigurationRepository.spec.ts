@@ -41,7 +41,8 @@ function createMockFileSystemService(): FileSystemService {
                 return Promise.resolve('{"id": "test_job"}');
             }
             return Promise.reject('No such a file found');
-        })
+        }),
+        writeFile: undefined
     };
 }
 
