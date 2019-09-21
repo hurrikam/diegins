@@ -21,7 +21,7 @@ export default class App extends React.Component {
                 <Home path="/" />
                 <JobConfiguratorContainer path={NEW_JOB_CONFIGURATION} />
                 <JobConfiguratorContainer path={JOB_CONFIGURATION} />
-                <JobLogViewerContainer path={JOB_LOG} />
+                <JobLogViewerContainer path={JOB_LOG} refreshIntervalMs={3000} />
                 <JobRunnerContainer path={JOB_RUNNER} />
             </Router>
         );
