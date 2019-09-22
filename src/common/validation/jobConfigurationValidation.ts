@@ -1,8 +1,14 @@
 'use strict';
 
 import JobConfiguration from '../models/jobConfiguration';
-import { isBlankString } from './valueTesters';
+import { isBlankString, isPositiveInteger } from './valueTesters';
 import JobParameter from '../models/jobParameter';
+
+function validateMaximumConcurrentJobs(maximumConcurrentJobs: number): void {
+    if (maximumConcurrentJobs !== undefined && !isPositiveInteger(maximumConcurrentJobs)) {
+        throw new Error('The \'maximum concurrent jobs\' parameter must be unspecified or a positive integer');
+    }
+}
 
 function validateJobParameter(parameter: JobParameter): void {
     if (typeof parameter !== 'object') {
@@ -20,6 +26,7 @@ export function validateJobConfiguration(jobConfiguration: JobConfiguration): vo
     if (isBlankString(jobConfiguration.id)) {
         throw new Error('Configuration ID cannot be blank.');
     }
+    validateMaximumConcurrentJobs(jobConfiguration.maximumConcurrentJobs);
     const jobParameters = jobConfiguration.parameters;
     if (!Array.isArray(jobParameters)) {
         throw new Error('Invalid parameters list.');

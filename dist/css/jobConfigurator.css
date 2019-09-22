@@ -22,7 +22,7 @@
     align-self: center;
 }
 
-.job-configurator-steps-container {
+.job-configurator-scroll-container {
     height: calc(100% - 110px);
     overflow-y: auto;
 }

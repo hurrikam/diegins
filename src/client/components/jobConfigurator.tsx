@@ -6,6 +6,7 @@ import JobStepConfiguration from '../../common/models/jobStepConfiguration';
 import JobParameterConfigurator from './jobParameterConfigurator';
 import JobStepConfigurator from './jobStepConfigurator';
 import JobParameter from '../../common/models/jobParameter';
+import { number } from 'prop-types';
 
 interface JobConfiguratorProps {
     jobConfiguration?: JobConfiguration;
@@ -15,6 +16,7 @@ interface JobConfiguratorProps {
 
 interface JobConfiguratorState {
     jobId: string;
+    maximumConcurrentJobs: number;
     parameters: Array<JobParameter>;
     stepConfigurations: Array<JobStepConfiguration>;
 }
@@ -30,6 +32,7 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
         if (jobConfiguration) {
             this.state = {
                 jobId: jobConfiguration.id,
+                maximumConcurrentJobs: jobConfiguration.maximumConcurrentJobs,
                 parameters: jobConfiguration.parameters || [],
                 stepConfigurations: jobConfiguration.stepConfigurations || []
             };
@@ -37,6 +40,7 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
         }
         this.state = {
             jobId: '',
+            maximumConcurrentJobs: undefined,
             parameters: [],
             stepConfigurations: []
         };
@@ -47,7 +51,14 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
             <div className="job-configurator">
                 {this.renderJobId()}
                 <hr />
-                <div className="job-configurator-steps-container">
+                <div className="job-configurator-scroll-container">
+                    <div className="job-configurator-section-header">Job Properties</div>
+                    <div className="text-block-container">
+                        <span className="text-input-label">Maximum concurrent jobs</span>
+                        <input type="text" value={this.state.maximumConcurrentJobs || ''}
+                            onChange={(event) => this.setState({maximumConcurrentJobs: parseInt(event.currentTarget.value, 10)})} />
+                    </div>
+                    <hr />
                     <div className="job-configurator-section-header">Parameters</div>
                     {this.state.parameters.map((parameter, index) =>
                         (<JobParameterConfigurator
@@ -155,6 +166,7 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
     private save(): void {
         this.props.save({
             id: this.state.jobId,
+            maximumConcurrentJobs: this.state.maximumConcurrentJobs,
             parameters: this.state.parameters,
             stepConfigurations: this.state.stepConfigurations
         });

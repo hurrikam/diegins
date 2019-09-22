@@ -10,6 +10,10 @@ export function isBlankString(value: string): boolean {
     return false;
 }
 
+export function isPositiveInteger(value: number): boolean {
+    return Number.isInteger(value) && value > 0;
+}
+
 export function stringContainsSpaces(value: string): boolean {
     return value
         .trim()
