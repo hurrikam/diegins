@@ -3,6 +3,7 @@
 import axios from 'axios';
 import {
     CANCEL_JOB,
+    GET_JOB_INFO,
     GET_JOB_INFOS,
     GET_JOB_LOG,
     RUN_JOB
@@ -44,6 +45,13 @@ export default class JobService {
         const response = await axios.get(apiUrl);
         return response.data;
     }
+}
+
+export async function getJobInfo(jobNumber: number): Promise<JobInfo> {
+    const apiUrl = appendToServerUrl(GET_JOB_INFO)
+        .replace(':jobNumber', jobNumber.toString());
+    const response = await axios.get(apiUrl);
+    return response.data as JobInfo;
 }
 
 export function openJobLog(jobNumber: number): void {
