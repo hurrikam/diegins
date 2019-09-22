@@ -18,7 +18,7 @@ export default class GetJobInfoCommand implements Command {
     }
 
     public execute(request: Request, response: Response): void {
-        const jobNumber = request.params.jobNumber;
+        const jobNumber = parseInt(request.params.jobNumber, 10);
         const jobInfo = this.jobScheduler.getJobInfos()
             .find(job => job.number === jobNumber);
         if (!jobInfo) {

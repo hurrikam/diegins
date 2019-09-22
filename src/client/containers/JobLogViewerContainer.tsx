@@ -4,6 +4,8 @@ import * as React from 'react';
 import { RouteComponentProps } from '@reach/router';
 import JobLogViewer from '../components/jobLogViewer';
 import { jobService } from '../services';
+import { getJobInfo } from '../services/jobService';
+import JobStatus from '../../common/models/jobStatus';
 
 interface JobLogViewerContainerProps extends RouteComponentProps {
     jobNumber?: number;
@@ -18,7 +20,7 @@ export default class JobLogViewerContainer
     extends React.Component<JobLogViewerContainerProps, JobLogViewerContainerState> {
 
     private intervalTimer: NodeJS.Timeout;
-    private isMounted: boolean;
+    private shouldRefreshLog: boolean;
 
     constructor(props: JobLogViewerContainerProps) {
         super(props);
@@ -26,14 +28,13 @@ export default class JobLogViewerContainer
     }
 
     public async componentDidMount(): Promise<void> {
-        this.isMounted = true;
+        this.shouldRefreshLog = true;
         this.refreshLog();
         this.intervalTimer = setInterval(() => this.refreshLog(), this.props.refreshIntervalMs);
     }
 
     public componentWillUnmount(): void {
-        this.isMounted = false;
-        clearInterval(this.intervalTimer);
+        this.stopLogRefresh();
     }
 
     public render(): React.ReactNode {
@@ -45,15 +46,30 @@ export default class JobLogViewerContainer
         );
     }
 
+    private stopLogRefresh(): void {
+        this.shouldRefreshLog = false;
+        clearInterval(this.intervalTimer);
+    }
+
     private async refreshLog(): Promise<void> {
-        if (!this.isMounted) {
+        if (!this.shouldRefreshLog) {
             return;
         }
+        const jobNumber = this.props.jobNumber;
         try {
-            const data = await jobService.getJobLog(this.props.jobNumber);
+            const data = await jobService.getJobLog(jobNumber);
             this.setState({ text: data });
             // tslint:disable-next-line:no-empty
         } catch (error) {
+        }
+        let jobInfo;
+        try {
+            jobInfo = await getJobInfo(jobNumber);
+        } catch (error) {
+            return;
+        }
+        if (jobInfo.status === JobStatus.Finished) {
+            this.stopLogRefresh();
         }
     }
 }
