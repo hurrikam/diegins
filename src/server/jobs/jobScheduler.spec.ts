@@ -11,6 +11,7 @@ import { JOBS_FOLDER } from './jobFileConstants';
 import { JOB_FINISHED_EVENT, JOB_STARTED_EVENT } from './jobEvents';
 import JobInfo from '../../common/models/jobInfo';
 import JobResult from '../../common/models/jobResult';
+import JobStatus from '../../common/models/jobStatus';
 import JobStep from './jobStep';
 import FileSystemService from '../services/fileSystemService';
 
@@ -88,6 +89,7 @@ describe('JobScheduler', () => {
                 currentStepIndex: -1,
                 number: 1,
                 result: undefined,
+                status: JobStatus.Running,
                 stepCount: 1
             } as JobInfo);
         });
@@ -111,6 +113,7 @@ describe('JobScheduler', () => {
                 currentStepIndex: -1,
                 number: 2,
                 result: JobResult.Failed,
+                status: JobStatus.Finished,
                 stepCount: 0
             } as JobInfo);
         });
@@ -134,6 +137,7 @@ describe('JobScheduler', () => {
                 currentStepIndex: 0,
                 number: 1,
                 result: JobResult.Canceled,
+                status: JobStatus.Finished,
                 stepCount: 1
             } as JobInfo);
         });
@@ -169,6 +173,7 @@ describe('JobScheduler', () => {
                 currentStepIndex: 0,
                 number: 1,
                 result: JobResult.Succeeded,
+                status: JobStatus.Finished,
                 stepCount: 1
             } as JobInfo]);
         });

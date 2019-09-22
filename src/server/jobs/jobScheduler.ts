@@ -12,6 +12,7 @@ import JobEventEmitter from './jobEventEmitter';
 import JobEnvironmentVariables from './jobEnvironmentVariables';
 import FileSystemService from '../services/fileSystemService';
 import JobParameterValues from '../../common/models/jobParameterValues';
+import JobStatus from '../../common/models/jobStatus';
 
 export default class JobScheduler {
 
@@ -50,6 +51,7 @@ export default class JobScheduler {
                 currentStepIndex: -1,
                 number: this.lastJobNumber,
                 result: JobResult.Failed,
+                status: JobStatus.Finished,
                 stepCount: jobConfiguration.stepConfigurations.length
             };
             this.emitJobFinished(jobInfo);
@@ -80,6 +82,7 @@ export default class JobScheduler {
             number: jobRunner.jobNumber,
             currentStepIndex: jobRunner.currentStepIndex,
             result: jobRunner.result,
+            status: jobRunner.status,
             stepCount: jobRunner.stepCount
         }));
     }

@@ -5,6 +5,7 @@ import JobResult from '../../common/models/jobResult';
 import JobInfo from '../../common/models/jobInfo';
 import JobEnvironmentVariables from './jobEnvironmentVariables';
 import JobEventEmitter from './jobEventEmitter';
+import JobStatus from '../../common/models/jobStatus';
 import { JOB_STARTED_EVENT, JOB_OUTPUT_EVENT, JOB_FINISHED_EVENT } from './jobEvents';
 
 export default class JobRunner {
@@ -14,6 +15,7 @@ export default class JobRunner {
     public readonly stepCount: number;
     public currentStepIndex = -1;
     public result?: JobResult;
+    public status: JobStatus;
     private isCancelling = false;
 
     public constructor(
@@ -33,26 +35,27 @@ export default class JobRunner {
         this.jobId = job.id;
         this.jobNumber = job.number;
         this.stepCount = job.steps.length;
+        this.status = JobStatus.Scheduled;
     }
 
     public async run(): Promise<JobResult> {
         if (this.result !== undefined) {
             throw new Error('The job cannot be restarted');
         }
+        this.status = JobStatus.Running;
         let jobInfo = this.createJobInfo();
         this.jobEventEmitter.emit(JOB_STARTED_EVENT, jobInfo);
-        let result = JobResult.Succeeded;
         try {
-            result = await this.runSteps();
+            this.result = await this.runSteps();
         } catch (error) {
             this.cancelCurrentStep();
-            result = JobResult.Failed;
+            this.result = JobResult.Failed;
         } finally {
-            this.result = result;
-            jobInfo = this.createJobInfo(result);
+            this.status = JobStatus.Finished;
+            jobInfo = this.createJobInfo();
             this.emitJobFinished(jobInfo);
         }
-        return result;
+        return this.result;
     }
 
     public cancel(): void {
@@ -60,12 +63,13 @@ export default class JobRunner {
         this.cancelCurrentStep();
     }
 
-    private createJobInfo(result?: JobResult): JobInfo {
+    private createJobInfo(): JobInfo {
         return {
             id: this.jobId,
             number: this.job.number,
             currentStepIndex: this.currentStepIndex,
-            result,
+            result: this.result,
+            status: this.status,
             stepCount: this.stepCount
         };
     }

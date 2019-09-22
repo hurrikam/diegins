@@ -5,6 +5,7 @@ import CancelJobCommand from './commands/cancelJobCommand';
 import CreateJobConfigurationCommand from './commands/createJobConfigurationCommand';
 import GetJobConfigurationCommand from './commands/getJobConfigurationCommand';
 import GetJobConfigurationsCommand from './commands/getJobConfigurationsCommand';
+import GetJobInfoCommand from './commands/getJobInfoCommand';
 import GetJobInfosCommand from './commands/getJobInfosCommand';
 import GetJobLogCommand from './commands/getJobLogCommand';
 import GetJobStepIdsCommand from './commands/getJobStepIdsCommand';
@@ -36,6 +37,7 @@ describe('commandFactory', () => {
                 GetJobConfigurationCommand,
                 GetJobConfigurationsCommand,
                 GetJobInfosCommand,
+                GetJobInfoCommand,
                 GetJobLogCommand,
                 GetJobStepIdsCommand,
                 RunJobCommand,

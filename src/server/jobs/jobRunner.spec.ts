@@ -7,6 +7,7 @@ import JobEventEmitter from './jobEventEmitter';
 import { JOB_STARTED_EVENT, JOB_FINISHED_EVENT } from './jobEvents';
 import JobInfo from '../../common/models/jobInfo';
 import JobResult from '../../common/models/jobResult';
+import JobStatus from '../../common/models/jobStatus';
 import JobStep from './jobStep';
 import JobEnvironmentVariables from './jobEnvironmentVariables';
 
@@ -78,6 +79,7 @@ describe('JobRunner', () => {
                 id: 'test_job',
                 number: 1,
                 result: undefined,
+                status: JobStatus.Running,
                 stepCount: 2,
                 currentStepIndex: -1
             } as JobInfo);
@@ -96,6 +98,7 @@ describe('JobRunner', () => {
                 id: 'test_job',
                 number: 1,
                 result: JobResult.Succeeded,
+                status: JobStatus.Finished,
                 stepCount: 2,
                 currentStepIndex: 1
             } as JobInfo);
@@ -114,6 +117,7 @@ describe('JobRunner', () => {
                 id: 'test_job',
                 number: 1,
                 result: JobResult.Failed,
+                status: JobStatus.Finished,
                 stepCount: 1,
                 currentStepIndex: 0
             } as JobInfo);
@@ -137,6 +141,7 @@ describe('JobRunner', () => {
                 id: 'test_job',
                 number: 1,
                 result: JobResult.Canceled,
+                status: JobStatus.Finished,
                 stepCount: 2,
                 currentStepIndex: 0
             } as JobInfo);
