@@ -42,12 +42,13 @@ export default class JobScheduler {
         if (!jobConfiguration) {
             throw new Error('no job configuration specified');
         }
+        const jobId = jobConfiguration.id;
         this.lastJobNumber++;
         try {
             await this.createJobWorkingDirectory(this.lastJobNumber);
         } catch (error) {
             const jobInfo: JobInfo = {
-                id: jobConfiguration.id,
+                id: jobId,
                 currentStepIndex: -1,
                 number: this.lastJobNumber,
                 result: JobResult.Failed,
@@ -63,8 +64,13 @@ export default class JobScheduler {
             workingDirectory: this.getJobWorkingDirectory(job.number)
         } as JobEnvironmentVariables;
         const jobRunner = new JobRunner(job, environmentVariables, this.jobEventEmitter);
+        const canRunJob = this.canRunJob(jobConfiguration);
         this.jobRunners.push(jobRunner);
+        if (!canRunJob) {
+            return;
+        }
         await jobRunner.run();
+        this.runScheduledJobs(jobId);
     }
 
     public cancel(jobNumber: number): void {
@@ -97,6 +103,31 @@ export default class JobScheduler {
     }
 
     private emitJobFinished(jobInfo: JobInfo): void {
+        this.runScheduledJobs(jobInfo.id);
         this.jobEventEmitter.emit(JOB_FINISHED_EVENT, jobInfo);
+    }
+
+    private canRunJob(jobConfiguration: JobConfiguration): boolean {
+        const maximumConcurrentJobs = jobConfiguration.maximumConcurrentJobs;
+        if (!maximumConcurrentJobs) {
+            return true;
+        }
+        const runningJobsPerConfiguration = this.jobRunners
+            .filter(jobRunner => jobRunner.jobId === jobConfiguration.id &&
+                jobRunner.status !== JobStatus.Finished)
+            .length;
+        if (runningJobsPerConfiguration < maximumConcurrentJobs) {
+            return true;
+        }
+        return false;
+    }
+
+    private runScheduledJobs(jobId: string): void {
+        const nextJobRunnerToStart = this.jobRunners
+            .find(jobRunner => jobRunner.jobId === jobId &&
+                jobRunner.status === JobStatus.Scheduled);
+        if (nextJobRunnerToStart) {
+            nextJobRunnerToStart.run();
+        }
     }
 }
