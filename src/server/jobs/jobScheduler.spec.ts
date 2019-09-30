@@ -68,7 +68,7 @@ describe('JobScheduler', () => {
             const jobCreator = {} as JobCreator;
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
             const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
-            await expect(jobScheduler.run(undefined))
+            await expect(jobScheduler.schedule(undefined))
                 .rejects.toEqual(new Error('no job configuration specified'));
         });
 
@@ -80,7 +80,7 @@ describe('JobScheduler', () => {
             jobEventEmitter.on(JOB_STARTED_EVENT, jobStartedHandler);
             const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
             const jobConfiguration = createTestJobConfiguration();
-            await jobScheduler.run(jobConfiguration);
+            await jobScheduler.schedule(jobConfiguration);
             expect(fs.mkdir).toHaveBeenCalledTimes(1);
             expect(fs.mkdir).toHaveBeenCalledWith(VALID_JOB_FOLDER, { recursive: true });
             expect(jobStartedHandler).toHaveBeenCalledTimes(1);
@@ -104,7 +104,7 @@ describe('JobScheduler', () => {
             jobEventEmitter.on(JOB_FINISHED_EVENT, jobFinishedHandler);
             const jobScheduler = new JobScheduler(jobCreator, 1, jobEventEmitter, fs);
             const jobConfiguration = createTestJobConfiguration();
-            await jobScheduler.run(jobConfiguration);
+            await jobScheduler.schedule(jobConfiguration);
             expect(fs.mkdir).toHaveBeenCalledTimes(1);
             expect(jobStartedHandler).not.toHaveBeenCalledWith();
             expect(jobFinishedHandler).toHaveBeenCalledTimes(1);
@@ -130,7 +130,7 @@ describe('JobScheduler', () => {
             jobEventEmitter.on(JOB_FINISHED_EVENT, jobFinishedHandler);
             const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
             const jobConfiguration = createTestJobConfiguration();
-            await jobScheduler.run(jobConfiguration);
+            await jobScheduler.schedule(jobConfiguration);
             expect(jobFinishedHandler).toHaveBeenCalledTimes(1);
             expect(jobFinishedHandler).toHaveBeenCalledWith({
                 id: TEST_JOB_ID,
@@ -167,7 +167,7 @@ describe('JobScheduler', () => {
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
             const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
             const jobConfiguration = createTestJobConfiguration();
-            await jobScheduler.run(jobConfiguration);
+            await jobScheduler.schedule(jobConfiguration);
             expect(jobScheduler.getJobInfos()).toEqual([{
                 id: TEST_JOB_ID,
                 currentStepIndex: 0,

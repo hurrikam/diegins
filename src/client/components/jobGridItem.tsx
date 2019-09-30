@@ -3,6 +3,7 @@
 import * as React from 'react';
 import JobInfo from '../../common/models/jobInfo';
 import JobResult from '../../common/models/jobResult';
+import JobStatus from '../../common/models/jobStatus';
 
 interface JobGridItemProps {
     jobInfo: JobInfo;
@@ -15,8 +16,9 @@ export default class JobGridItemComponent extends React.Component<JobGridItemPro
     public render(): React.ReactNode {
         const { jobInfo } = this.props;
         const resultClass = this.getJobResultClass();
+        const statusClass = this.isScheduled() ? 'job-grid-item-scheduled' : '';
         return (
-            <div className={`job-grid-item ${resultClass}`}
+            <div className={`job-grid-item ${resultClass} ${statusClass}`}
                 title="View the job log"
                 onClick={this.onClick.bind(this)}>
                 <span className="job-number">{jobInfo.number}</span>
@@ -60,8 +62,16 @@ export default class JobGridItemComponent extends React.Component<JobGridItemPro
         return this.props.jobInfo.result === undefined;
     }
 
+    private isScheduled(): boolean {
+        const { jobInfo } = this.props;
+        return jobInfo.status === JobStatus.Scheduled;
+    }
+
     private getJobStatus(): string {
         const { jobInfo } = this.props;
+        if (this.isScheduled()) {
+            return 'Scheduled';
+        }
         const stepNumber = `${jobInfo.currentStepIndex + 1} of ${jobInfo.stepCount}`;
         switch (jobInfo.result) {
             case JobResult.Succeeded:

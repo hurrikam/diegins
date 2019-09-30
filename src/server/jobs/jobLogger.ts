@@ -35,6 +35,9 @@ export default class JobLogger {
 
     private onJobFinished(jobInfo: JobInfo): void {
         const logStream = this.logStreams[jobInfo.number];
+        if (!logStream) {
+            return;
+        }
         logStream.close();
         delete this.logStreams[jobInfo.number];
     }
