@@ -73,24 +73,8 @@ export default class JobScheduler {
         jobRunner.run();
     }
 
-    public cancel(jobNumber: number): void {
-        const jobRunner = this.jobRunners
-            .find(runner => runner.jobNumber === jobNumber);
-        if (!jobRunner) {
-            return;
-        }
-        jobRunner.cancel();
-    }
-
-    public getJobInfos(): Array<JobInfo> {
-        return this.jobRunners.map(jobRunner => ({
-            id: jobRunner.jobId,
-            number: jobRunner.jobNumber,
-            currentStepIndex: jobRunner.currentStepIndex,
-            result: jobRunner.result,
-            status: jobRunner.status,
-            stepCount: jobRunner.stepCount
-        }));
+    public getJobRunners(): Array<JobRunner> {
+        return [...this.jobRunners];
     }
 
     private getJobWorkingDirectory(jobNumber: number): string {
