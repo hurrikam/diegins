@@ -15,7 +15,7 @@ export default class JobRunner {
     public readonly stepCount: number;
     public currentStepIndex = -1;
     public result?: JobResult;
-    public status: JobStatus;
+    public status = JobStatus.Scheduled;
     private isCancelling = false;
 
     public constructor(
@@ -35,11 +35,10 @@ export default class JobRunner {
         this.jobId = job.id;
         this.jobNumber = job.number;
         this.stepCount = job.steps.length;
-        this.status = JobStatus.Scheduled;
     }
 
-    public async run(): Promise<JobResult> {
-        if (this.result !== undefined) {
+    public async run(): Promise<void> {
+        if (this.hasStarted()) {
             throw new Error('The job cannot be restarted');
         }
         this.status = JobStatus.Running;
@@ -51,16 +50,25 @@ export default class JobRunner {
             this.cancelCurrentStep();
             this.result = JobResult.Failed;
         } finally {
-            this.status = JobStatus.Finished;
-            jobInfo = this.createJobInfo();
-            this.emitJobFinished(jobInfo);
+            this.finishJob();
         }
-        return this.result;
     }
 
     public cancel(): void {
+        if (this.isCancelling) {
+            return;
+        }
         this.isCancelling = true;
+        if (!this.hasStarted()) {
+            this.result = JobResult.Canceled;
+            this.finishJob();
+            return;
+        }
         this.cancelCurrentStep();
+    }
+
+    private hasStarted(): boolean {
+        return this.status !== JobStatus.Scheduled;
     }
 
     private createJobInfo(): JobInfo {
@@ -99,6 +107,9 @@ export default class JobRunner {
     }
 
     private cancelCurrentStep(): void {
+        if (this.currentStepIndex < 0) {
+            return;
+        }
         try {
             this.job.steps[this.currentStepIndex].cancel();
         // tslint:disable-next-line:no-empty
@@ -106,7 +117,9 @@ export default class JobRunner {
         }
     }
 
-    private emitJobFinished(jobInfo: JobInfo): void {
+    private finishJob(): void {
+        this.status = JobStatus.Finished;
+        const jobInfo = this.createJobInfo();
         this.jobEventEmitter.emit(JOB_FINISHED_EVENT, jobInfo);
     }
 

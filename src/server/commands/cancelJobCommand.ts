@@ -21,7 +21,14 @@ export default class CancelJobCommand implements Command {
     public execute(request: Request, response: Response): void {
         const parameters = request.params as CancelJobCommandParameters;
         const jobNumber = parseInt(parameters.jobNumber, 10);
-        this.jobScheduler.cancel(jobNumber);
-        response.end();
+        const jobRunner = this.jobScheduler.getJobRunners()
+            .find(runner => runner.jobNumber === jobNumber);
+        if (jobRunner) {
+            jobRunner.cancel();
+            response.end();
+            return;
+        }
+        response.status(404);
+        response.send(`No job with number ${jobNumber} exists in the list of scheduled jobs`);
     }
 }

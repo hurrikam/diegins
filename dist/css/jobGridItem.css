@@ -12,6 +12,10 @@
     width: 200px;
 }
 
+.job-grid-item-scheduled {
+    opacity: 0.7;
+}
+
 .job-grid-item-succeeded {
     background-color: #CDF7CD;
 }

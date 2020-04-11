@@ -92,7 +92,10 @@ describe('JobRunner', () => {
             const jobRunner = new JobRunner(job, jobArguments, jobEventEmitter);
             const jobFinishedHandler = jest.fn();
             jobEventEmitter.on(JOB_FINISHED_EVENT, jobFinishedHandler);
-            await expect(jobRunner.run()).resolves.toBe(JobResult.Succeeded);
+            const jobRunPromise = jobRunner.run();
+            await expect(jobRunPromise).resolves.toBeUndefined();
+            expect(jobRunner.result).toBe(JobResult.Succeeded);
+            expect(jobRunner.status).toBe(JobStatus.Finished);
             expect(jobFinishedHandler).toHaveBeenCalledTimes(1);
             expect(jobFinishedHandler).toHaveBeenCalledWith({
                 id: 'test_job',
@@ -111,7 +114,10 @@ describe('JobRunner', () => {
             const jobRunner = new JobRunner(job, jobArguments, jobEventEmitter);
             const jobFinishedHandler = jest.fn();
             jobEventEmitter.on(JOB_FINISHED_EVENT, jobFinishedHandler);
-            await expect(jobRunner.run()).resolves.toBe(JobResult.Failed);
+            const jobRunPromise = jobRunner.run();
+            await expect(jobRunPromise).resolves.toBeUndefined();
+            expect(jobRunner.result).toBe(JobResult.Failed);
+            expect(jobRunner.status).toBe(JobStatus.Finished);
             expect(jobFinishedHandler).toHaveBeenCalledTimes(1);
             expect(jobFinishedHandler).toHaveBeenCalledWith({
                 id: 'test_job',
@@ -135,7 +141,9 @@ describe('JobRunner', () => {
             jobEventEmitter.on(JOB_FINISHED_EVENT, jobFinishedHandler);
             const jobRunPromise = jobRunner.run();
             jobRunner.cancel();
-            await expect(jobRunPromise).resolves.toBe(JobResult.Canceled);
+            await expect(jobRunPromise).resolves.toBeUndefined();
+            expect(jobRunner.result).toBe(JobResult.Canceled);
+            expect(jobRunner.status).toBe(JobStatus.Finished);
             expect(jobFinishedHandler).toHaveBeenCalledTimes(1);
             expect(jobFinishedHandler).toHaveBeenCalledWith({
                 id: 'test_job',

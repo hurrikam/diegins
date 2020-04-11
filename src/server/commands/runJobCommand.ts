@@ -37,7 +37,7 @@ export default class RunJobCommand implements Command {
             return;
         }
 
-        this.jobScheduler.run(jobConfiguration, request.body as JobParameterValues);
+        this.jobScheduler.schedule(jobConfiguration, request.body as JobParameterValues);
         response.end();
     }
 }

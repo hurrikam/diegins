@@ -36,18 +36,20 @@ export default class JobScheduler {
         if (!fileSystemService) {
             throw new Error('fileSystemService not specified');
         }
+        this.jobEventEmitter.on(JOB_FINISHED_EVENT, this.onJobFinished.bind(this));
     }
 
-    public async run(jobConfiguration: JobConfiguration, jobParameterValues?: JobParameterValues): Promise<void> {
+    public async schedule(jobConfiguration: JobConfiguration, jobParameterValues?: JobParameterValues): Promise<void> {
         if (!jobConfiguration) {
             throw new Error('no job configuration specified');
         }
+        const jobId = jobConfiguration.id;
         this.lastJobNumber++;
         try {
             await this.createJobWorkingDirectory(this.lastJobNumber);
         } catch (error) {
             const jobInfo: JobInfo = {
-                id: jobConfiguration.id,
+                id: jobId,
                 currentStepIndex: -1,
                 number: this.lastJobNumber,
                 result: JobResult.Failed,
@@ -63,28 +65,16 @@ export default class JobScheduler {
             workingDirectory: this.getJobWorkingDirectory(job.number)
         } as JobEnvironmentVariables;
         const jobRunner = new JobRunner(job, environmentVariables, this.jobEventEmitter);
+        const canRunJob = this.canRunJob(jobConfiguration);
         this.jobRunners.push(jobRunner);
-        await jobRunner.run();
-    }
-
-    public cancel(jobNumber: number): void {
-        const runningJob = this.jobRunners
-            .find(jobRunner => jobRunner.jobNumber === jobNumber);
-        if (!runningJob) {
+        if (!canRunJob) {
             return;
         }
-        runningJob.cancel();
+        jobRunner.run();
     }
 
-    public getJobInfos(): Array<JobInfo> {
-        return this.jobRunners.map(jobRunner => ({
-            id: jobRunner.jobId,
-            number: jobRunner.jobNumber,
-            currentStepIndex: jobRunner.currentStepIndex,
-            result: jobRunner.result,
-            status: jobRunner.status,
-            stepCount: jobRunner.stepCount
-        }));
+    public getJobRunners(): Array<JobRunner> {
+        return [...this.jobRunners];
     }
 
     private getJobWorkingDirectory(jobNumber: number): string {
@@ -98,5 +88,29 @@ export default class JobScheduler {
 
     private emitJobFinished(jobInfo: JobInfo): void {
         this.jobEventEmitter.emit(JOB_FINISHED_EVENT, jobInfo);
+    }
+
+    private canRunJob(jobConfiguration: JobConfiguration): boolean {
+        const maximumConcurrentJobs = jobConfiguration.maximumConcurrentJobs;
+        if (!maximumConcurrentJobs) {
+            return true;
+        }
+        const runningJobsPerConfiguration = this.jobRunners
+            .filter(jobRunner => jobRunner.jobId === jobConfiguration.id &&
+                jobRunner.status !== JobStatus.Finished)
+            .length;
+        if (runningJobsPerConfiguration < maximumConcurrentJobs) {
+            return true;
+        }
+        return false;
+    }
+
+    private onJobFinished(jobInfo: JobInfo): void {
+        const nextJobRunnerToStart = this.jobRunners
+            .find(jobRunner => jobRunner.jobId === jobInfo.id &&
+                jobRunner.status === JobStatus.Scheduled);
+        if (nextJobRunnerToStart) {
+            nextJobRunnerToStart.run();
+        }
     }
 }
