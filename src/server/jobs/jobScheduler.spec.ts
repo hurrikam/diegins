@@ -20,21 +20,17 @@ const VALID_JOB_FOLDER = join(JOBS_FOLDER, '1', 'workdir');
 
 function createMockFileSystemService(): FileSystemService {
     return {
-        mkdir: jest.fn((path: string, options: {}) => {
-            if (path === VALID_JOB_FOLDER) {
-                return Promise.resolve();
-            }
-            return Promise.reject('Error while creating the test job folder');
-        }),
+        mkdir: jest.fn((path: string, options: {}) => Promise.resolve()),
         readdir: undefined,
         readFile: undefined,
         writeFile: undefined
     };
 }
 
-function createTestJobConfiguration(): JobConfiguration {
+function createTestJobConfiguration(maximumConcurrentJobs?: number): JobConfiguration {
     return {
         id: TEST_JOB_ID,
+        maximumConcurrentJobs,
         parameters: [],
         stepConfigurations: []
     };
@@ -44,7 +40,7 @@ function createSuccessfulStep(): JobStep {
     return {
         // tslint:disable-next-line:no-empty
         cancel: () => { },
-        execute: () => Promise.resolve(JobResult.Succeeded)
+        execute: () => new Promise(resolve => setImmediate(resolve, JobResult.Succeeded))
     };
 }
 
@@ -61,7 +57,7 @@ function createMockJobCreator(): JobCreator {
 
 describe('JobScheduler', () => {
 
-    describe('run', () => {
+    describe('schedule', () => {
 
         test('throws an exception if no job configuration is passed', async () => {
             const fs = createMockFileSystemService();
@@ -81,6 +77,8 @@ describe('JobScheduler', () => {
             const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
             const jobConfiguration = createTestJobConfiguration();
             await jobScheduler.schedule(jobConfiguration);
+            const jobRunners = jobScheduler.getJobRunners();
+            expect(jobRunners[0].status).toBe(JobStatus.Running);
             expect(fs.mkdir).toHaveBeenCalledTimes(1);
             expect(fs.mkdir).toHaveBeenCalledWith(VALID_JOB_FOLDER, { recursive: true });
             expect(jobStartedHandler).toHaveBeenCalledTimes(1);
@@ -94,8 +92,9 @@ describe('JobScheduler', () => {
             } as JobInfo);
         });
 
-        test('reports failure if the job folder cannot be created without starting the job', async () => {
+        test('does not schedule a job if the job folder and reports failure', async () => {
             const fs = createMockFileSystemService();
+            fs.mkdir = jest.fn(() => Promise.reject('Error while creating the test job folder'));
             const jobCreator = createMockJobCreator();
             const jobEventEmitter = new EventEmitter() as JobEventEmitter;
             const jobStartedHandler = jest.fn();
@@ -105,8 +104,10 @@ describe('JobScheduler', () => {
             const jobScheduler = new JobScheduler(jobCreator, 1, jobEventEmitter, fs);
             const jobConfiguration = createTestJobConfiguration();
             await jobScheduler.schedule(jobConfiguration);
+            const jobRunners = jobScheduler.getJobRunners();
+            expect(jobRunners).toHaveLength(0);
             expect(fs.mkdir).toHaveBeenCalledTimes(1);
-            expect(jobStartedHandler).not.toHaveBeenCalledWith();
+            expect(jobStartedHandler).not.toHaveBeenCalled();
             expect(jobFinishedHandler).toHaveBeenCalledTimes(1);
             expect(jobFinishedHandler).toHaveBeenCalledWith({
                 id: TEST_JOB_ID,
@@ -117,67 +118,49 @@ describe('JobScheduler', () => {
                 stepCount: 0
             } as JobInfo);
         });
+
+        test('executes a second job in parallel', async () => {
+            const fs = createMockFileSystemService();
+            const jobCreator = createMockJobCreator();
+            const jobEventEmitter = new EventEmitter() as JobEventEmitter;
+            const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
+            const jobConfiguration = createTestJobConfiguration();
+            await jobScheduler.schedule(jobConfiguration);
+            await jobScheduler.schedule(jobConfiguration);
+            const jobRunners = jobScheduler.getJobRunners();
+            expect(jobRunners[1].status).toBe(JobStatus.Running);
+        });
+
+        test('queues a job if it cannot run in parallel', async () => {
+            const fs = createMockFileSystemService();
+            const jobCreator = createMockJobCreator();
+            const jobEventEmitter = new EventEmitter() as JobEventEmitter;
+            const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
+            const jobConfiguration = createTestJobConfiguration(1);
+            await jobScheduler.schedule(jobConfiguration);
+            await jobScheduler.schedule(jobConfiguration);
+            const jobRunners = jobScheduler.getJobRunners();
+            expect(jobRunners[1].status).toBe(JobStatus.Scheduled);
+        });
+
+        test('starts a queued job once a previous one has completed', async () => {
+            const fs = createMockFileSystemService();
+            const jobCreator = createMockJobCreator();
+            const jobEventEmitter = new EventEmitter() as JobEventEmitter;
+            const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
+            const jobConfiguration = createTestJobConfiguration(1);
+            await jobScheduler.schedule(jobConfiguration);
+            await jobScheduler.schedule(jobConfiguration);
+            const firstJobFinishedPromise = new Promise(resolve =>
+                jobEventEmitter.on(JOB_FINISHED_EVENT, (jobInfo: JobInfo) => {
+                    if (jobInfo.number === 1) {
+                        resolve();
+                    }
+                }));
+            await firstJobFinishedPromise;
+            const jobRunners = jobScheduler.getJobRunners();
+            expect(jobRunners[0].status).toBe(JobStatus.Finished);
+            expect(jobRunners[1].status).toBe(JobStatus.Running);
+        });
     });
-
-    describe('cancel', () => {
-
-        // test('aborts a scheduled job', async () => {
-        //     const fs = createMockFileSystemService();
-        //     const jobCreator = createMockJobCreator();
-        //     const jobEventEmitter = new EventEmitter() as JobEventEmitter;
-        //     const jobFinishedHandler = jest.fn();
-        //     jobEventEmitter.on(JOB_FINISHED_EVENT, jobFinishedHandler);
-        //     const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
-        //     const jobConfiguration = createTestJobConfiguration();
-        //     await jobScheduler.schedule(jobConfiguration);
-        //     const jobRunner = jobScheduler.getJobRunners()
-        //         .find(runner => runner.jobNumber === 1);
-        //     jobEventEmitter.on(JOB_STARTED_EVENT, () => jobRunner.cancel());
-        //     expect(jobFinishedHandler).toHaveBeenCalledTimes(1);
-        //     expect(jobFinishedHandler).toHaveBeenCalledWith({
-        //         id: TEST_JOB_ID,
-        //         currentStepIndex: 0,
-        //         number: 1,
-        //         result: JobResult.Canceled,
-        //         status: JobStatus.Finished,
-        //         stepCount: 1
-        //     } as JobInfo);
-        // });
-
-        // test('does nothing if the specified job is not running', () => {
-        //     const fs = createMockFileSystemService();
-        //     const jobCreator = createMockJobCreator();
-        //     const jobEventEmitter = new EventEmitter() as JobEventEmitter;
-        //     const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
-        //     jobScheduler.cancel(1);
-        // });
-    });
-
-    // describe('getJobInfos', () => {
-
-    //     test('returns an empty array if no job is running', () => {
-    //         const fs = createMockFileSystemService();
-    //         const jobCreator = createMockJobCreator();
-    //         const jobEventEmitter = new EventEmitter() as JobEventEmitter;
-    //         const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
-    //         expect(jobScheduler.getJobInfos()).toHaveLength(0);
-    //     });
-
-    //     test('returns an array containing information about scheduled jobs', async () => {
-    //         const fs = createMockFileSystemService();
-    //         const jobCreator = createMockJobCreator();
-    //         const jobEventEmitter = new EventEmitter() as JobEventEmitter;
-    //         const jobScheduler = new JobScheduler(jobCreator, 0, jobEventEmitter, fs);
-    //         const jobConfiguration = createTestJobConfiguration();
-    //         await jobScheduler.schedule(jobConfiguration);
-    //         expect(jobScheduler.getJobInfos()).toEqual([{
-    //             id: TEST_JOB_ID,
-    //             currentStepIndex: 0,
-    //             number: 1,
-    //             result: undefined,
-    //             status: JobStatus.Running,
-    //             stepCount: 1
-    //         } as JobInfo]);
-    //     });
-    // });
 });
