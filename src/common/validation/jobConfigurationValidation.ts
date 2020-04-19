@@ -1,8 +1,9 @@
 'use strict';
 
 import JobConfiguration from '../models/jobConfiguration';
-import { isBlankString, isPositiveInteger } from './valueTesters';
+import { isBlankString, isPositiveInteger, isString, isUndefined } from './valueTesters';
 import JobParameter from '../models/jobParameter';
+import JobStepConfiguration from '../models/jobStepConfiguration';
 
 function validateMaximumConcurrentJobs(maximumConcurrentJobs: number): void {
     if (maximumConcurrentJobs !== undefined && !isPositiveInteger(maximumConcurrentJobs)) {
@@ -16,6 +17,13 @@ function validateJobParameter(parameter: JobParameter): void {
     }
     if (isBlankString(parameter.name)) {
         throw new Error('Missing parameter name.');
+    }
+}
+
+function validateStepConfiguration(stepConfiguration: JobStepConfiguration): void {
+    const description = stepConfiguration.description;
+    if (!isUndefined(description) && !isString(description)) {
+        throw new Error('Step configuration description must be either undefined or a string.');
     }
 }
 
@@ -42,4 +50,9 @@ export function validateJobConfiguration(jobConfiguration: JobConfiguration): vo
         }
         jobParametersSet.add(normalizedParameterName);
     });
+    const stepConfigurations = jobConfiguration.stepConfigurations;
+    if (!Array.isArray(stepConfigurations)) {
+        throw new Error('Step configurations must be an array.');
+    }
+    stepConfigurations.forEach(stepConfiguration => validateStepConfiguration(stepConfiguration));
 }

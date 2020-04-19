@@ -19,6 +19,12 @@
     font-size: 22px;
 }
 
+.job-step-configurator-description {
+    flex: 1;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 .job-step-configurator-delete-button {
     margin-left: auto;
 }
