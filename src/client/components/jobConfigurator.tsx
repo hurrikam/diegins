@@ -56,7 +56,7 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
                     <div className="text-block-container">
                         <span className="text-input-label">Maximum concurrent jobs</span>
                         <input type="text" value={this.state.maximumConcurrentJobs || ''}
-                            onChange={(event) => this.setState({maximumConcurrentJobs: parseInt(event.currentTarget.value, 10)})} />
+                            onChange={(event) => this.setState({ maximumConcurrentJobs: parseInt(event.currentTarget.value, 10) })} />
                     </div>
                     <hr />
                     <div className="job-configurator-section-header">Parameters</div>
@@ -80,7 +80,9 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
                         (<JobStepConfigurator
                             data={stepConfiguration.data}
                             deleteStepConfiguration={this.deleteStepConfiguration.bind(this)}
+                            description={stepConfiguration.description}
                             onDataChanged={(newData) => this.onStepConfigurationDataChanged(index, newData)}
+                            onDescriptionChanged={(newDescription) => this.onStepConfigurationDescriptionChanged(index, newDescription)}
                             stepId={stepConfiguration.stepId}
                             stepIndex={index}
                         />))
@@ -160,6 +162,12 @@ export default class JobConfigurator extends React.Component<JobConfiguratorProp
     private onStepConfigurationDataChanged(index: number, newData: string): void {
         const modifiedStepConfigurations = [...this.state.stepConfigurations];
         modifiedStepConfigurations[index].data = newData;
+        this.setState({ stepConfigurations: modifiedStepConfigurations });
+    }
+
+    private onStepConfigurationDescriptionChanged(index: number, newDescription: string): void {
+        const modifiedStepConfigurations = [...this.state.stepConfigurations];
+        modifiedStepConfigurations[index].description = newDescription;
         this.setState({ stepConfigurations: modifiedStepConfigurations });
     }
 

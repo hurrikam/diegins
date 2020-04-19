@@ -5,6 +5,7 @@ import { join } from 'path';
 import JobConfiguration from '../../common/models/jobConfiguration';
 import { JOB_CONFIGURATIONS_FOLDER, JOB_CONFIGURATION_FILE_EXTENSION } from './jobFileConstants';
 import { validateJobConfiguration } from '../../common/validation/jobConfigurationValidation';
+import { normalizeJobConfiguration }  from './jobConfigurationNormalization';
 import FileSystemService from '../services/fileSystemService';
 
 export default class JobConfigurationRepository {
@@ -47,6 +48,7 @@ export default class JobConfigurationRepository {
 
     public async saveJobConfiguration(jobConfiguration: JobConfiguration): Promise<void> {
         validateJobConfiguration(jobConfiguration);
+        normalizeJobConfiguration(jobConfiguration);
         const configurationId = jobConfiguration.id;
         const configurationFileName = this.configurationFileNameFromJobId(configurationId);
         const configurationFilePath = join(JOB_CONFIGURATIONS_FOLDER, configurationFileName);
